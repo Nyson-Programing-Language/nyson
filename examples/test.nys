@@ -1,1 +1,2 @@
-let foo = 'bar'
+log("hello world")
+log("bye world")
