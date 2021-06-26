@@ -1,6 +1,4 @@
-#syntax
-
-##print
+## print
 ```
 log("hello world")
 ```
