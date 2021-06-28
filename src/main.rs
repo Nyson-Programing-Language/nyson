@@ -1,5 +1,4 @@
 mod lexer;
-mod parser;
 mod run;
 
 use std::env;
@@ -21,6 +20,4 @@ fn main() {
     println!("{:?}", contents);
     let to_parse = lexer::lexer(contents);
     run::run(to_parse);
-    parser::create_tree(to_parse)
-
 }
