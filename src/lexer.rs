@@ -1,5 +1,4 @@
 #![allow(unused)]
-
 pub enum Tokens {
     Id{value: String},
     Op{value: String},
@@ -9,9 +8,7 @@ pub enum Tokens {
 }
 
 pub fn lexer(contents: String){
-    let contents_literal = remove_whitespace(&contents);
-    println!("{:?}", contents_literal);
-    split(contents);
+    let contents_literal = split(contents);
     /*
     for n in 0..contents_literal.len() {
         let lex_vec: Vec<String> = Vec::new();
@@ -27,7 +24,7 @@ fn remove_whitespace(s: &str) -> String {
     s.split_whitespace().collect()
 }
 
-fn split(text: String) {
+fn split(text: String) -> Vec<String> {
     let mut result = Vec::new();
     let mut last = 0;
     for (index, matched) in text.match_indices(|c: char| !(c.is_alphanumeric() || c == '\'' || c == ' ')) {
@@ -87,7 +84,13 @@ fn split(text: String) {
         
     }
     
-    println!("{:?}", output);
+    let mut outputs:Vec<String> = Vec::new();
+    
+    for x in output {
+        outputs.push(String::from(x));
+    }
+    
+    return outputs;
 }
 
 fn check_enum(input_string: String) {
