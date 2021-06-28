@@ -92,15 +92,3 @@ fn split(text: String) -> Vec<String> {
     
     return outputs;
 }
-
-fn check_enum(input_string: String) {
-    let check = input_string.as_str();
-    match check{
-        "log" => println!("id"),
-        "(" | ")" | "+" | "-" | "/" | "*" => println!("op"),
-        r##"""## => println!("quote"),
-        "1" | "2" | "3" | "4" | "5" | "6" | "7"| "8"| "9" => print!("num"),
-        _ => println!("other"),
-
-    }
-}
