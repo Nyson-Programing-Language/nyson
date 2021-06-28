@@ -1,5 +1,6 @@
 mod lexer;
 mod parser;
+mod run;
 
 use std::env;
 use std::fs;
@@ -19,4 +20,6 @@ fn main() {
     };
     println!("{:?}", contents);
     let to_parse = lexer::lexer(contents);
+    run::run(to_parse);
+    
 }
