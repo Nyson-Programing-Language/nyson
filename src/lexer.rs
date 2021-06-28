@@ -7,7 +7,7 @@ pub enum Tokens {
     Quote{value: String}
 }
 
-pub fn lexer(contents: String){
+pub fn lexer(contents: String) -> Vec<String>{
     let contents_literal = split(contents);
     /*
     for n in 0..contents_literal.len() {
