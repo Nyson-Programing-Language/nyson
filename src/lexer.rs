@@ -18,6 +18,12 @@ pub fn lexer(contents: String){
         println!("{:?}", contents_literal.chars().nth(n).unwrap())
     }
     */
+    let mut outputs:Vec<String> = Vec::new();
+    for x in contents_literal {
+        outputs.push(String::from(x));
+    }
+    
+    return outputs;
 }
 
 fn remove_whitespace(s: &str) -> String {
