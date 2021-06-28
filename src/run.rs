@@ -4,7 +4,6 @@ pub fn run(contents: Vec<String>) {
             let mut vec = Vec::new();
             let mut skip = false;
             let mut n = 0;
-            println!("{:?}", contents);
             for y in x+1..contents.len() {
                 if skip == false {
                     if contents[x+1] != "(" {
