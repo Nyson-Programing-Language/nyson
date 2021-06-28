@@ -17,5 +17,5 @@ fn main() {
         panic!("Could not open file for reading.");
     };
     println!("{:?}", contents);
-    lexer::lexer(contents);
+    let to_parse = lexer::lexer(contents);
 }
