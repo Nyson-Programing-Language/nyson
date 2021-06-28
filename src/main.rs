@@ -1,3 +1,5 @@
+mod lexer;
+
 use std::env;
 use std::fs;
 
@@ -14,5 +16,6 @@ fn main() {
     } else {
         panic!("Could not open file for reading.");
     };
-    println!("{:?}", contents)
+    println!("{:?}", contents);
+    lexer::lexer(contents);
 }

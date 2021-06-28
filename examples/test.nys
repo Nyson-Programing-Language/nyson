@@ -1,2 +1,2 @@
 log("hello world")
-dec numberEx: 3 + 5
+dec numberEx:3+5
