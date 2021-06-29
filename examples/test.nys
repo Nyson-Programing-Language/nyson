@@ -1,2 +1,3 @@
-dec str test: I want to;
+dec str hello: "bob";
+dec int test: math(5+5) "hello" hello;
 log(test " poop"); 

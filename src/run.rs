@@ -18,6 +18,9 @@ pub fn run(contents: Vec<String>) {
                 println!("{}", math(x, contents.clone()));
             }
             else if contents[x] == "dec" {
+                let memory_names_save = memory_names.clone();
+                let memory_types_save = memory_types.clone();
+                let memory_values_save = memory_values.clone();
                 let move_up = 2;
                 if contents[x+move_up] == "int" {
                     memory_types.push(String::from("int"));
@@ -40,14 +43,59 @@ pub fn run(contents: Vec<String>) {
                     } else {
                         let mut move_final = 1;
                     }
+                    let mut n = 0;
+                    let mut quote = 0;
                     loop {
                         if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
+                            println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
                             break;
                         }
                         else {
-                            value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
-                            move_final = move_final+1;
+                            if contents[x+move_up+move_up+move_up_up+move_final] == "\"" || contents[x+move_up+move_up+move_up_up+move_final] == "\'" || contents[x+move_up+move_up+move_up_up+move_final] == r"\`" {
+                                quote = quote + 1;
+                            }
+                            else {
+                                if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
+                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone()).to_string().as_str());
+                                    n = 1;
+                                }
+                                else {
+                                    if n == 0 {
+                                        if quote%2 == 1 {
+                                            value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                        }
+                                        else {
+                                            let mut position = memory_names_save.len();
+                                            let mut skip = false;
+                                            for pos in 0..memory_names_save.len() {
+                                                if skip == false {
+                                                    if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_up_up+move_final].to_string() {
+                                                        position = pos;
+                                                        skip = true;
+                                                    }
+                                                }
+                                            }
+                                            if position != memory_names_save.len() {
+                                                value.push_str(memory_values_save[position].to_string().as_str());
+                                            }
+                                            else {
+                                                value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                            }
+                                        }
+                                    }
+                                }
+                                if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == "(" {
+                                    n = n + 1
+                                }
+                                else if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == ")" {
+                                    n = n - 1;
+                                    if n == 1 {
+                                        n = 0;
+                                    }
+                                }
+                            }
                         }
+                        move_final = move_final+1;
                     }
                     memory_values.push(value);
                 } else {
@@ -58,17 +106,61 @@ pub fn run(contents: Vec<String>) {
                     } else {
                         let mut move_final = 1;
                     }
+                    let mut n = 0;
+                    let mut quote = 0;
                     loop {
                         if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
                             println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
                             break;
                         }
                         else {
-                            value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
-                            move_final = move_final+1;
-                            println!("{:?}", move_final);
-                            println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                            if contents[x+move_up+move_up+move_up_up+move_final] == "\"" || contents[x+move_up+move_up+move_up_up+move_final] == "\'" || contents[x+move_up+move_up+move_up_up+move_final] == r"\`" {
+                                quote = quote + 1;
+                            }
+                            else {
+                                if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
+                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone()).to_string().as_str());
+                                    n = 1;
+                                }
+                                else {
+                                    if n == 0 {
+                                        if quote%2 == 1 {
+                                            value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                        }
+                                        else {
+                                            let mut position = memory_names_save.len();
+                                            let mut skip = false;
+                                            for pos in 0..memory_names_save.len() {
+                                                if skip == false {
+                                                    if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_up_up+move_final].to_string() {
+                                                        position = pos;
+                                                        skip = true;
+                                                    }
+                                                }
+                                            }
+                                            if position != memory_names_save.len() {
+                                                value.push_str(memory_values_save[position].to_string().as_str());
+                                            }
+                                            else {
+                                                value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                            }
+                                        }
+                                    }
+                                }
+                                if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == "(" {
+                                    n = n + 1
+                                }
+                                else if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == ")" {
+                                    n = n - 1;
+                                    if n == 1 {
+                                        n = 0;
+                                    }
+                                }
+                            }
                         }
+                        move_final = move_final+1;
+                        println!("{:?}", move_final);
+                        println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
                     }
                     memory_values.push(value);
                 }
@@ -177,9 +269,6 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
             }
         }
     }
-    println!("{}", string);
-    println!("{}", string);
-    println!("{}", string);
     println!("{}", string);
 }
 
