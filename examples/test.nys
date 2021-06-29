@@ -1,2 +1,2 @@
-log("hello tester " math(5+5))
-math(15+5^2)
+dec str test: I want to;
+log(test " poop"); 

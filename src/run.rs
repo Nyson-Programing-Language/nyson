@@ -12,7 +12,7 @@ pub fn run(contents: Vec<String>) {
         }
         if quotes%2 == 0 {
             if contents[x] == "log" {
-                log(x, contents.clone());
+                log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone());
             }
             else if contents[x] == "math" {
                 println!("{}", math(x, contents.clone()));
@@ -90,7 +90,7 @@ pub fn find_greatest(list_of_numbers: &[i32]) -> &i32 {
     return largest;
 }
 
-pub fn log(x:usize, contents: Vec<String>) {
+pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>) {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
     let mut n = 0;
@@ -134,6 +134,21 @@ pub fn log(x:usize, contents: Vec<String>) {
             else if vec[y] == "math" {
                 string.push_str(math(y, vec.to_vec()).to_string().as_str());
             }
+            else {
+                let mut postion = memory_names.len();
+                let mut skip = false;
+                for pos in 0..memory_names.len() {
+                    if skip == false {
+                        if memory_names[pos].to_string() == vec[y].to_string() {
+                            postion = pos;
+                            skip = true;
+                        }
+                    }
+                }
+                if postion != memory_names.len() {
+                    string.push_str(&*memory_values[postion].to_string());
+                }
+            }
         }
     }
     else {
@@ -145,8 +160,26 @@ pub fn log(x:usize, contents: Vec<String>) {
             else if n%2 == 1 {
                 string.push_str(vec[y].as_str())
             }
+            else {
+                let mut postion = memory_names.len();
+                let mut skip = false;
+                for pos in 0..memory_names.len() {
+                    if skip == false {
+                        if memory_names[pos].to_string() == vec[y].to_string() {
+                            postion = pos;
+                            skip = true;
+                        }
+                    }
+                }
+                if postion != memory_names.len() {
+                    string.push_str(&*memory_values[postion].to_string());
+                }
+            }
         }
     }
+    println!("{}", string);
+    println!("{}", string);
+    println!("{}", string);
     println!("{}", string);
 }
 
