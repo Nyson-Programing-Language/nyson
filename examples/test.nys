@@ -1,3 +1,3 @@
 dec str hello: "bob";
-dec int test: math(5+random) "hello" hello;
+dec int test: math(random) "hello" hello;
 log(test " poop"); 

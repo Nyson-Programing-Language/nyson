@@ -321,35 +321,46 @@ pub fn math(x:usize, contents: Vec<String>) -> f32 {
             for y in 0..vec.len() {
                 if skip == false {
                     let mut rng = rand::thread_rng();
-                    if vec[y + 1].to_lowercase() == "random" {
-                        vec[y+1] = rng.gen::<f32>().to_string();
-                        skip = true;
-                    }
                     if vec[y] == "+" {
+                        if vec[y + 1].to_lowercase() == "random" {
+                            vec[y+1] = rng.gen::<f32>().to_string();
+                        }
                         vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().add(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
                         skip = true;
                     }
                     else if vec[y] == "-" {
+                        if vec[y + 1].to_lowercase() == "random" {
+                            vec[y+1] = rng.gen::<f32>().to_string();
+                        }
                         vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().sub(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
                         skip = true;
                     }
                     else if vec[y] == "*" {
+                        if vec[y + 1].to_lowercase() == "random" {
+                            vec[y+1] = rng.gen::<f32>().to_string();
+                        }
                         vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().mul(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
                         skip = true;
                     }
                     else if vec[y] == "/" {
+                        if vec[y + 1].to_lowercase() == "random" {
+                            vec[y+1] = rng.gen::<f32>().to_string();
+                        }
                         vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().div(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
                         skip = true;
                     }
                     else if vec[y] == "^" {
+                        if vec[y + 1].to_lowercase() == "random" {
+                            vec[y+1] = rng.gen::<f32>().to_string();
+                        }
                         vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().powf(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
