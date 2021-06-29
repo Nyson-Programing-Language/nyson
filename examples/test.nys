@@ -1,2 +1,2 @@
 log("hello world")
-math(5+5)
+math(15+5)
