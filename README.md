@@ -5,4 +5,4 @@ Contributors:
 
 https://github.com/Nyelsonon
 
-https://github.com/AMTitan
+https://github.com/AMTitan [![wakatime](https://wakatime.com/badge/github/AMTitan/nyson-programming-language.svg)](https://wakatime.com/badge/github/AMTitan/nyson-programming-language)
