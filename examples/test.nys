@@ -1,2 +1,2 @@
-log("poo poo hahhahahah")
+log("hello tester " math(5+5))
 math(15+5^2)
