@@ -1,7 +1,6 @@
 use std::ops::{Add, Sub, Mul, Div};
 
 pub fn run(contents: Vec<String>) {
-    println!("{:?}", contents);
     let mut memory_names: Vec<String> = Vec::new();
     let mut memory_values: Vec<String> = Vec::new();
     let mut memory_types: Vec<String> = Vec::new();
@@ -47,7 +46,6 @@ pub fn run(contents: Vec<String>) {
                     let mut quote = 0;
                     loop {
                         if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
-                            println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
                             break;
                         }
                         else {
@@ -110,7 +108,6 @@ pub fn run(contents: Vec<String>) {
                     let mut quote = 0;
                     loop {
                         if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
-                            println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
                             break;
                         }
                         else {
@@ -159,14 +156,9 @@ pub fn run(contents: Vec<String>) {
                             }
                         }
                         move_final = move_final+1;
-                        println!("{:?}", move_final);
-                        println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
                     }
                     memory_values.push(value);
                 }
-                println!("{:?}", memory_names);
-                println!("{:?}", memory_types);
-                println!("{:?}", memory_values);
             }
         }
     }
@@ -206,7 +198,6 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
             }
         }
     }
-    println!("{:?}",  vec);
     let mut z = 0;
     for y in vec.to_vec() {
         if y == "(" || y == ")" {
