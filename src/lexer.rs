@@ -19,6 +19,7 @@ pub fn lexer(contents: String) -> Vec<String>{
     }
     */
     let mut outputs:Vec<String> = Vec::new();
+    outputs.push(" ".parse().unwrap());
     for x in contents_literal {
         outputs.push(String::from(x));
     }

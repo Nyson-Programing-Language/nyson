@@ -1,3 +1,5 @@
+use std::ops::{Add, Sub, Mul, Div};
+
 pub fn run(contents: Vec<String>) {
     println!("{:?}", contents);
     let mut memory_names: Vec<String> = Vec::new();
@@ -28,7 +30,6 @@ pub fn run(contents: Vec<String>) {
                     }
                 }
             }
-            //println!("{:?}", vec);
             let mut z = 0;
             for y in vec.to_vec() {
                 if y == "(" || y == ")" {
@@ -53,7 +54,7 @@ pub fn run(contents: Vec<String>) {
             println!("{}", string);
         }
         else if contents[x] == "math" {
-            let mut vec = Vec::new();
+            let mut vec:Vec<String> = Vec::new();
             let mut skip = false;
             let mut n = 0;
             for y in x+1..contents.len() {
@@ -71,8 +72,67 @@ pub fn run(contents: Vec<String>) {
                     if n%2 == 0 {
                         skip = true;
                         for z in x+1..y+1 {
-                            vec.push(&contents[z]);
+                            vec.push(contents[z].to_string());
                         }
+                    }
+                }
+            }
+            let mut n = 0;
+            let mut what_to_do_first = Vec::new(); 
+            vec.remove(0);
+            vec.remove(vec.len()-1);
+            for y in 0..vec.len() {
+                if vec[y] == "(" {
+                    n = n +1;
+                }
+                else if vec[y] == ")" {
+                    n = n-1;
+                }
+                what_to_do_first.push(n);
+            }
+            if find_greatest(&*what_to_do_first) > &0 {
+                // has parenties
+            }
+            else {
+                let mut keep_going = true;
+                while keep_going {
+                    let mut skip =  false;
+                    for y in 0..vec.len() {
+                        if skip == false {
+                            if vec[y] == "+" {
+                                vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().add(vec[y + 1].parse::<i32>().unwrap()).to_string();
+                                vec.remove(y);
+                                vec.remove(y);
+                                skip = true;
+                            }
+                            else if vec[y] == "-" {
+                                vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().sub(vec[y + 1].parse::<i32>().unwrap()).to_string();
+                                vec.remove(y);
+                                vec.remove(y);
+                                skip = true;
+                            }
+                            else if vec[y] == "*" {
+                                vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().mul(vec[y + 1].parse::<i32>().unwrap()).to_string();
+                                vec.remove(y);
+                                vec.remove(y);
+                                skip = true;
+                            }
+                            else if vec[y] == "/" {
+                                vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().div(vec[y + 1].parse::<i32>().unwrap()).to_string();
+                                vec.remove(y);
+                                vec.remove(y);
+                                skip = true;
+                            }
+                            else if vec[y] == "^" {
+                                vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().pow(vec[y + 1].parse::<i32>().unwrap() as u32).to_string();
+                                vec.remove(y);
+                                vec.remove(y);
+                                skip = true;
+                            }
+                        }
+                    }
+                    if vec.len() == 1 {
+                        keep_going = false;
                     }
                 }
             }
@@ -138,4 +198,14 @@ pub fn run(contents: Vec<String>) {
             println!("{:?}", memory_values);
         }
     }
+}
+
+pub fn find_greatest(list_of_numbers: &[i32]) -> &i32 {
+    let mut largest = &list_of_numbers[0];
+    for number in list_of_numbers {
+        if number > largest {
+            largest = number
+        }
+    }
+    return largest;
 }
