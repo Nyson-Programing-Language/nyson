@@ -1,4 +1,6 @@
 use std::ops::{Add, Sub, Mul, Div};
+#[allow(unused_variables)]
+#[allow(unused_mut)]
 
 pub fn run(contents: Vec<String>) {
     let mut memory_names: Vec<String> = Vec::new();
