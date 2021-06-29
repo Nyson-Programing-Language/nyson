@@ -1,8 +1,8 @@
 pub fn run(contents: Vec<String>) {
     println!("{:?}", contents);
-    let memory_names: Vec<String> = Vec::new();
-    let memory_values: Vec<String> = Vec::new();
-    let memory_types: Vec<String> = Vec::new();
+    let mut memory_names: Vec<String> = Vec::new();
+    let mut memory_values: Vec<String> = Vec::new();
+    let mut memory_types: Vec<String> = Vec::new();
     for x in 0..contents.len() {
         if contents[x] == "log" {
             let mut vec = Vec::new();
@@ -79,17 +79,63 @@ pub fn run(contents: Vec<String>) {
             println!("{:?}", vec);
         }
         else if contents[x] == "dec" {
-            let mut contents_clear = contents.clone();
-            for y in 0..contents_clear.len() {
-                if contents_clear[y] == "" {
-                    contents_clear.remove(y);
-                } else if contents_clear[y] == r"\n" {
-                    contents_clear.remove(y);
-                } else if contents_clear[y] == r"\r" {
-                    contents_clear.remove(y);
-                }
+            let move_up = 2;
+            if contents[x+move_up] == "int" {
+                memory_types.push(String::from("int"));
+            } else if contents[x+move_up] == "str"  {
+                memory_types.push(String::from("str"));
             }
-            println!("{:?}", contents_clear)
+            memory_names.push(String::from(contents[x+move_up+move_up].clone()));
+            let move_up_up = 1;
+            if contents[x+move_up+move_up+1] == ":" {
+                let move_up_up = 1;
+            }
+            if contents[x+move_up+move_up+1] == " " {
+                let move_up_up = 2;
+            }
+            if contents[x+move_up+move_up+move_up_up] == " " {
+                let mut value = String::new();
+                let mut move_final = 2;
+                if contents[x+move_up+move_up+move_up_up+2] == " " {
+                    let mut move_final = 2;
+                } else {
+                    let mut move_final = 1;
+                }
+                loop {
+                    if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
+                        break;
+                    }
+                    else {
+                        value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                        move_final = move_final+1;
+                    }
+                }
+                memory_values.push(value);
+            } else {
+                let mut value = String::new();
+                let mut move_final = 2;
+                if contents[x+move_up+move_up+move_up_up+2] == " " {
+                    let mut move_final = 2;
+                } else {
+                    let mut move_final = 1;
+                }
+                loop {
+                    if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
+                        println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                        break;
+                    }
+                    else {
+                        value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                        move_final = move_final+1;
+                        println!("{:?}", move_final);
+                        println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                    }
+                }
+                memory_values.push(value);
+            }
+            println!("{:?}", memory_names);
+            println!("{:?}", memory_types);
+            println!("{:?}", memory_values);
         }
     }
 }
