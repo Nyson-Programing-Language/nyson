@@ -1,5 +1,8 @@
 pub fn run(contents: Vec<String>) {
     println!("{:?}", contents);
+    memory_names: Vec<String> = Vec::new();
+    memory_values: Vec<String> = Vec::new();
+    memory_types: Vec<String> = Vec::new();
     for x in 0..contents.len() {
         if contents[x] == "log" {
             let mut vec = Vec::new();
@@ -52,6 +55,19 @@ pub fn run(contents: Vec<String>) {
                 }
             }
             println!("{:?}", vec);
+        }
+        else if contents[x] == "dec" {
+            let contents_clear = contents.clone();
+            for y in 0..contents_clear.len() {
+                if contents_clear[y] == "" {
+                    contents_clear.remove(y);
+                } else if contents_clear[y] == r"\n" {
+                    contents_clear.remove(y);
+                } else if contents_clear[y] == r"\r" {
+                    contents_clear.remove(y);
+                }
+            }
+            println!("{:?}", contents_clear)
         }
     }
 }
