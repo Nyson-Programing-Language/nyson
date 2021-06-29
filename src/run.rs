@@ -1,4 +1,5 @@
 use std::ops::{Add, Sub, Mul, Div};
+use rand::Rng;
 
 pub fn run(contents: Vec<String>) {
     println!("{:?}", contents);
@@ -6,6 +7,7 @@ pub fn run(contents: Vec<String>) {
     let mut memory_values: Vec<String> = Vec::new();
     let mut memory_types: Vec<String> = Vec::new();
     let mut quotes = 0;
+    let types: &str = {"math"};
     for x in 0..contents.len() {
         if contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`" {
             quotes = quotes + 1;
@@ -272,7 +274,7 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
     println!("{}", string);
 }
 
-pub fn math(x:usize, contents: Vec<String>) -> i32 {
+pub fn math(x:usize, contents: Vec<String>) -> f32 {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
     let mut n = 0;
@@ -318,34 +320,43 @@ pub fn math(x:usize, contents: Vec<String>) -> i32 {
             let mut skip =  false;
             for y in 0..vec.len() {
                 if skip == false {
+                    let mut rng = rand::thread_rng();
+                    if vec[y + 1].to_lowercase() == "random" {
+                        vec[y+1] = rng.gen::<f32>().to_string();
+                        skip = true;
+                    }
                     if vec[y] == "+" {
-                        vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().add(vec[y + 1].parse::<i32>().unwrap()).to_string();
+                        vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().add(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
                         skip = true;
                     }
                     else if vec[y] == "-" {
-                        vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().sub(vec[y + 1].parse::<i32>().unwrap()).to_string();
+                        vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().sub(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
                         skip = true;
                     }
                     else if vec[y] == "*" {
-                        vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().mul(vec[y + 1].parse::<i32>().unwrap()).to_string();
+                        vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().mul(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
                         skip = true;
                     }
                     else if vec[y] == "/" {
-                        vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().div(vec[y + 1].parse::<i32>().unwrap()).to_string();
+                        vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().div(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
                         skip = true;
                     }
                     else if vec[y] == "^" {
-                        vec[y - 1] = vec[y - 1].parse::<i32>().unwrap().pow(vec[y + 1].parse::<i32>().unwrap() as u32).to_string();
+                        vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().powf(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
+                        skip = true;
+                    }
+                    else if vec[y].to_lowercase() == "random" {
+                        vec[y] = rng.gen::<f32>().to_string();
                         skip = true;
                     }
                 }
