@@ -33,7 +33,7 @@ fn remove_whitespace(s: &str) -> String {
 fn split(text: String) -> Vec<String> {
     let mut result = Vec::new();
     let mut last = 0;
-    for (index, matched) in text.match_indices(|c: char| !(c.is_alphanumeric() || c == '\'' || c == ' ')) {
+    for (index, matched) in text.match_indices(|c: char| !(c.is_ascii())) {
         if last != index {
             result.push(&text[last..index]);
         }
