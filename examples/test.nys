@@ -1,2 +1,3 @@
 log("hello world")
 math(15+5)
+dec int test: 5 + 5;
