@@ -3,4 +3,5 @@ dec int test: math(random+10) "hello" hello;
 log(test " poop"); 
 loop(5) {
     log("Loops"); 
+    log(test " poop");
 }

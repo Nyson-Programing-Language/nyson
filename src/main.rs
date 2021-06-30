@@ -6,6 +6,13 @@ use std::fs;
 
 fn main() {
     let maybe_file = env::args().nth(1);
+    let mut args= env::args();
+    let mut dev = false;
+    for arg in args {
+        if arg == "-dev" {
+            dev = true;
+        }
+    }
     let file = if let Some(f) = maybe_file {
         f
     } else {
@@ -20,7 +27,9 @@ fn main() {
     let mut space: String = " ".parse().unwrap();
     space.push_str(contents.as_str());
     contents = space;
-    println!("{:?}", contents);
-    let to_parse = lexer::lexer(contents);
-    run::run(to_parse);
+    if dev {
+        println!("{:?}", contents);
+    }
+    let to_parse = lexer::lexer(contents, dev);
+    run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new());
 }

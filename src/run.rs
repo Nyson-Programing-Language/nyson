@@ -1,11 +1,10 @@
 use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
 
-pub fn run(contents: Vec<String>) {
-    println!("{:?}", contents);
-    let mut memory_names: Vec<String> = Vec::new();
-    let mut memory_values: Vec<String> = Vec::new();
-    let mut memory_types: Vec<String> = Vec::new();
+pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut memory_values: Vec<String>, mut memory_types: Vec<String>,) {
+    if dev {
+        println!("{:?}", contents);
+    }
     let mut quotes = 0;
     let mut squigle = 0;
     for x in 0..contents.len() {
@@ -17,13 +16,10 @@ pub fn run(contents: Vec<String>) {
         }
         if quotes%2 == 0 && squigle%2 == 0 {
             if contents[x] == "log" {
-                log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone());
-            }
-            else if contents[x] == "math" {
-                println!("{}", math(x, contents.clone()));
+                log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
             }
             else if contents[x] == "loop" {
-                _loop(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone());
+                _loop(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
             }
             else if contents[x] == "dec" {
                 let memory_names_save = memory_names.clone();
@@ -55,7 +51,9 @@ pub fn run(contents: Vec<String>) {
                     let mut quote = 0;
                     loop {
                         if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
-                            println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                            if dev {
+                                println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                            }
                             break;
                         }
                         else {
@@ -64,7 +62,7 @@ pub fn run(contents: Vec<String>) {
                             }
                             else {
                                 if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
-                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone()).to_string().as_str());
+                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), dev).to_string().as_str());
                                     n = 1;
                                 }
                                 else {
@@ -118,7 +116,9 @@ pub fn run(contents: Vec<String>) {
                     let mut quote = 0;
                     loop {
                         if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
-                            println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                            if dev {
+                                println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                            }
                             break;
                         }
                         else {
@@ -127,7 +127,7 @@ pub fn run(contents: Vec<String>) {
                             }
                             else {
                                 if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
-                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone()).to_string().as_str());
+                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), dev).to_string().as_str());
                                     n = 1;
                                 }
                                 else {
@@ -167,14 +167,18 @@ pub fn run(contents: Vec<String>) {
                             }
                         }
                         move_final = move_final+1;
-                        println!("{:?}", move_final);
-                        println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                        if dev {
+                            println!("{:?}", move_final);
+                            println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                        }
                     }
                     memory_values.push(value);
                 }
-                println!("{:?}", memory_names);
-                println!("{:?}", memory_types);
-                println!("{:?}", memory_values);
+                if dev {
+                    println!("{:?}", memory_names);
+                    println!("{:?}", memory_types);
+                    println!("{:?}", memory_values);
+                }
             }
         }
     }
@@ -190,7 +194,7 @@ pub fn find_greatest(list_of_numbers: &[i32]) -> &i32 {
     return largest;
 }
 
-pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>) {
+pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
     let mut n = 0;
@@ -214,7 +218,9 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
             }
         }
     }
-    println!("{:?}",  vec);
+    if dev {
+        println!("{:?}",  vec);
+    }
     let mut z = 0;
     for y in vec.to_vec() {
         if y == "(" || y == ")" {
@@ -232,7 +238,7 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
                 string.push_str(vec[y].as_str())
             }
             else if vec[y] == "math" {
-                string.push_str(math(y, vec.to_vec()).to_string().as_str());
+                string.push_str(math(y, vec.to_vec(), dev).to_string().as_str());
             }
             else {
                 let mut postion = memory_names.len();
@@ -280,7 +286,7 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
     println!("{}", string);
 }
 
-pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>) {
+pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
     let mut number_of_times = contents[x+2].parse::<i32>().unwrap();
@@ -305,76 +311,11 @@ pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
     }
     vec.remove(0);
     for q in 0..number_of_times {
-        run(vec.clone());
+        run(vec.clone(), dev, memory_names.clone(), memory_values.clone(), memory_types.clone());
     }
-    /*
-    let mut z = 0;
-    for y in vec.to_vec() {
-        if y == "(" || y == ")" {
-            z = z + 1;
-        }
-    }
-    let mut string: String = "".to_string();
-    if z > 2 {
-        let mut n = 0;
-        for y in 0..vec.len() {
-            if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
-                n = n + 1;
-            }
-            else if n%2 == 1 {
-                string.push_str(vec[y].as_str())
-            }
-            else if vec[y] == "math" {
-                string.push_str(math(y, vec.to_vec()).to_string().as_str());
-            }
-            else {
-                let mut postion = memory_names.len();
-                let mut skip = false;
-                for pos in 0..memory_names.len() {
-                    if skip == false {
-                        if memory_names[pos].to_string() == vec[y].to_string() {
-                            postion = pos;
-                            skip = true;
-                        }
-                    }
-                }
-                if postion != memory_names.len() {
-                    string.push_str(&*memory_values[postion].to_string());
-                }
-            }
-        }
-    }
-    else {
-        let mut n = 0;
-        for y in 0..vec.len() {
-            if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
-                n = n + 1;
-            }
-            else if n%2 == 1 {
-                string.push_str(vec[y].as_str())
-            }
-            else {
-                let mut postion = memory_names.len();
-                let mut skip = false;
-                for pos in 0..memory_names.len() {
-                    if skip == false {
-                        if memory_names[pos].to_string() == vec[y].to_string() {
-                            postion = pos;
-                            skip = true;
-                        }
-                    }
-                }
-                if postion != memory_names.len() {
-                    string.push_str(&*memory_values[postion].to_string());
-                }
-            }
-        }
-    }
-    println!("{}", string);
-    */
 }
 
-pub fn math(x:usize, contents: Vec<String>) -> f32 {
+pub fn math(x:usize, contents: Vec<String>, dev: bool) -> f32 {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
     let mut n = 0;

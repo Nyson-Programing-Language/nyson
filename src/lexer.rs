@@ -7,8 +7,8 @@ pub enum Tokens {
     Quote{value: String}
 }
 
-pub fn lexer(contents: String) -> Vec<String>{
-    let contents_literal = split(contents);
+pub fn lexer(contents: String, dev: bool) -> Vec<String>{
+    let contents_literal = split(contents, dev);
     /*
     for n in 0..contents_literal.len() {
         let lex_vec: Vec<String> = Vec::new();
@@ -30,7 +30,7 @@ fn remove_whitespace(s: &str) -> String {
     s.split_whitespace().collect()
 }
 
-fn split(text: String) -> Vec<String> {
+fn split(text: String, dev: bool) -> Vec<String> {
     let mut result = Vec::new();
     let mut last = 0;
     for (index, matched) in text.match_indices(|c: char| !(c.is_ascii())) {
