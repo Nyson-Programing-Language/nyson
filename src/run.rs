@@ -2,7 +2,7 @@ use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
 use crate::lexer;
 
-pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut memory_values: Vec<String>, mut memory_types: Vec<String>, mut func_names: Vec<String>, mut func_par: Vec<String>, mut func_code: Vec<String>) {
+pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut memory_values: Vec<String>, mut memory_types: Vec<String>, mut func_names: Vec<String>, mut func_par: Vec<String>, mut func_code: Vec<String>) {
     if dev {
         println!("{:?}", contents);
     }

@@ -8,7 +8,6 @@ loop(random*5) {
     log("Loops"); 
     log(test " poop" "er");
 }
-func(writeQuestion()) {
+if hello == "bob" {
     log("hello how are you?");
 }
-writeQuestion()

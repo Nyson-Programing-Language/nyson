@@ -47,3 +47,11 @@ get something like 5.5539
 log(round(math(random*10)));
 ```
 get something like 3
+
+## Functions
+```
+func(sayHello()) {
+    log("hello");
+}
+sayHello();
+```
