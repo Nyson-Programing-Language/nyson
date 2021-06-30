@@ -1,6 +1,5 @@
 ### print statements
 ```
-log();
 log("hello world");
 ```
 
@@ -34,3 +33,17 @@ loop(5) {
 ```
 log(math(random));
 ```
+this will give you a float between 0 and 1
+
+### print random number between 0 and 10
+
+```
+log(math(random*10));
+```
+get something like 5.5539
+
+### print rounded random number
+```
+log(round(math(random*10)));
+```
+get something like 3

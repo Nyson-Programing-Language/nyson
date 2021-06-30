@@ -1,1 +1,9 @@
-log(round(math(random*5)));
+dec str hello: "bob";
+dec int test: math(random+10) "hello" hello;
+log(test " poop"); 
+dec int times: math(random*100);
+log(round(times));
+loop(random*5) {
+    log("Loops"); 
+    log(test " poop");
+}
