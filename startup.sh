@@ -1,3 +1,7 @@
+LOC="$(pwd)"
+cd ~
+git clone https://github.com/Nyelsonon/nyson-programming-language.git
+cd nyson-programming-language
 cargo build --release
-DIR="$( cd "$( dirname "$0" )" && pwd )"
-sudo cp $DIR/target/release/nyson /usr/bin
+cd $LOC
+sudo cp ~/nyson-programming-language/target/release/nyson /usr/bin
