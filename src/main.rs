@@ -20,7 +20,7 @@ fn main() {
             println!(">> (type quit to quit)");
             let mut line = String::new();
             std::io::stdin().read_line(&mut line).unwrap();
-            if line == "exit\n" || line == "quit\n" {
+            if line == "exit\n" || line == "quit\n" || line == "quit" || line == "exit" {
                 std::process::exit(1);
             }
             else {
