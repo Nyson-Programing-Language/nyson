@@ -65,6 +65,10 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                                     value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                     n = 1;
                                 }
+                                else if contents[x+move_up+move_up+move_up_up+move_final] == "round" {
+                                    value.push_str(round(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                    n = 1;
+                                }
                                 else {
                                     if n == 0 {
                                         if quote%2 == 1 {
@@ -128,6 +132,10 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                             else {
                                 if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
                                     value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                    n = 1;
+                                }
+                                else if contents[x+move_up+move_up+move_up_up+move_final] == "round" {
+                                    value.push_str(round(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                     n = 1;
                                 }
                                 else {
@@ -227,63 +235,152 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
             z = z + 1;
         }
     }
+    skip = false;
     let mut string: String = "".to_string();
-    if z > 2 {
-        let mut n = 0;
+    let mut n = 0;
+    while skip == false {
+        skip = false;
         for y in 0..vec.len() {
-            if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
-                n = n + 1;
-            }
-            else if n%2 == 1 {
-                string.push_str(vec[y].as_str())
-            }
-            else if vec[y] == "math" {
-                string.push_str(math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
-            }
-            else {
-                let mut postion = memory_names.len();
-                let mut skip = false;
-                for pos in 0..memory_names.len() {
-                    if skip == false {
-                        if memory_names[pos].to_string() == vec[y].to_string() {
-                            postion = pos;
-                            skip = true;
+            if skip == false {
+                if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
+                    n = n + 1;
+                } else if n % 2 == 1 {
+                    string.push_str(vec[y].as_str());
+                    skip = true;
+                } else if vec[y] == "math" {
+                    string.push_str(math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    skip = true;
+                } else if vec[y] == "round" {
+                    string.push_str(round(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    skip = true;
+                } else {
+                    let mut postion = memory_names.len();
+                    let mut skip = false;
+                    for pos in 0..memory_names.len() {
+                        if skip == false {
+                            if memory_names[pos].to_string() == vec[y].to_string() {
+                                postion = pos;
+                                skip = true;
+                            }
                         }
                     }
-                }
-                if postion != memory_names.len() {
-                    string.push_str(&*memory_values[postion].to_string());
-                }
-            }
-        }
-    }
-    else {
-        let mut n = 0;
-        for y in 0..vec.len() {
-            if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
-                n = n + 1;
-            }
-            else if n%2 == 1 {
-                string.push_str(vec[y].as_str())
-            }
-            else {
-                let mut postion = memory_names.len();
-                let mut skip = false;
-                for pos in 0..memory_names.len() {
-                    if skip == false {
-                        if memory_names[pos].to_string() == vec[y].to_string() {
-                            postion = pos;
-                            skip = true;
-                        }
+                    if postion != memory_names.len() {
+                        string.push_str(&*memory_values[postion].to_string());
                     }
-                }
-                if postion != memory_names.len() {
-                    string.push_str(&*memory_values[postion].to_string());
                 }
             }
         }
     }
     println!("{}", string);
+}
+
+pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) -> i32 {
+    let mut vec:Vec<String> = Vec::new();
+    let mut skip = false;
+    let mut n = 0;
+    for y in x+1..contents.len() {
+        if skip == false {
+            if contents[x+1] != "(" {
+                println!("You have to put a parentheses after the function on line {}", get_line(x, contents.clone()));
+                std::process::exit(1);
+            }
+            if contents[y] == "(" {
+                n = n +1;
+            }
+            else if contents[y] == ")" {
+                n = n-1;
+            }
+            if n == 0 {
+                skip = true;
+                for z in x+1..y+1 {
+                    vec.push(contents[z].to_string());
+                }
+            }
+        }
+    }
+    let mut n = 0;
+    let mut what_to_do_first = Vec::new();
+    vec.remove(0);
+    vec.remove(vec.len()-1);
+    for y in 0..vec.len() {
+        if vec[y] == "(" {
+            n = n +1;
+        }
+        else if vec[y] == ")" {
+            n = n-1;
+        }
+        what_to_do_first.push(n);
+    }
+    let mut keep_going = true;
+    while keep_going {
+        let mut skip =  false;
+        for y in 0..vec.len() {
+            if skip == false {
+                if vec[y] == "math" {
+                    vec[y] = math(y, vec.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
+                    let mut skip1 = false;
+                    let mut t = 0;
+                    while vec.len() > 1 {
+                        for z in 1..vec.len() {
+                            if skip1 == false {
+                                if contents[z] == "(" {
+                                    t = t +1;
+                                }
+                                else if contents[z] == ")" {
+                                    t = t-1;
+                                }
+                                if t%2 == 1 {
+                                    vec.remove(z);
+                                    skip1 = true;
+                                }
+                            }
+                        }
+                        skip1 = false;
+                    }
+
+                    skip = true;
+                }
+                else if vec[y] == "round" {
+                    vec[y] = round(y, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
+                    let mut skip1 = false;
+                    for y in x+1..vec.len() {
+                        if skip1 == false {
+                            if contents[y] == "(" {
+                                n = n +1;
+                            }
+                            else if contents[y] == ")" {
+                                n = n-1;
+                            }
+                            if n%2 == 0 {
+                                vec.remove(y);
+                            }
+                        }
+                    }
+                    skip = true;
+                }
+                else {
+                    let mut postion = memory_names.len();
+                    let mut skip = false;
+                    for pos in 0..memory_names.len() {
+                        if skip == false {
+                            if memory_names[pos].to_string() == vec[y].to_string() {
+                                postion = pos;
+                                skip = true;
+                            }
+                        }
+                    }
+                    if postion != memory_names.len() {
+                        vec[y] = memory_values[postion].to_string();
+                    }
+                }
+            }
+        }
+        if vec.len() == 1 {
+            keep_going = false;
+        }
+    }
+    //let returns:i32 = vec[0].parse().unwrap();
+    return vec[0].parse::<f32>().unwrap().round() as i32;
 }
 
 pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) {
@@ -362,7 +459,11 @@ pub fn math(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
             for y in 0..vec.len() {
                 if skip == false {
                     let mut rng = rand::thread_rng();
-                    if vec[y] == "+" {
+                    if vec[y].to_lowercase() == "random" {
+                        vec[y] = rng.gen::<f32>().to_string();
+                        skip = true;
+                    }
+                    else if vec[y] == "+" {
                         if vec[y + 1].to_lowercase() == "random" {
                             vec[y+1] = rng.gen::<f32>().to_string();
                         }
@@ -405,10 +506,6 @@ pub fn math(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
                         vec[y - 1] = vec[y - 1].parse::<f32>().unwrap().powf(vec[y + 1].parse::<f32>().unwrap()).to_string();
                         vec.remove(y);
                         vec.remove(y);
-                        skip = true;
-                    }
-                    else if vec[y].to_lowercase() == "random" {
-                        vec[y] = rng.gen::<f32>().to_string();
                         skip = true;
                     }
                     else {
