@@ -62,7 +62,7 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                             }
                             else {
                                 if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
-                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), dev).to_string().as_str());
+                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                     n = 1;
                                 }
                                 else {
@@ -127,7 +127,7 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                             }
                             else {
                                 if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
-                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), dev).to_string().as_str());
+                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                                     n = 1;
                                 }
                                 else {
@@ -238,7 +238,7 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
                 string.push_str(vec[y].as_str())
             }
             else if vec[y] == "math" {
-                string.push_str(math(y, vec.to_vec(), dev).to_string().as_str());
+                string.push_str(math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
             }
             else {
                 let mut postion = memory_names.len();
@@ -289,7 +289,7 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
 pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
-    let mut number_of_times = math(x, contents.clone(), dev);
+    let mut number_of_times = math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
     let mut n = 0;
     let mut reached = false;
     for y in x+1..contents.len() {
@@ -315,14 +315,14 @@ pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
     }
 }
 
-pub fn math(x:usize, contents: Vec<String>, dev: bool) -> f32 {
+pub fn math(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) -> f32 {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
     let mut n = 0;
     for y in x+1..contents.len() {
         if skip == false {
             if contents[x+1] != "(" {
-                println!("You have to put a parentheses after a math");
+                println!("You have to put a parentheses after the function on line {}", get_line(x, contents.clone()));
                 std::process::exit(1);
             }
             if contents[y] == "(" {
@@ -411,6 +411,21 @@ pub fn math(x:usize, contents: Vec<String>, dev: bool) -> f32 {
                         vec[y] = rng.gen::<f32>().to_string();
                         skip = true;
                     }
+                    else {
+                        let mut postion = memory_names.len();
+                        let mut skip = false;
+                        for pos in 0..memory_names.len() {
+                            if skip == false {
+                                if memory_names[pos].to_string() == vec[y].to_string() {
+                                    postion = pos;
+                                    skip = true;
+                                }
+                            }
+                        }
+                        if postion != memory_names.len() {
+                            vec[y] = memory_values[postion].to_string();
+                        }
+                    }
                 }
             }
             if vec.len() == 1 {
@@ -419,4 +434,14 @@ pub fn math(x:usize, contents: Vec<String>, dev: bool) -> f32 {
         }
     }
     return vec[0].parse().unwrap();
+}
+
+pub fn get_line(x:usize, contents: Vec<String>) -> i32 {
+    let mut line = 1;
+    for n in 0..x {
+        if contents[n] == "\n" {
+            line = line + 1;
+        }
+    }
+    return line;
 }

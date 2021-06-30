@@ -1,7 +1,8 @@
 dec str hello: "bob";
 dec int test: math(random+10) "hello" hello;
 log(test " poop"); 
-loop(5*random) {
+dec int times: math(random);
+loop(times*5) {
     log("Loops"); 
     log(test " poop");
 }
