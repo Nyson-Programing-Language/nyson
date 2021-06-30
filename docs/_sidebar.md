@@ -1,0 +1,3 @@
+- [HOME](/)
+
+- [Install](install.md)
