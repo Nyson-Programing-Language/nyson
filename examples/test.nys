@@ -8,3 +8,7 @@ loop(random*5) {
     log("Loops"); 
     log(test " poop" "er");
 }
+func(writeQuestion()) {
+    log("hello how are you?");
+}
+writeQuestion()

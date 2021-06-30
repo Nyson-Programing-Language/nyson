@@ -31,7 +31,7 @@ fn main() {
                     println!("{:?}", contents);
                 }
                 let to_parse = lexer::lexer(contents, dev);
-                run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new());
+                run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
             }
         }
     };
@@ -48,5 +48,5 @@ fn main() {
         println!("{:?}", contents);
     }
     let to_parse = lexer::lexer(contents, dev);
-    run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new());
+    run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
 }

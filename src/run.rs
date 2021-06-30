@@ -1,13 +1,14 @@
 use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
+use crate::lexer;
 
-pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut memory_values: Vec<String>, mut memory_types: Vec<String>,) {
+pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut memory_values: Vec<String>, mut memory_types: Vec<String>, mut func_names: Vec<String>, mut func_par: Vec<String>, mut func_code: Vec<String>) {
     if dev {
         println!("{:?}", contents);
     }
     let mut quotes = 0;
     let mut squigle = 0;
-    for x in 0..contents.len() {
+    for mut x in 0..contents.len() {
         if contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`" {
             quotes = quotes + 1;
         }
@@ -19,7 +20,86 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                 log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
             }
             else if contents[x] == "loop" {
-                _loop(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                _loop(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev, func_names.clone(), func_par.clone(), func_code.clone());
+            }
+            else if contents[x] == "func" {
+                let mut vec:Vec<String> = Vec::new();
+                let mut skip = false;
+                let mut n = 1;
+                let mut reached = false;
+                let mut name:String = "".parse().unwrap();
+                for y in x+2..contents.len() {
+                    if skip == false {
+                        if contents[y] == "(" {
+                            n = n -1;
+                            reached = true;
+                        }
+                        else if contents[y] == ")" {
+                            n = n-1;
+                        }
+                        if n > 0 {
+                            name.push_str(&contents[y]);
+                        }
+                        else if reached == true {
+                            skip = true;
+                        }
+                    }
+                }
+                let mut code:String = "".parse().unwrap();
+                skip = false;
+                n = 0;
+                reached = false;
+                for y in x+1..contents.len() {
+                    if skip == false {
+                        if contents[y] == "}" {
+                            n = n-1;
+                        }
+                        if n > 0 {
+                            code.push_str(&contents[y]);
+                        }
+                        else if reached == true {
+                            skip = true;
+                        }
+                        if contents[y] == "{" {
+                            n = n +1;
+                            reached = true;
+                        }
+                    }
+                }
+                let mut par:String = "".parse().unwrap();
+                skip = false;
+                n = 0;
+                reached = false;
+                for y in x+2..contents.len() {
+                    if skip == false {
+                        if contents[y] == ")" {
+                            n = n-1;
+                        }
+                        if n > 0 {
+                            par.push_str(&contents[y]);
+                        }
+                        else if reached == true {
+                            skip = true;
+                        }
+                        if contents[y] == "(" {
+                            n = n +1;
+                            reached = true;
+                        }
+                    }
+                }
+                if dev {
+                    println!("{}", par);
+                    println!("{}", code);
+                    println!("{}", name);
+                }
+                func_par.push(par);
+                func_code.push(code);
+                func_names.push(name);
+                if dev {
+                    println!("{:?}", func_par);
+                    println!("{:?}", func_code);
+                    println!("{:?}", func_names);
+                }
             }
             else if contents[x] == "dec" {
                 let memory_names_save = memory_names.clone();
@@ -278,6 +358,26 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                     x = x + find_brack;
                 }
             }
+            else {
+                if x > 2 {
+                    if contents[x-2] != "func" {
+                        let mut postion = func_names.len();
+                        let mut skip = false;
+                        for pos in 0..func_names.len() {
+                            if skip == false {
+                                if func_names[pos].to_string() == contents[x].to_string() {
+                                    postion = pos;
+                                    skip = true;
+                                }
+                            }
+                        }
+                        if postion != func_names.len() {
+                            let to_parse = lexer::lexer(func_code[postion].to_string(), dev);
+                            run(to_parse, dev, memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone());
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -527,7 +627,7 @@ pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
     return vec[0].parse::<f32>().unwrap().round() as i32;
 }
 
-pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) {
+pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool, mut func_names: Vec<String>, mut func_par: Vec<String>, mut func_code: Vec<String>) {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
     let mut number_of_times = math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
@@ -552,7 +652,7 @@ pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
     }
     vec.remove(0);
     for q in 0..number_of_times.round() as i32 {
-        run(vec.clone(), dev, memory_names.clone(), memory_values.clone(), memory_types.clone());
+        run(vec.clone(), dev, memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone());
     }
 }
 
