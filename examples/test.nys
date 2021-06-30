@@ -1,3 +1,6 @@
 dec str hello: "bob";
-dec int test: math(random) "hello" hello;
+dec int test: math(random+10) "hello" hello;
 log(test " poop"); 
+loop(5) {
+    log("Loops"); 
+}
