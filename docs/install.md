@@ -14,7 +14,13 @@ cd target/release
 
 it will be called Nylex
 
-## Linux
+## Linux or Mac
 ```shell
 curl "https://raw.githubusercontent.com/Nyelsonon/nyson-programming-language/main/startup.sh" | sh
+```
+
+## Windows
+(have to run in cmd with administrator)
+```shell
+curl "https://raw.githubusercontent.com/Nyelsonon/nyson-programming-language/main/startup.bat" -o startup.bat; ./startup.bat; del ./startup.bat
 ```
