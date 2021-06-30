@@ -4,9 +4,12 @@ mod run;
 use std::env;
 use std::fs;
 
+#[allow(unused_variables)]
+#[allow(unused)]
+
 fn main() {
     let maybe_file = env::args().nth(1);
-    let mut args= env::args();
+    let args= env::args();
     let mut dev = false;
     for arg in args {
         if arg == "-dev" {

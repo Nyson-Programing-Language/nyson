@@ -2,6 +2,8 @@ use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
 use crate::lexer;
 
+#[allow(unused)]
+
 pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut memory_values: Vec<String>, mut memory_types: Vec<String>, mut func_names: Vec<String>, mut func_par: Vec<String>, mut func_code: Vec<String>) {
     if dev {
         println!("{:?}", contents);
@@ -23,7 +25,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                 _loop(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev, func_names.clone(), func_par.clone(), func_code.clone());
             }
             else if contents[x] == "func" {
-                let mut vec:Vec<String> = Vec::new();
+                let vec:Vec<String> = Vec::new();
                 let mut skip = false;
                 let mut n = 1;
                 let mut reached = false;
@@ -123,9 +125,9 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                     let mut value = String::new();
                     let mut move_final = 2;
                     if contents[x+move_up+move_up+move_up_up+2] == " " {
-                        let mut move_final = 2;
+                        let move_final = 2;
                     } else {
-                        let mut move_final = 1;
+                        let move_final = 1;
                     }
                     let mut n = 0;
                     let mut quote = 0;
@@ -192,9 +194,9 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                     let mut value = String::new();
                     let mut move_final = 2;
                     if contents[x+move_up+move_up+move_up_up+2] == " " {
-                        let mut move_final = 2;
+                        let move_final = 2;
                     } else {
-                        let mut move_final = 1;
+                        let move_final = 1;
                     }
                     let mut n = 0;
                     let mut quote = 0;
@@ -270,7 +272,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
             }
             else if contents[x] == "if" {
                 let mut condition = String::new();
-                let mut move_up = 0;
+                let move_up = 0;
                 let mut cond_vec: Vec<usize> = Vec::new();
                 let mut final_check = 0;
                 loop {
@@ -346,8 +348,8 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                     println!("equal");
                 } else {
                     println!("not equal");
-                    let mut find_brack = 0;
-                    let mut position_rem = 0;
+                    let find_brack = 0;
+                    let position_rem = 0;
                     for ele in x..contents.len() {
                         if contents[ele] == ">" {
                             break;
@@ -585,7 +587,7 @@ pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
                 }
                 else if vec[y] == "round" {
                     vec[y] = round(y, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
-                    let mut skip1 = false;
+                    let skip1 = false;
                     for y in x+1..vec.len() {
                         if skip1 == false {
                             if contents[y] == "(" {
@@ -626,10 +628,10 @@ pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
     return vec[0].parse::<f32>().unwrap().round() as i32;
 }
 
-pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool, mut func_names: Vec<String>, mut func_par: Vec<String>, mut func_code: Vec<String>) {
+pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool, func_names: Vec<String>, func_par: Vec<String>, func_code: Vec<String>) {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
-    let mut number_of_times = math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+    let number_of_times = math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
     let mut n = 0;
     let mut reached = false;
     for y in x+1..contents.len() {
