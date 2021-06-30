@@ -274,7 +274,7 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                 let mut cond_vec: Vec<usize> = Vec::new();
                 let mut final_check = 0;
                 loop {
-                    if contents[x] == "{" {
+                    if contents[x] == "<" {
                         final_check = x;
                         break;
                         
@@ -284,7 +284,7 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                         cond_vec.push(x);
                     }
                 }
-                condition = condition.replace("{", "");
+                condition = condition.replace("<", "");
                 let mut cond_var: String = String::new();
                 for letter in condition.chars() {
                     if letter.to_string() == "=" {
@@ -344,18 +344,17 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                 }
                 if value.to_string() == cond_eq.to_string() {
                     println!("equal");
-                    x = final_check;
                 } else {
                     println!("not equal");
                     let mut find_brack = 0;
-                    loop {
-                        if contents[x + find_brack].to_string() == "}" {
+                    let mut position_rem = 0;
+                    for ele in x..contents.len() {
+                        if contents[ele] == ">" {
                             break;
                         } else {
-                            find_brack = find_brack + 1
+                            contents[ele] = String::from("-");
                         }
                     }
-                    x = x + find_brack;
                 }
             }
             else {
