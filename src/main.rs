@@ -16,7 +16,24 @@ fn main() {
     let file = if let Some(f) = maybe_file {
         f
     } else {
-        panic!("Expected file");
+        loop {
+            println!(">> (type quit to quit)");
+            let mut line = String::new();
+            std::io::stdin().read_line(&mut line).unwrap();
+            if line == "exit\n" || line == "quit\n" {
+                std::process::exit(1);
+            }
+            else {
+                let mut space: String = " ".parse().unwrap();
+                space.push_str(&line);
+                let contents = space;
+                if dev {
+                    println!("{:?}", contents);
+                }
+                let to_parse = lexer::lexer(contents, dev);
+                run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new());
+            }
+        }
     };
     let maybe_contents = fs::read_to_string(file);
     let mut contents = if maybe_contents.is_ok() {

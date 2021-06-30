@@ -238,29 +238,80 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
     skip = false;
     let mut string: String = "".to_string();
     let mut n = 0;
-    while skip == false {
-        skip = false;
-        for y in 0..vec.len() {
+    let mut n1 = 1;
+    let mut skips = 0;
+    for y in 1..vec.len() {
+        if skips == 0 {
             if skip == false {
                 if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
                     n = n + 1;
-                } else if n % 2 == 1 {
+                }else if vec[y] == "(" {
+                    n1 = n1 + 1;
+                }
+                else if vec[y] == ")" {
+                    n1 = n1 - 1;
+                }else if n % 2 == 1 {
                     string.push_str(vec[y].as_str());
-                    skip = true;
                 } else if vec[y] == "math" {
                     string.push_str(math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
-                    skip = true;
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "round" {
                     string.push_str(round(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
-                    skip = true;
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if contents[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if contents[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else {
                     let mut postion = memory_names.len();
-                    let mut skip = false;
+                    let mut skip1 = false;
                     for pos in 0..memory_names.len() {
-                        if skip == false {
+                        if skip1 == false {
                             if memory_names[pos].to_string() == vec[y].to_string() {
                                 postion = pos;
-                                skip = true;
+                                skip1 = true;
                             }
                         }
                     }
@@ -269,6 +320,9 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
                     }
                 }
             }
+        }
+        else {
+            skips = skips -1;
         }
     }
     println!("{}", string);

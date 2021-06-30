@@ -2,8 +2,9 @@ dec str hello: "bob";
 dec int test: math(random+10) "hello" hello;
 log(test " poop"); 
 dec int times: math(random*100);
-log(round(times));
+log(round(times) " random numbre");
+log(math(random*100)" random numbre");
 loop(random*5) {
     log("Loops"); 
-    log(test " poop");
+    log(test " poop" "er");
 }
