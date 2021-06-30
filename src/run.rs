@@ -289,7 +289,7 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
 pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
-    let mut number_of_times = contents[x+2].parse::<i32>().unwrap();
+    let mut number_of_times = math(x, contents.clone(), dev);
     let mut n = 0;
     let mut reached = false;
     for y in x+1..contents.len() {
@@ -310,7 +310,7 @@ pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
         }
     }
     vec.remove(0);
-    for q in 0..number_of_times {
+    for q in 0..number_of_times.round() as i32 {
         run(vec.clone(), dev, memory_names.clone(), memory_values.clone(), memory_types.clone());
     }
 }
