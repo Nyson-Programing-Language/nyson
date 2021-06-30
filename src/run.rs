@@ -188,6 +188,96 @@ pub fn run(contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut 
                     println!("{:?}", memory_values);
                 }
             }
+            else if contents[x] == "if" {
+                let mut condition = String::new();
+                let mut move_up = 0;
+                let mut cond_vec: Vec<usize> = Vec::new();
+                let mut final_check = 0;
+                loop {
+                    if contents[x] == "{" {
+                        final_check = x;
+                        break;
+                        
+                    } else {
+                        x=x+1;
+                        condition.push_str(&contents[x]);
+                        cond_vec.push(x);
+                    }
+                }
+                condition = condition.replace("{", "");
+                let mut cond_var: String = String::new();
+                for letter in condition.chars() {
+                    if letter.to_string() == "=" {
+                        break;
+                    }
+                    else {
+                        cond_var.push(letter);
+                    }
+                }
+                cond_var = cond_var.replace(" ", "");
+                let mut cond_equal = String::new();
+                let mut h = 0;
+                for letter in condition.chars() {
+                    if letter.to_string() == "=" {
+                        h = h + 2;
+                        let mut j = 0;
+                        for letter in condition.chars() {
+                            j = j + 1;
+                            if h < j {
+                                cond_equal.push(letter)
+                            }
+                        }
+                    } else {
+                        h = h + 1;
+                    }
+                }
+                let mut quote_count = 0;
+                let mut cond_eq = String::new();
+                for letter in cond_equal.chars() {
+                    if quote_count == 1 {
+                        cond_eq.push(letter)
+                    }
+                    if letter.to_string() == "\"" {
+                        quote_count = quote_count+1
+                    } else if quote_count == 0 {
+                        continue;
+                    } else if quote_count == 2 {
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+                cond_eq.pop();
+                let mut index = 0;
+                for j  in 0..memory_names.len() {
+                    if memory_names[j].to_string() == cond_var {
+                        index = j;
+                    }
+                }
+                let mut value = String::new();
+                let mut yh = 0;
+                for char in memory_values[index].chars() {
+                    if yh > 0 {
+                        value.push(char)
+                    }
+                    yh = yh + 1
+                }
+                if value.to_string() == cond_eq.to_string() {
+                    println!("equal");
+                    x = final_check;
+                } else {
+                    println!("not equal");
+                    let mut find_brack = 0;
+                    loop {
+                        if contents[x + find_brack].to_string() == "}" {
+                            break;
+                        } else {
+                            find_brack = find_brack + 1
+                        }
+                    }
+                    x = x + find_brack;
+                }
+            }
         }
     }
 }
