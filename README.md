@@ -11,4 +11,4 @@ Documentation:
 
 https://github.com/Nyelsonon/nyson-programming-language-documentation/blob/main/README.md
 
-
+https://github.com/Nyelsonon/nyson-programming-language/wiki
