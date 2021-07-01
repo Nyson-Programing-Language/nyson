@@ -86,3 +86,9 @@ log("I was sent 5 seconds later");
 log(replace("I am really bad", "bad", "good"));
 ```
 will give "I am really good"
+
+## Trim
+```
+log(trim("        Hello      "));
+```
+will give "Hello"

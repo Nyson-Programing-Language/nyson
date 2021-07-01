@@ -1,1 +1,1 @@
-log(replace("bdb", "d", "o"));
+log(trim("     hello      "));
