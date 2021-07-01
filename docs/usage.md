@@ -72,4 +72,8 @@ dec str condition : "true";
 if condition : "true" <
     log("true")
 >
-"""
+
+Output:
+true
+```
+
