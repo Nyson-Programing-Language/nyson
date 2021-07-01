@@ -68,7 +68,8 @@ sayHello();
 
 ## If Statements
 ```
-if condition == "true" <
+dec str condition : "true";
+if condition : "true" <
     log("true")
 >
 """
