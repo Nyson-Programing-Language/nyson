@@ -1,0 +1,6 @@
+dec str name: "bob";
+func(sayHello()) {
+    log("hello " name);
+}
+log("hello " name);
+sayHello();

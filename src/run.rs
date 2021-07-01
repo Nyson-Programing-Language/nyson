@@ -107,7 +107,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                 let memory_names_save = memory_names.clone();
                 let memory_types_save = memory_types.clone();
                 let memory_values_save = memory_values.clone();
-                let move_up = 2;
+                let move_up = 1;
                 if contents[x+move_up] == "int" {
                     memory_types.push(String::from("int"));
                 } else if contents[x+move_up] == "str"  {
