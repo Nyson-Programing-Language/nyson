@@ -2,6 +2,7 @@ use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
 use crate::lexer;
 use std::fs;
+use std::thread;
 
 #[allow(unused)]
 
@@ -31,6 +32,10 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                     }
                     else if contents[x] == "loop" {
                         _loop(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev, func_names.clone(), func_par.clone(), func_code.clone());
+                    }
+                    else if contents[x] == "sleep" {
+                        let number_of_times = math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                        thread::sleep_ms(number_of_times as u32);
                     }
                     else if contents[x] == "func" {
                         let vec:Vec<String> = Vec::new();
