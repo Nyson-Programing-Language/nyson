@@ -1,6 +1,7 @@
 use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
 use crate::lexer;
+use std::fs;
 
 #[allow(unused)]
 
@@ -10,395 +11,443 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
     }
     let mut quotes = 0;
     let mut squigle = 0;
-    for mut x in 0..contents.len() {
-        if contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`" {
-            quotes = quotes + 1;
-        }
-        if contents[x] == "{" || contents[x] == "}" {
-            squigle = squigle + 1;
-        }
-        if quotes%2 == 0 && squigle%2 == 0 {
-            if contents[x] == "log" {
-                log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
-            }
-            else if contents[x] == "loop" {
-                _loop(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev, func_names.clone(), func_par.clone(), func_code.clone());
-            }
-            else if contents[x] == "func" {
-                let vec:Vec<String> = Vec::new();
-                let mut skip = false;
-                let mut n = 1;
-                let mut reached = false;
-                let mut name:String = "".parse().unwrap();
-                for y in x+2..contents.len() {
-                    if skip == false {
-                        if contents[y] == "(" {
-                            n = n -1;
-                            reached = true;
-                        }
-                        else if contents[y] == ")" {
-                            n = n-1;
-                        }
-                        if n > 0 {
-                            name.push_str(&contents[y]);
-                        }
-                        else if reached == true {
-                            skip = true;
-                        }
-                    }
+    let mut readfrom = 0;
+    let mut skiperwiper = false;
+    let mut read = true;
+    while read {
+        read = false;
+        skiperwiper = false;
+        for mut x in readfrom..contents.len() {
+            if skiperwiper == false {
+                if contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`" {
+                    quotes = quotes + 1;
                 }
-                let mut code:String = "".parse().unwrap();
-                skip = false;
-                n = 0;
-                reached = false;
-                for y in x+1..contents.len() {
-                    if skip == false {
-                        if contents[y] == "}" {
-                            n = n-1;
-                        }
-                        if n > 0 {
-                            code.push_str(&contents[y]);
-                        }
-                        else if reached == true {
-                            skip = true;
-                        }
-                        if contents[y] == "{" {
-                            n = n +1;
-                            reached = true;
-                        }
-                    }
+                if contents[x] == "{" || contents[x] == "}" {
+                    squigle = squigle + 1;
                 }
-                let mut par:String = "".parse().unwrap();
-                skip = false;
-                n = 0;
-                reached = false;
-                for y in x+2..contents.len() {
-                    if skip == false {
-                        if contents[y] == ")" {
-                            n = n-1;
-                        }
-                        if n > 0 {
-                            par.push_str(&contents[y]);
-                        }
-                        else if reached == true {
-                            skip = true;
-                        }
-                        if contents[y] == "(" {
-                            n = n +1;
-                            reached = true;
-                        }
+                if quotes%2 == 0 && squigle%2 == 0 {
+                    if contents[x] == "log" {
+                        log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
                     }
-                }
-                if dev {
-                    println!("{}", par);
-                    println!("{}", code);
-                    println!("{}", name);
-                }
-                func_par.push(par);
-                func_code.push(code);
-                func_names.push(name);
-                if dev {
-                    println!("{:?}", func_par);
-                    println!("{:?}", func_code);
-                    println!("{:?}", func_names);
-                }
-            }
-            else if contents[x] == "dec" {
-                let memory_names_save = memory_names.clone();
-                let memory_types_save = memory_types.clone();
-                let memory_values_save = memory_values.clone();
-                let move_up = 1;
-                if contents[x+move_up] == "int" {
-                    memory_types.push(String::from("int"));
-                } else if contents[x+move_up] == "str"  {
-                    memory_types.push(String::from("str"));
-                }
-                memory_names.push(String::from(contents[x+move_up+move_up].clone()));
-                let move_up_up = 1;
-                if contents[x+move_up+move_up+1] == ":" {
-                    let move_up_up = 1;
-                }
-                if contents[x+move_up+move_up+1] == " " {
-                    let move_up_up = 2;
-                }
-                if contents[x+move_up+move_up+move_up_up] == " " {
-                    let mut value = String::new();
-                    let mut move_final = 2;
-                    if contents[x+move_up+move_up+move_up_up+2] == " " {
-                        let move_final = 2;
-                    } else {
-                        let move_final = 1;
+                    else if contents[x] == "loop" {
+                        _loop(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev, func_names.clone(), func_par.clone(), func_code.clone());
                     }
-                    let mut n = 0;
-                    let mut quote = 0;
-                    loop {
-                        if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
-                            if dev {
-                                println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
-                            }
-                            break;
-                        }
-                        else {
-                            if contents[x+move_up+move_up+move_up_up+move_final] == "\"" || contents[x+move_up+move_up+move_up_up+move_final] == "\'" || contents[x+move_up+move_up+move_up_up+move_final] == r"\`" {
-                                quote = quote + 1;
-                            }
-                            else {
-                                if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
-                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                    n = 1;
-                                }
-                                else if contents[x+move_up+move_up+move_up_up+move_final] == "round" {
-                                    value.push_str(round(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                    n = 1;
-                                }
-                                else {
-                                    if n == 0 {
-                                        if quote%2 == 1 {
-                                            value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
-                                        }
-                                        else {
-                                            let mut position = memory_names_save.len();
-                                            let mut skip = false;
-                                            for pos in 0..memory_names_save.len() {
-                                                if skip == false {
-                                                    if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_up_up+move_final].to_string() {
-                                                        position = pos;
-                                                        skip = true;
-                                                    }
-                                                }
-                                            }
-                                            if position != memory_names_save.len() {
-                                                value.push_str(memory_values_save[position].to_string().as_str());
-                                            }
-                                            else {
-                                                value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
-                                            }
-                                        }
-                                    }
-                                }
-                                if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == "(" {
-                                    n = n + 1
-                                }
-                                else if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == ")" {
-                                    n = n - 1;
-                                    if n == 1 {
-                                        n = 0;
-                                    }
-                                }
-                            }
-                        }
-                        move_final = move_final+1;
-                    }
-                    memory_values.push(value);
-                } else {
-                    let mut value = String::new();
-                    let mut move_final = 2;
-                    if contents[x+move_up+move_up+move_up_up+2] == " " {
-                        let move_final = 2;
-                    } else {
-                        let move_final = 1;
-                    }
-                    let mut n = 0;
-                    let mut quote = 0;
-                    loop {
-                        if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
-                            if dev {
-                                println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
-                            }
-                            break;
-                        }
-                        else {
-                            if contents[x+move_up+move_up+move_up_up+move_final] == "\"" || contents[x+move_up+move_up+move_up_up+move_final] == "\'" || contents[x+move_up+move_up+move_up_up+move_final] == r"\`" {
-                                quote = quote + 1;
-                            }
-                            else {
-                                if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
-                                    value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
-                                    n = 1;
-                                }
-                                else if contents[x+move_up+move_up+move_up_up+move_final] == "round" {
-                                    value.push_str(round(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                    n = 1;
-                                }
-                                else {
-                                    if n == 0 {
-                                        if quote%2 == 1 {
-                                            value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
-                                        }
-                                        else {
-                                            let mut position = memory_names_save.len();
-                                            let mut skip = false;
-                                            for pos in 0..memory_names_save.len() {
-                                                if skip == false {
-                                                    if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_up_up+move_final].to_string() {
-                                                        position = pos;
-                                                        skip = true;
-                                                    }
-                                                }
-                                            }
-                                            if position != memory_names_save.len() {
-                                                value.push_str(memory_values_save[position].to_string().as_str());
-                                            }
-                                            else {
-                                                value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
-                                            }
-                                        }
-                                    }
-                                }
-                                if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == "(" {
-                                    n = n + 1
-                                }
-                                else if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == ")" {
-                                    n = n - 1;
-                                    if n == 1 {
-                                        n = 0;
-                                    }
-                                }
-                            }
-                        }
-                        move_final = move_final+1;
-                        if dev {
-                            println!("{:?}", move_final);
-                            println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
-                        }
-                    }
-                    memory_values.push(value);
-                }
-                if dev {
-                    println!("{:?}", memory_names);
-                    println!("{:?}", memory_types);
-                    println!("{:?}", memory_values);
-                }
-            }
-            else if contents[x] == "if" {
-                let mut condition = String::new();
-                let move_up = 0;
-                let mut cond_vec: Vec<usize> = Vec::new();
-                let mut final_check = 0;
-                loop {
-                    if contents[x] == "{" {
-                        final_check = x;
-                        break;
-                        
-                    } else {
-                        x=x+1;
-                        condition.push_str(&contents[x]);
-                        cond_vec.push(x);
-                    }
-                }
-                condition = condition.replace("{", "");
-                let mut cond_var: String = String::new();
-                for letter in condition.chars() {
-                    if letter.to_string() == "=" {
-                        break;
-                    }
-                    else {
-                        cond_var.push(letter);
-                    }
-                }
-                cond_var = cond_var.replace(" ", "");
-                let mut cond_equal = String::new();
-                let mut h = 0;
-                for letter in condition.chars() {
-                    if letter.to_string() == ":" {
-                        h = h + 1;
-                        let mut j = 0;
-                        for letter in condition.chars() {
-                            j = j + 1;
-                            if h < j {
-                                cond_equal.push(letter)
-                            }
-                        }
-                    } else {
-                        h = h + 1;
-                    }
-                }
-                let mut quote_count = 0;
-                let mut cond_eq = String::new();
-                for letter in cond_equal.chars() {
-                    if quote_count == 1 {
-                        cond_eq.push(letter)
-                    }
-                    if letter.to_string() == "\"" {
-                        quote_count = quote_count+1
-                    } else if quote_count == 0 {
-                        continue;
-                    } else if quote_count == 2 {
-                        break;
-                    } else {
-                        continue;
-                    }
-                }
-                cond_eq.pop();
-                let mut index = 0;
-                for j  in 0..memory_names.len() {
-                    if memory_names[j].to_string() == cond_var {
-                        index = j;
-                    }
-                }
-                let mut value = String::new();
-                for char in memory_values[index].chars() {
-                        value.push(char);
-                }
-                if value.to_string() == cond_eq.to_string() {
-                    if dev {
-                        println!("equal");
-                    }
-                    let mut vecvec:Vec<String> = Vec::new();
-                    let mut skiper = false;
-                    let mut n = 0;
-                    let mut reacheded = false;
-                    for yy in x..contents.len() {
-                        if skiper == false {
-                            if contents[yy] == "{" {
-                                n = n +1;
-                                reacheded = true;
-                            }
-                            else if contents[yy] == "}" {
-                                n = n-1;
-                            }
-                            if n > 0 {
-                                vecvec.push((&contents[yy]).parse().unwrap());
-                            }
-                            else if reacheded == true {
-                                skiper = true;
-                            }
-                        }
-                    }
-                    vecvec.remove(0);
-                    run(vecvec.clone(), dev, memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone());
-                } else {
-                    if dev {
-                        println!("not equal");
-                        println!("{:?}, {:?}", value, cond_eq);
-                    }
-                    let find_brack = 0;
-                    let position_rem = 0;
-                    for ele in x..contents.len() {
-                        if contents[ele] == "}" {
-                            break;
-                        } else {
-                            contents[ele] = String::from("-");
-                        }
-                    }
-                }
-            }
-            else {
-                if x > 2 {
-                    if contents[x-2] != "func" {
-                        let mut postion = func_names.len();
+                    else if contents[x] == "func" {
+                        let vec:Vec<String> = Vec::new();
                         let mut skip = false;
-                        for pos in 0..func_names.len() {
+                        let mut n = 1;
+                        let mut reached = false;
+                        let mut name:String = "".parse().unwrap();
+                        for y in x+2..contents.len() {
                             if skip == false {
-                                if func_names[pos].to_string() == contents[x].to_string() {
-                                    postion = pos;
+                                if contents[y] == "(" {
+                                    n = n -1;
+                                    reached = true;
+                                }
+                                else if contents[y] == ")" {
+                                    n = n-1;
+                                }
+                                if n > 0 {
+                                    name.push_str(&contents[y]);
+                                }
+                                else if reached == true {
                                     skip = true;
                                 }
                             }
                         }
-                        if postion != func_names.len() {
-                            let to_parse = lexer::lexer(func_code[postion].to_string(), dev);
-                            run(to_parse, dev, memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone());
+                        let mut code:String = "".parse().unwrap();
+                        skip = false;
+                        n = 0;
+                        reached = false;
+                        for y in x+1..contents.len() {
+                            if skip == false {
+                                if contents[y] == "}" {
+                                    n = n-1;
+                                }
+                                if n > 0 {
+                                    code.push_str(&contents[y]);
+                                }
+                                else if reached == true {
+                                    skip = true;
+                                }
+                                if contents[y] == "{" {
+                                    n = n +1;
+                                    reached = true;
+                                }
+                            }
+                        }
+                        let mut par:String = "".parse().unwrap();
+                        skip = false;
+                        n = 0;
+                        reached = false;
+                        for y in x+2..contents.len() {
+                            if skip == false {
+                                if contents[y] == ")" {
+                                    n = n-1;
+                                }
+                                if n > 0 {
+                                    par.push_str(&contents[y]);
+                                }
+                                else if reached == true {
+                                    skip = true;
+                                }
+                                if contents[y] == "(" {
+                                    n = n +1;
+                                    reached = true;
+                                }
+                            }
+                        }
+                        if dev {
+                            println!("{}", par);
+                            println!("{}", code);
+                            println!("{}", name);
+                        }
+                        func_par.push(par);
+                        func_code.push(code);
+                        func_names.push(name);
+                        if dev {
+                            println!("{:?}", func_par);
+                            println!("{:?}", func_code);
+                            println!("{:?}", func_names);
+                        }
+                    }
+                    else if contents[x] == "imp" {
+                        let imp = imp(x, contents.clone(), dev);
+                        readfrom = x;
+                        skiperwiper = true;
+                        read = true;
+                        let mut delete = Vec::new();
+                        let mut deleted = 0;
+                        let mut skirt = false;
+                        let mut n3 = 0;
+                        delete.push(x);
+                        for y1 in x+1..contents.len() {
+                            if skirt == false {
+                                if contents[y1] == "(" {
+                                    n3 = n3 + 1;
+                                }
+                                if n3 == 0 {
+                                    skirt = true;
+                                }
+                                if contents[y1] == ")" {
+                                    n3 = n3 - 1;
+                                }
+                                delete.push(y1);
+                            }
+                        }
+                        for item in delete {
+                            contents.remove(item - deleted);
+                            deleted = deleted + 1 ;
+                        }
+                        let mut newVec = Vec::new();
+                        for itom in 0..contents.len() {
+                            if itom == x {
+                                for item in imp.clone() {
+                                    newVec.push(item);
+                                }
+                            }
+                            newVec.push(contents[itom].clone());
+                        }
+                        contents = newVec;
+                    }
+                    else if contents[x] == "dec" {
+                        let memory_names_save = memory_names.clone();
+                        let memory_types_save = memory_types.clone();
+                        let memory_values_save = memory_values.clone();
+                        let move_up = 1;
+                        if contents[x+move_up] == "int" {
+                            memory_types.push(String::from("int"));
+                        } else if contents[x+move_up] == "str"  {
+                            memory_types.push(String::from("str"));
+                        }
+                        memory_names.push(String::from(contents[x+move_up+move_up].clone()));
+                        let move_up_up = 1;
+                        if contents[x+move_up+move_up+1] == ":" {
+                            let move_up_up = 1;
+                        }
+                        if contents[x+move_up+move_up+1] == " " {
+                            let move_up_up = 2;
+                        }
+                        if contents[x+move_up+move_up+move_up_up] == " " {
+                            let mut value = String::new();
+                            let mut move_final = 2;
+                            if contents[x+move_up+move_up+move_up_up+2] == " " {
+                                let move_final = 2;
+                            } else {
+                                let move_final = 1;
+                            }
+                            let mut n = 0;
+                            let mut quote = 0;
+                            loop {
+                                if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
+                                    if dev {
+                                        println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                                    }
+                                    break;
+                                }
+                                else {
+                                    if contents[x+move_up+move_up+move_up_up+move_final] == "\"" || contents[x+move_up+move_up+move_up_up+move_final] == "\'" || contents[x+move_up+move_up+move_up_up+move_final] == r"\`" {
+                                        quote = quote + 1;
+                                    }
+                                    else {
+                                        if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
+                                            value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            n = 1;
+                                        }
+                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "round" {
+                                            value.push_str(round(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            n = 1;
+                                        }
+                                        else {
+                                            if n == 0 {
+                                                if quote%2 == 1 {
+                                                    value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                                }
+                                                else {
+                                                    let mut position = memory_names_save.len();
+                                                    let mut skip = false;
+                                                    for pos in 0..memory_names_save.len() {
+                                                        if skip == false {
+                                                            if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_up_up+move_final].to_string() {
+                                                                position = pos;
+                                                                skip = true;
+                                                            }
+                                                        }
+                                                    }
+                                                    if position != memory_names_save.len() {
+                                                        value.push_str(memory_values_save[position].to_string().as_str());
+                                                    }
+                                                    else {
+                                                        value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == "(" {
+                                            n = n + 1
+                                        }
+                                        else if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == ")" {
+                                            n = n - 1;
+                                            if n == 1 {
+                                                n = 0;
+                                            }
+                                        }
+                                    }
+                                }
+                                move_final = move_final+1;
+                            }
+                            memory_values.push(value);
+                        } else {
+                            let mut value = String::new();
+                            let mut move_final = 2;
+                            if contents[x+move_up+move_up+move_up_up+2] == " " {
+                                let move_final = 2;
+                            } else {
+                                let move_final = 1;
+                            }
+                            let mut n = 0;
+                            let mut quote = 0;
+                            loop {
+                                if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
+                                    if dev {
+                                        println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                                    }
+                                    break;
+                                }
+                                else {
+                                    if contents[x+move_up+move_up+move_up_up+move_final] == "\"" || contents[x+move_up+move_up+move_up_up+move_final] == "\'" || contents[x+move_up+move_up+move_up_up+move_final] == r"\`" {
+                                        quote = quote + 1;
+                                    }
+                                    else {
+                                        if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
+                                            value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                            n = 1;
+                                        }
+                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "round" {
+                                            value.push_str(round(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            n = 1;
+                                        }
+                                        else {
+                                            if n == 0 {
+                                                if quote%2 == 1 {
+                                                    value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                                }
+                                                else {
+                                                    let mut position = memory_names_save.len();
+                                                    let mut skip = false;
+                                                    for pos in 0..memory_names_save.len() {
+                                                        if skip == false {
+                                                            if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_up_up+move_final].to_string() {
+                                                                position = pos;
+                                                                skip = true;
+                                                            }
+                                                        }
+                                                    }
+                                                    if position != memory_names_save.len() {
+                                                        value.push_str(memory_values_save[position].to_string().as_str());
+                                                    }
+                                                    else {
+                                                        value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == "(" {
+                                            n = n + 1
+                                        }
+                                        else if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == ")" {
+                                            n = n - 1;
+                                            if n == 1 {
+                                                n = 0;
+                                            }
+                                        }
+                                    }
+                                }
+                                move_final = move_final+1;
+                                if dev {
+                                    println!("{:?}", move_final);
+                                    println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                                }
+                            }
+                            memory_values.push(value);
+                        }
+                        if dev {
+                            println!("{:?}", memory_names);
+                            println!("{:?}", memory_types);
+                            println!("{:?}", memory_values);
+                        }
+                    }
+                    else if contents[x] == "if" {
+                        let mut condition = String::new();
+                        let move_up = 0;
+                        let mut cond_vec: Vec<usize> = Vec::new();
+                        let mut final_check = 0;
+                        loop {
+                            if contents[x] == "{" {
+                                final_check = x;
+                                break;
+
+                            } else {
+                                x=x+1;
+                                condition.push_str(&contents[x]);
+                                cond_vec.push(x);
+                            }
+                        }
+                        condition = condition.replace("{", "");
+                        let mut cond_var: String = String::new();
+                        for letter in condition.chars() {
+                            if letter.to_string() == "=" {
+                                break;
+                            }
+                            else {
+                                cond_var.push(letter);
+                            }
+                        }
+                        cond_var = cond_var.replace(" ", "");
+                        let mut cond_equal = String::new();
+                        let mut h = 0;
+                        for letter in condition.chars() {
+                            if letter.to_string() == ":" {
+                                h = h + 1;
+                                let mut j = 0;
+                                for letter in condition.chars() {
+                                    j = j + 1;
+                                    if h < j {
+                                        cond_equal.push(letter)
+                                    }
+                                }
+                            } else {
+                                h = h + 1;
+                            }
+                        }
+                        let mut quote_count = 0;
+                        let mut cond_eq = String::new();
+                        for letter in cond_equal.chars() {
+                            if quote_count == 1 {
+                                cond_eq.push(letter)
+                            }
+                            if letter.to_string() == "\"" {
+                                quote_count = quote_count+1
+                            } else if quote_count == 0 {
+                                continue;
+                            } else if quote_count == 2 {
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                        cond_eq.pop();
+                        let mut index = 0;
+                        for j  in 0..memory_names.len() {
+                            if memory_names[j].to_string() == cond_var {
+                                index = j;
+                            }
+                        }
+                        let mut value = String::new();
+                        for char in memory_values[index].chars() {
+                            value.push(char);
+                        }
+                        if value.to_string() == cond_eq.to_string() {
+                            if dev {
+                                println!("equal");
+                            }
+                            let mut vecvec:Vec<String> = Vec::new();
+                            let mut skiper = false;
+                            let mut n = 0;
+                            let mut reacheded = false;
+                            for yy in x..contents.len() {
+                                if skiper == false {
+                                    if contents[yy] == "{" {
+                                        n = n +1;
+                                        reacheded = true;
+                                    }
+                                    else if contents[yy] == "}" {
+                                        n = n-1;
+                                    }
+                                    if n > 0 {
+                                        vecvec.push((&contents[yy]).parse().unwrap());
+                                    }
+                                    else if reacheded == true {
+                                        skiper = true;
+                                    }
+                                }
+                            }
+                            vecvec.remove(0);
+                            run(vecvec.clone(), dev, memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone());
+                        } else {
+                            if dev {
+                                println!("not equal");
+                                println!("{:?}, {:?}", value, cond_eq);
+                            }
+                            let find_brack = 0;
+                            let position_rem = 0;
+                            for ele in x..contents.len() {
+                                if contents[ele] == "}" {
+                                    break;
+                                } else {
+                                    contents[ele] = String::from("-");
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if x > 2 {
+                            if contents[x-2] != "func" {
+                                let mut postion = func_names.len();
+                                let mut skip = false;
+                                for pos in 0..func_names.len() {
+                                    if skip == false {
+                                        if func_names[pos].to_string() == contents[x].to_string() {
+                                            postion = pos;
+                                            skip = true;
+                                        }
+                                    }
+                                }
+                                if postion != func_names.len() {
+                                    let to_parse = lexer::lexer(func_code[postion].to_string(), dev);
+                                    run(to_parse, dev, memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone());
+                                }
+                            }
                         }
                     }
                 }
@@ -650,6 +699,55 @@ pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
     }
     //let returns:i32 = vec[0].parse().unwrap();
     return vec[0].parse::<f32>().unwrap().round() as i32;
+}
+
+pub fn imp(x:usize, contents: Vec<String>, dev: bool) -> Vec<String> {
+    let mut vec:Vec<String> = Vec::new();
+    let mut skip = false;
+    let mut n = 0;
+    for y in x+1..contents.len() {
+        if skip == false {
+            if contents[x+1] != "(" {
+                println!("You have to put a parentheses after the function on line {}", get_line(x, contents.clone()));
+                std::process::exit(1);
+            }
+            if contents[y] == "(" {
+                n = n +1;
+            }
+            else if contents[y] == ")" {
+                n = n-1;
+            }
+            if n == 0 {
+                skip = true;
+                for z in x+1..y+1 {
+                    vec.push(contents[z].to_string());
+                }
+            }
+        }
+    }
+    vec.remove(0);
+    vec.remove(vec.len()-1);
+    let string:String = vec.join("").to_string();
+    if dev {
+        println!("{}", string);
+    }
+    let maybe_contents = fs::read_to_string(string);
+    let mut contents = if maybe_contents.is_ok() {
+        maybe_contents.unwrap()
+    } else {
+        panic!("Could not open file for reading.");
+    };
+    let mut space: String = " ".parse().unwrap();
+    space.push_str(contents.as_str());
+    contents = space;
+    if dev {
+        println!("{:?}", contents);
+    }
+    let to_parse = lexer::lexer(contents, dev);
+    if dev {
+        println!("{:?}", to_parse);
+    }
+    return to_parse;
 }
 
 pub fn _loop(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool, func_names: Vec<String>, func_par: Vec<String>, func_code: Vec<String>) {
