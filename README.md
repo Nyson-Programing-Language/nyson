@@ -12,6 +12,4 @@ https://github.com/AMTitan [![wakatime](https://wakatime.com/badge/github/AMTita
 
 Documentation:
 
-https://github.com/Nyelsonon/nyson-programming-language-documentation/blob/main/README.md
-
 https://nyelsonon.github.io/nyson-programming-language
