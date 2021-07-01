@@ -1,3 +1,4 @@
-log("hi");
-sleep(random*10000);
-log("hi");
+dec str name: "bob";
+log(name);
+sleep(5000);
+log(name);

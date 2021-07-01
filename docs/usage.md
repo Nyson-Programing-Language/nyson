@@ -74,3 +74,10 @@ if condition : "true" {
 }
 ```
 
+## Sleep
+```
+log("Hi");
+sleep(5000);
+log("I was sent 5 seconds later");
+```
+
