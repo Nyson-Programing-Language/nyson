@@ -1,5 +1,3 @@
-dec str name: "bob";
-if (name : "bob") {
-	  log("true");
-	  log(name " == bob");
-}
+imp(bob.nys);
+log("hello from test.nys"); 
+sayHello();
