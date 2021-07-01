@@ -1,5 +1,5 @@
 dec str name: "bob";
-if name : "bob1" {
+if (name : "bob") {
 	  log("true");
 	  log(name " == bob");
 }

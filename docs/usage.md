@@ -69,8 +69,8 @@ sayHello();
 ## If Statements
 ```
 dec str condition : "true";
-if condition : "true" <
-    log("true")
->
+if condition : "true" {
+    log("true");
+}
 ```
 
