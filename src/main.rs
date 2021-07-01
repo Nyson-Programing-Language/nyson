@@ -31,7 +31,7 @@ fn main() {
                 space.push_str(&line);
                 let contents = space;
                 if dev {
-                    println!("{:?}", contents);
+                    println!("contents: {:?}", contents);
                 }
                 let to_parse = lexer::lexer(contents, dev);
                 run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
@@ -48,7 +48,7 @@ fn main() {
     space.push_str(contents.as_str());
     contents = space;
     if dev {
-        println!("{:?}", contents);
+        println!("contents: {:?}", contents);
     }
     let to_parse = lexer::lexer(contents, dev);
     run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());

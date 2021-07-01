@@ -33,7 +33,7 @@ fn remove_whitespace(s: &str) -> String {
 
 fn no_extra_whitespace(mut input:Vec<String>, dev: bool) -> Vec<String> {
     if dev {
-        println!("{:?}", input);
+        println!("input: {:?}", input);
     }
     let mut quotes = 0;
     let mut delete = Vec::new();
@@ -53,7 +53,7 @@ fn no_extra_whitespace(mut input:Vec<String>, dev: bool) -> Vec<String> {
     }
     
     if dev {
-        println!("{:?}", input);
+        println!("input: {:?}", input);
     }
     
     return input;

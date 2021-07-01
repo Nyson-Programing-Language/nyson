@@ -10,7 +10,7 @@ use std::io::Write;
 
 pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut memory_values: Vec<String>, mut memory_types: Vec<String>, mut func_names: Vec<String>, mut func_par: Vec<String>, mut func_code: Vec<String>) {
     if dev {
-        println!("{:?}", contents);
+        println!("contents: {:?}", contents);
     }
     let mut quotes = 0;
     let mut squigle = 0;
@@ -109,17 +109,17 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             }
                         }
                         if dev {
-                            println!("{}", par);
-                            println!("{}", code);
-                            println!("{}", name);
+                            println!("par: {}", par);
+                            println!("code: {}", code);
+                            println!("name: {}", name);
                         }
                         func_par.push(par);
                         func_code.push(code);
                         func_names.push(name);
                         if dev {
-                            println!("{:?}", func_par);
-                            println!("{:?}", func_code);
-                            println!("{:?}", func_names);
+                            println!("func_par: {:?}", func_par);
+                            println!("func_code: {:?}", func_code);
+                            println!("func_names: {:?}", func_names);
                         }
                     }
                     else if contents[x] == "imp" {
@@ -192,7 +192,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             loop {
                                 if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
                                     if dev {
-                                        println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                                        println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[x+move_up+move_up+move_up_up+move_final]);
                                     }
                                     break;
                                 }
@@ -273,7 +273,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             loop {
                                 if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
                                     if dev {
-                                        println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                                        println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[x+move_up+move_up+move_up_up+move_final]);
                                     }
                                     break;
                                 }
@@ -340,16 +340,16 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 }
                                 move_final = move_final+1;
                                 if dev {
-                                    println!("{:?}", move_final);
-                                    println!("{:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                                    println!("move_final: {:?}", move_final);
+                                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[x+move_up+move_up+move_up_up+move_final]);
                                 }
                             }
                             memory_values.push(value);
                         }
                         if dev {
-                            println!("{:?}", memory_names);
-                            println!("{:?}", memory_types);
-                            println!("{:?}", memory_values);
+                            println!("memory_names: {:?}", memory_names);
+                            println!("memory_types: {:?}", memory_types);
+                            println!("memory_values: {:?}", memory_values);
                         }
                     }
                     else if contents[x] == "if" {
@@ -452,7 +452,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         } else {
                             if dev {
                                 println!("not equal");
-                                println!("{:?}, {:?}", value, cond_eq);
+                                println!("value: {:?}, cond_eq: {:?}", value, cond_eq);
                             }
                             let find_brack = 0;
                             let position_rem = 0;
@@ -526,7 +526,7 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
         }
     }
     if dev {
-        println!("{:?}",  vec);
+        println!("vec: {:?}",  vec);
     }
     let mut z = 0;
     for y in vec.to_vec() {
@@ -1151,11 +1151,11 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
         }
     }
     if dev {
-        println!("{:?}", vec);
-        println!("{:?}", file);
-        println!("{:?}", text);
-        println!("{}", file_s);
-        println!("{}", text_s);
+        println!("vec: {:?}", vec);
+        println!("file: {:?}", file);
+        println!("text: {:?}", text);
+        println!("file_s: {}", file_s);
+        println!("text_s: {}", text_s);
     }
     let mut file = File::create(file_s)?;
     file.write_all(text_s.as_ref())?;
@@ -1187,7 +1187,7 @@ pub fn get_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
         }
     }
     if dev {
-        println!("{:?}",  vec);
+        println!("vec: {:?}",  vec);
     }
     let mut z = 0;
     for y in vec.to_vec() {
@@ -1778,13 +1778,13 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
         }
     }
     if dev {
-        println!("{:?}", vec);
-        println!("{:?}", imput);
-        println!("{:?}", find);
-        println!("{:?}", replacer);
-        println!("{}", imput_s);
-        println!("{}", find_s);
-        println!("{}", replacer_s);
+        println!("vec: {:?}", vec);
+        println!("imput: {:?}", imput);
+        println!("find: {:?}", find);
+        println!("replacer: {:?}", replacer);
+        println!("imput_s: {}", imput_s);
+        println!("find_s: {}", find_s);
+        println!("replacer_s: {}", replacer_s);
     }
     return imput_s.replace(&*find_s, &*replacer_s);
 }
@@ -1819,7 +1819,7 @@ pub fn imp(x:usize, contents: Vec<String>, dev: bool) -> Vec<String> {
     vec.remove(vec.len()-1);
     let string:String = vec.join("").to_string();
     if dev {
-        println!("{}", string);
+        println!("string: {}", string);
     }
     let maybe_contents = fs::read_to_string(string);
     let mut contents = if maybe_contents.is_ok() {
@@ -1831,11 +1831,11 @@ pub fn imp(x:usize, contents: Vec<String>, dev: bool) -> Vec<String> {
     space.push_str(contents.as_str());
     contents = space;
     if dev {
-        println!("{:?}", contents);
+        println!("contents: {:?}", contents);
     }
     let to_parse = lexer::lexer(contents, dev);
     if dev {
-        println!("{:?}", to_parse);
+        println!("to_parse: {:?}", to_parse);
     }
     return to_parse;
 }
