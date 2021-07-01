@@ -1257,6 +1257,8 @@ pub fn imp(x:usize, contents: Vec<String>, dev: bool) -> Vec<String> {
     }
     vec.remove(0);
     vec.remove(vec.len()-1);
+    vec.remove(0);
+    vec.remove(vec.len()-1);
     let string:String = vec.join("").to_string();
     if dev {
         println!("{}", string);
