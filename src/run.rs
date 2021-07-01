@@ -300,8 +300,8 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                 let mut cond_equal = String::new();
                 let mut h = 0;
                 for letter in condition.chars() {
-                    if letter.to_string() == "=" {
-                        h = h + 2;
+                    if letter.to_string() == ":" {
+                        h = h + 1;
                         let mut j = 0;
                         for letter in condition.chars() {
                             j = j + 1;
@@ -337,17 +337,14 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                     }
                 }
                 let mut value = String::new();
-                let mut yh = 0;
                 for char in memory_values[index].chars() {
-                    if yh > 0 {
-                        value.push(char)
-                    }
-                    yh = yh + 1
+                        value.push(char);
                 }
                 if value.to_string() == cond_eq.to_string() {
                     println!("equal");
                 } else {
                     println!("not equal");
+                    println!("{:?}, {:?}", value, cond_eq);
                     let find_brack = 0;
                     let position_rem = 0;
                     for ele in x..contents.len() {
