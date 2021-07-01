@@ -92,3 +92,17 @@ will give "I am really good"
 log(trim("        Hello      "));
 ```
 will give "Hello"
+
+## Import
+FILE: hello.nys
+```
+func(sayhello()) {
+    log("hello")
+}
+```
+FILE: main.nys
+```
+imp("hello.nys")
+sayhello()
+```
+Returns: hello
