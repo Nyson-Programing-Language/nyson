@@ -1,4 +1,3 @@
 func(sayHello()) {
     log("hello from bob.nys");
-    runHello()
 }

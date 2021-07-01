@@ -1,1 +1,2 @@
-log(trim("     hello      "));
+imp( "bob.nys" );
+sayHello();
