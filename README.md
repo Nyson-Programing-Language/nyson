@@ -1,4 +1,4 @@
-# nyson-programming-language (ni-sin)
+# nyson-programming-language (Nai-son)
 The official home of the Nyson Programming Language, built off Rust.
 
 ![Logo](https://raw.githubusercontent.com/Nyelsonon/nyson-programming-language/main/Logo/Logo.png)
