@@ -1,55 +1,55 @@
-## print
+## Print
 ```
 log("hello world");
 ```
 
-## math
+## Math
 ```
 log(math(5+5));
 ```
 
-## loop
+## Loop
 ```
 loop(5) {
     log("loops");
 }
 ```
 
-## variables
-### set
+## Variables
+#### Set
 ```
 dec str hello: "bob";
 ```
 this makes a string variable called hello set to bob
 
-### call
+#### Call
 ```
 dec str name: "bob";
 log("Hello, " name);
 ```
 
-## random number
-### print random number
+## Random Number
+#### Print Random Number
 ```
 log(math(random));
 ```
 this will give you a float between 0 and 1
 
-### print random number between 0 and 10
+#### Print Random Number Between 0 and 10
 
 ```
 log(math(random*10));
 ```
 get something like 5.5539
 
-### print rounded random number
+#### Print Rounded Random Number
 ```
 log(round(math(random*10)));
 ```
 get something like 3
 
 ## Functions
-### with out variables
+#### Without Variables
 ```
 func(sayHello()) {
     log("hello");
@@ -57,7 +57,7 @@ func(sayHello()) {
 sayHello();
 ```
 
-### with variables
+#### With Variables
 ```
 dec str name: "bob";
 func(sayHello()) {
@@ -80,4 +80,3 @@ log("Hi");
 sleep(5000);
 log("I was sent 5 seconds later");
 ```
-
