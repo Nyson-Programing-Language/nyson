@@ -55,3 +55,10 @@ func(sayHello()) {
 }
 sayHello();
 ```
+
+## If Statements
+```
+if condition == "true" <
+    log("true")
+>
+"""
