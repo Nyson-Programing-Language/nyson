@@ -115,6 +115,6 @@ will give the content of bob.nys
 
 ## Set Files
 ```
-log(setcont("bob.nys", "Hello I am bob."));
+setcont("bob.nys", "Hello I am bob.");
 ```
 bob.nys now has "Hello I am bob." as its contents
