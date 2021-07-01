@@ -276,7 +276,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                 let mut cond_vec: Vec<usize> = Vec::new();
                 let mut final_check = 0;
                 loop {
-                    if contents[x] == "<" {
+                    if contents[x] == "{" {
                         final_check = x;
                         break;
                         
@@ -286,7 +286,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         cond_vec.push(x);
                     }
                 }
-                condition = condition.replace("<", "");
+                condition = condition.replace("{", "");
                 let mut cond_var: String = String::new();
                 for letter in condition.chars() {
                     if letter.to_string() == "=" {
@@ -341,14 +341,41 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         value.push(char);
                 }
                 if value.to_string() == cond_eq.to_string() {
-                    println!("equal");
+                    if dev {
+                        println!("equal");
+                    }
+                    let mut vecvec:Vec<String> = Vec::new();
+                    let mut skiper = false;
+                    let mut n = 0;
+                    let mut reacheded = false;
+                    for yy in x..contents.len() {
+                        if skiper == false {
+                            if contents[yy] == "{" {
+                                n = n +1;
+                                reacheded = true;
+                            }
+                            else if contents[yy] == "}" {
+                                n = n-1;
+                            }
+                            if n > 0 {
+                                vecvec.push((&contents[yy]).parse().unwrap());
+                            }
+                            else if reacheded == true {
+                                skiper = true;
+                            }
+                        }
+                    }
+                    vecvec.remove(0);
+                    run(vecvec.clone(), dev, memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone());
                 } else {
-                    println!("not equal");
-                    println!("{:?}, {:?}", value, cond_eq);
+                    if dev {
+                        println!("not equal");
+                        println!("{:?}, {:?}", value, cond_eq);
+                    }
                     let find_brack = 0;
                     let position_rem = 0;
                     for ele in x..contents.len() {
-                        if contents[ele] == ">" {
+                        if contents[ele] == "}" {
                             break;
                         } else {
                             contents[ele] = String::from("-");

@@ -1,6 +1,5 @@
 dec str name: "bob";
-func(sayHello()) {
-    log("hello " name);
+if name : "bob1" {
+	  log("true");
+	  log(name " == bob");
 }
-log("hello " name);
-sayHello();
