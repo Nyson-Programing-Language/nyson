@@ -1,4 +1,1 @@
-dec str name: "bob";
-log(name);
-sleep(5000);
-log(name);
+log(replace("bdb", "d", "o"));

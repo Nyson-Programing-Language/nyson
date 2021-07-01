@@ -80,3 +80,9 @@ log("Hi");
 sleep(5000);
 log("I was sent 5 seconds later");
 ```
+
+## Replace
+```
+log(replace("I am really bad", "bad", "good"));
+```
+will give "I am really good"
