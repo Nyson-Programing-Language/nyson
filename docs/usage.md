@@ -49,9 +49,19 @@ log(round(math(random*10)));
 get something like 3
 
 ## Functions
+### with out variables
 ```
 func(sayHello()) {
     log("hello");
+}
+sayHello();
+```
+
+### with variables
+```
+dec str name: "bob";
+func(sayHello()) {
+    log("hello " name);
 }
 sayHello();
 ```
