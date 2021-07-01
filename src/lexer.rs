@@ -23,11 +23,40 @@ pub fn lexer(contents: String, dev: bool) -> Vec<String>{
         outputs.push(String::from(x));
     }
     outputs.remove(0);
+    outputs = no_extra_whitespace(outputs, dev);
     return outputs;
 }
 
 fn remove_whitespace(s: &str) -> String {
     s.split_whitespace().collect()
+}
+
+fn no_extra_whitespace(mut input:Vec<String>, dev: bool) -> Vec<String> {
+    if dev {
+        println!("{:?}", input);
+    }
+    let mut quotes = 0;
+    let mut delete = Vec::new();
+    let mut deleted = 0;
+    for i in 0..input.len() {
+        if input[i] == "\"" || input[i] == "\'" || input[i] == r"\`" {
+            quotes = quotes + 1;
+        }
+        if quotes%2 == 0 && input[i] == " " {
+            delete.push(i);
+        }
+    }
+    
+    for i in delete {
+        input.remove(i-deleted);
+        deleted = deleted+1;
+    }
+    
+    if dev {
+        println!("{:?}", input);
+    }
+    
+    return input;
 }
 
 fn split(text: String, dev: bool) -> Vec<String> {
