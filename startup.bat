@@ -1,5 +1,5 @@
 set "curpath=%cd%"
-cd C:\
+cd C:\Users\%username%
 git clone https://github.com/Nyelsonon/nyson-programming-language.git
 cd nyson-programming-language
 cargo build --release
