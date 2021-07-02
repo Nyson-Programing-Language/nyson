@@ -1,1 +1,3 @@
-exec("/usr/bin/touch jimmy.nys");
+log("What is your name?");
+dec string name: input();
+log("Hello, " name);
