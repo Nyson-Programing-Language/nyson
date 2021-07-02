@@ -169,202 +169,112 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let memory_names_save = memory_names.clone();
                         let memory_types_save = memory_types.clone();
                         let memory_values_save = memory_values.clone();
-                        let move_up = 1;
-                        if contents[x+move_up] == "int" {
+                        let mut types = false;
+                        let mut position = x+1;
+                        if contents[position] == "int" {
                             memory_types.push(String::from("int"));
-                        } else if contents[x+move_up] == "str"  {
+                            memory_names.push(String::from(contents[position+1].clone()));
+                            position = position + 2;
+                        } else if contents[position] == "str"  {
                             memory_types.push(String::from("str"));
+                            memory_names.push(String::from(contents[position+1].clone()));
+                            position = position + 2;
+                            
                         }
-                        memory_names.push(String::from(contents[x+move_up+move_up].clone()));
-                        let move_up_up = 1;
-                        if contents[x+move_up+move_up+1] == ":" {
-                            let move_up_up = 1;
+                        else if contents[position] == "anon"  {
+                            memory_types.push(String::from("anon"));
+                            types = true;
+                            position = position + 1;
                         }
-                        if contents[x+move_up+move_up+1] == " " {
-                            let move_up_up = 2;
-                        }
-                        if contents[x+move_up+move_up+move_up_up] == " " {
-                            let mut value = String::new();
-                            let mut move_final = 2;
-                            if contents[x+move_up+move_up+move_up_up+2] == " " {
-                                let move_final = 2;
-                            } else {
-                                let move_final = 1;
-                            }
-                            let mut n = 0;
-                            let mut quote = 0;
-                            loop {
-                                if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
-                                    if dev {
-                                        println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[x+move_up+move_up+move_up_up+move_final]);
-                                    }
-                                    break;
-                                }
-                                else {
-                                    if contents[x+move_up+move_up+move_up_up+move_final] == "\"" || contents[x+move_up+move_up+move_up_up+move_final] == "\'" || contents[x+move_up+move_up+move_up_up+move_final] == r"\`" {
-                                        quote = quote + 1;
-                                    }
-                                    else {
-                                        if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
-                                            value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "round" {
-                                            value.push_str(round(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "replace" {
-                                            value.push_str(replace(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "input" {
-                                            value.push_str(input(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "exec" {
-                                            value.push_str(exec(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "trim" {
-                                            value.push_str(trim(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "getcont" {
-                                            value.push_str(get_contents(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else {
-                                            if n == 0 {
-                                                if quote%2 == 1 {
-                                                    value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
-                                                }
-                                                else {
-                                                    let mut position = memory_names_save.len();
-                                                    let mut skip = false;
-                                                    for pos in 0..memory_names_save.len() {
-                                                        if skip == false {
-                                                            if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_up_up+move_final].to_string() {
-                                                                position = pos;
-                                                                skip = true;
-                                                            }
-                                                        }
-                                                    }
-                                                    if position != memory_names_save.len() {
-                                                        value.push_str(memory_values_save[position].to_string().as_str());
-                                                    }
-                                                    else {
-                                                        value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == "(" {
-                                            n = n + 1
-                                        }
-                                        else if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == ")" {
-                                            n = n - 1;
-                                            if n == 1 {
-                                                n = 0;
-                                            }
-                                        }
-                                    }
-                                }
-                                move_final = move_final+1;
-                            }
-                            memory_values.push(value);
-                        } else {
-                            let mut value = String::new();
-                            let mut move_final = 2;
-                            if contents[x+move_up+move_up+move_up_up+2] == " " {
-                                let move_final = 2;
-                            } else {
-                                let move_final = 1;
-                            }
-                            let mut n = 0;
-                            let mut quote = 0;
-                            loop {
-                                if contents[x+move_up+move_up+move_up_up+move_final] == ";" {
-                                    if dev {
-                                        println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[x+move_up+move_up+move_up_up+move_final]);
-                                    }
-                                    break;
-                                }
-                                else {
-                                    if contents[x+move_up+move_up+move_up_up+move_final] == "\"" || contents[x+move_up+move_up+move_up_up+move_final] == "\'" || contents[x+move_up+move_up+move_up_up+move_final] == r"\`" {
-                                        quote = quote + 1;
-                                    }
-                                    else {
-                                        if contents[x+move_up+move_up+move_final] == "math" {
-                                            value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_final] == "round" {
-                                            value.push_str(round(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_final] == "replace" {
-                                            value.push_str(replace(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_final] == "input" {
-                                            value.push_str(input(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_final] == "exec" {
-                                            value.push_str(exec(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_final] == "trim" {
-                                            value.push_str(trim(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else if contents[x+move_up+move_up+move_final] == "getcont" {
-                                            value.push_str(get_contents(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
-                                            n = 1;
-                                        }
-                                        else {
-                                            if n == 0 {
-                                                if quote%2 == 1 {
-                                                    value.push_str(contents[x+move_up+move_up+move_final].as_str());
-                                                }
-                                                else {
-                                                    let mut position = memory_names_save.len();
-                                                    let mut skip = false;
-                                                    for pos in 0..memory_names_save.len() {
-                                                        if skip == false {
-                                                            if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_final].to_string() {
-                                                                position = pos;
-                                                                skip = true;
-                                                            }
-                                                        }
-                                                    }
-                                                    if position != memory_names_save.len() {
-                                                        value.push_str(memory_values_save[position].to_string().as_str());
-                                                    }
-                                                    else {
-                                                        value.push_str(contents[x+move_up+move_up+move_final].as_str());
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if n >= 1 && contents[x+move_up+move_up+move_final] == "(" {
-                                            n = n + 1
-                                        }
-                                        else if n >= 1 && contents[x+move_up+move_up+move_final] == ")" {
-                                            n = n - 1;
-                                            if n == 1 {
-                                                n = 0;
-                                            }
-                                        }
-                                    }
-                                }
-                                move_final = move_final+1;
+                        println!("{}", contents[position]);
+                        let mut value = String::new();
+                        let mut n = 0;
+                        let mut quote = 0;
+                        position = position+2;
+                        loop {
+                            if contents[position] == ";" {
                                 if dev {
-                                    println!("move_final: {:?}", move_final);
-                                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[x+move_up+move_up+move_final]);
+                                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
+                                }
+                                break;
+                            }
+                            else {
+                                if contents[position] == "\"" || contents[position] == "\'" || contents[position] == r"\`" {
+                                    quote = quote + 1;
+                                }
+                                else {
+                                    if contents[position] == "math" {
+                                        value.push_str(math(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        n = 1;
+                                    }
+                                    else if contents[position] == "round" {
+                                        value.push_str(round(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                        n = 1;
+                                    }
+                                    else if contents[position] == "replace" {
+                                        value.push_str(replace(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                        n = 1;
+                                    }
+                                    else if contents[position] == "input" {
+                                        value.push_str(input(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                        n = 1;
+                                    }
+                                    else if contents[position] == "exec" {
+                                        value.push_str(exec(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                        n = 1;
+                                    }
+                                    else if contents[position] == "trim" {
+                                        value.push_str(trim(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                        n = 1;
+                                    }
+                                    else if contents[position] == "getcont" {
+                                        value.push_str(get_contents(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                        n = 1;
+                                    }
+                                    else {
+                                        if n == 0 {
+                                            if quote%2 == 1 {
+                                                value.push_str(contents[position].as_str());
+                                            }
+                                            else {
+                                                let mut positions = memory_names_save.len();
+                                                let mut skip = false;
+                                                for pos in 0..memory_names_save.len() {
+                                                    if skip == false {
+                                                        if memory_names_save[pos].to_string() == contents[position].to_string() {
+                                                            positions = pos;
+                                                            skip = true;
+                                                        }
+                                                    }
+                                                }
+                                                if positions != memory_names_save.len() {
+                                                    value.push_str(memory_values_save[positions].to_string().as_str());
+                                                }
+                                                else {
+                                                    value.push_str(contents[position].as_str());
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if n >= 1 && contents[position] == "(" {
+                                        n = n + 1
+                                    }
+                                    else if n >= 1 && contents[position] == ")" {
+                                        n = n - 1;
+                                        if n == 1 {
+                                            n = 0;
+                                        }
+                                    }
                                 }
                             }
-                            memory_values.push(value);
+                            position = position+1;
+                            if dev {
+                                println!("position: {:?}", position);
+                            }
+                        }
+                        memory_values.push(value.clone());
+                        if types {
+                            memory_names.push(value.clone());
                         }
                         if dev {
                             println!("memory_names: {:?}", memory_names);

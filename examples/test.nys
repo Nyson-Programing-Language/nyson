@@ -1,3 +1,2 @@
-log("What is your name?");
-dec string name: input();
-log("Hello, " name);
+dec anon: "2";
+log(2);
