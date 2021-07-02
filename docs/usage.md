@@ -129,3 +129,10 @@ exec("/usr/bin/touch jimmy.nys");
 ```
 log(exec("ls -a"));
 ```
+
+## Input
+```
+log("What is your name?");
+dec str name: input();
+log("Hello, " name);
+```
