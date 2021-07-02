@@ -611,13 +611,13 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             if 0 < item {
                                 next = &result[item-1];
                             }
-                            if result[item] == "=" && 0 < item {
-                                if result[item-1] == "=" || result[item-1] == "!" || result[item-1] == ">" || result[item-1] == "<" {
-                                    output.push(result[item - 1].to_owned() + &*"=".to_string());
+                            if result[item] == "=" && result.len() > item {
+                                if result[item+1] == "=" || result[item+1] == "!" || result[item+1] == ">" || result[item+1] == "<" {
+                                    output.push(result[item + 1].to_owned() + &*"=".to_string());
                                 }
                             }
                             else if result[item] == "|" && 0 < item {
-                                if result[item-1] == "|" {
+                                if result[item+1] == "|" {
                                     output.push("||".parse().unwrap());
                                 }
                             }
@@ -1998,7 +1998,7 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
 pub fn input(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) -> String {
     let mut line = String::new();
     std::io::stdin().read_line(&mut line).unwrap();
-    return  line;
+    return line.trim().to_string();
 }
 
 pub fn get_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) -> String {
