@@ -294,45 +294,45 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         quote = quote + 1;
                                     }
                                     else {
-                                        if contents[x+move_up+move_up+move_up_up+move_final] == "math" {
+                                        if contents[x+move_up+move_up+move_final] == "math" {
                                             value.push_str(math(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                                             n = 1;
                                         }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "round" {
+                                        else if contents[x+move_up+move_up+move_final] == "round" {
                                             value.push_str(round(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                             n = 1;
                                         }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "replace" {
+                                        else if contents[x+move_up+move_up+move_final] == "replace" {
                                             value.push_str(replace(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                             n = 1;
                                         }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "input" {
+                                        else if contents[x+move_up+move_up+move_final] == "input" {
                                             value.push_str(input(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                             n = 1;
                                         }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "exec" {
+                                        else if contents[x+move_up+move_up+move_final] == "exec" {
                                             value.push_str(exec(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                             n = 1;
                                         }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "trim" {
+                                        else if contents[x+move_up+move_up+move_final] == "trim" {
                                             value.push_str(trim(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                             n = 1;
                                         }
-                                        else if contents[x+move_up+move_up+move_up_up+move_final] == "getcont" {
+                                        else if contents[x+move_up+move_up+move_final] == "getcont" {
                                             value.push_str(get_contents(x+move_up+move_up+move_up_up+move_final, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                             n = 1;
                                         }
                                         else {
                                             if n == 0 {
                                                 if quote%2 == 1 {
-                                                    value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                                    value.push_str(contents[x+move_up+move_up+move_final].as_str());
                                                 }
                                                 else {
                                                     let mut position = memory_names_save.len();
                                                     let mut skip = false;
                                                     for pos in 0..memory_names_save.len() {
                                                         if skip == false {
-                                                            if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_up_up+move_final].to_string() {
+                                                            if memory_names_save[pos].to_string() == contents[x+move_up+move_up+move_final].to_string() {
                                                                 position = pos;
                                                                 skip = true;
                                                             }
@@ -342,15 +342,15 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                         value.push_str(memory_values_save[position].to_string().as_str());
                                                     }
                                                     else {
-                                                        value.push_str(contents[x+move_up+move_up+move_up_up+move_final].as_str());
+                                                        value.push_str(contents[x+move_up+move_up+move_final].as_str());
                                                     }
                                                 }
                                             }
                                         }
-                                        if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == "(" {
+                                        if n >= 1 && contents[x+move_up+move_up+move_final] == "(" {
                                             n = n + 1
                                         }
-                                        else if n >= 1 && contents[x+move_up+move_up+move_up_up+move_final] == ")" {
+                                        else if n >= 1 && contents[x+move_up+move_up+move_final] == ")" {
                                             n = n - 1;
                                             if n == 1 {
                                                 n = 0;
@@ -361,7 +361,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 move_final = move_final+1;
                                 if dev {
                                     println!("move_final: {:?}", move_final);
-                                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[x+move_up+move_up+move_up_up+move_final]);
+                                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[x+move_up+move_up+move_final]);
                                 }
                             }
                             memory_values.push(value);
