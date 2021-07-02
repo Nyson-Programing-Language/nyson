@@ -28,6 +28,12 @@ dec str name: "bob";
 log("Hello, " name);
 ```
 
+#### Anonymous variables
+```
+dec anon: "bob";
+log("Hello, " bob);
+```
+
 ## Random Number
 #### Print Random Number
 ```
