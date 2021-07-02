@@ -1,1 +1,3 @@
-POST("https://amtitan.free.beeceptor.com", "bob the builder");
+if ("1" >= "2") {
+    log("HEY!");
+}
