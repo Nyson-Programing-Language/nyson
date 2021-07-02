@@ -1,1 +1,1 @@
-setcont("bob.nys", "this work?");
+exec("/usr/bin/touch jimmy.nys");

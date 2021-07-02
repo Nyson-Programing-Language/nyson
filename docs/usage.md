@@ -118,3 +118,14 @@ will give the content of bob.nys
 setcont("bob.nys", "Hello I am bob.");
 ```
 bob.nys now has "Hello I am bob." as its contents
+
+## Exec
+#### Without Output
+```
+exec("/usr/bin/touch jimmy.nys");
+```
+
+#### With Output
+```
+log(exec("ls -a"));
+```
