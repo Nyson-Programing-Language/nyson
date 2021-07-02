@@ -1,3 +1,4 @@
+#![allow(warnings, unused)]
 use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
 use crate::lexer;
