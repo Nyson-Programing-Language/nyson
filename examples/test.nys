@@ -1,4 +1,0 @@
-dec str name: "bob";
-log(name);
-name: "billy";
-log(name);

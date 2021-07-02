@@ -25,10 +25,10 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
         skiperwiper = false;
         for mut x in readfrom..contents.len() {
             if skiperwiper == false {
-                if contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`" {
+                if (contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`") && contents[x-1] != "\\" {
                     quotes = quotes + 1;
                 }
-                if contents[x] == "{" || contents[x] == "}" {
+                if (contents[x] == "{" || contents[x] == "}") && quotes%2 == 0 {
                     squigle = squigle + 1;
                 }
                 if quotes%2 == 0 && squigle%2 == 0 {
@@ -198,7 +198,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 break;
                             }
                             else {
-                                if contents[position] == "\"" || contents[position] == "\'" || contents[position] == r"\`" {
+                                if (contents[position] == "\"" || contents[position] == "\'" || contents[position] == r"\`") && contents[position-1] != "\\" {
                                     quote = quote + 1;
                                 }
                                 else {
@@ -438,7 +438,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                 break;
                                             }
                                             else {
-                                                if contents[position] == "\"" || contents[position] == "\'" || contents[position] == r"\`" {
+                                                if (contents[position] == "\"" || contents[position] == "\'" || contents[position] == r"\`") && contents[position-1] != "\\" {
                                                     quote = quote + 1;
                                                 }
                                                 else {
@@ -574,12 +574,12 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
     for y in 1..vec.len() {
         if skips == 0 {
             if skip == false {
-                if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
+                if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y-1] != "\\" {
                     n = n + 1;
-                }else if vec[y] == "(" {
+                }else if vec[y] == "(" && n % 2 == 0 {
                     n1 = n1 + 1;
                 }
-                else if vec[y] == ")" {
+                else if vec[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
                 }else if n % 2 == 1 {
                     string.push_str(vec[y].as_str());
@@ -830,12 +830,12 @@ pub fn exec(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
     for y in 1..vec.len() {
         if skips == 0 {
             if skip == false {
-                if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
+                if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y-1] != "\\" {
                     n = n + 1;
-                }else if vec[y] == "(" {
+                }else if vec[y] == "(" && n % 2 == 0 {
                     n1 = n1 + 1;
                 }
-                else if vec[y] == ")" {
+                else if vec[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
                 }else if n % 2 == 1 {
                     string.push_str(vec[y].as_str());
@@ -1056,7 +1056,7 @@ pub fn exec(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
         .args(endvec)
         .output()
         .expect("failed to execute process");
-
+    
     return String::from_utf8_lossy(&output.stdout).to_string();
 }
 
@@ -1086,15 +1086,15 @@ pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
     }
     let mut n = 0;
     let mut what_to_do_first = Vec::new();
-    if vec[0] == "\"" || vec[0] == "\'" || vec[0] == r"\`" {
+    if vec[0] == "\"" || vec[0] == "\'" || vec[0] == r"\`"{
         vec.remove(0);
         vec.remove(vec.len()-1);
     }
     for y in 0..vec.len() {
-        if vec[y] == "(" {
+        if vec[y] == "(" && vec[y-1] != "\\" {
             n = n +1;
         }
-        else if vec[y] == ")" {
+        else if vec[y] == ")" && vec[y-1] != "\\" {
             n = n-1;
         }
         what_to_do_first.push(n);
@@ -1317,12 +1317,12 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
     for y in 0..file.len() {
         if skips == 0 {
             if skip == false {
-                if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
+                if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y-1] != "\\" {
                     n = n + 1;
-                }else if vec[y] == "(" {
+                }else if vec[y] == "(" && n % 2 == 0  {
                     n1 = n1 + 1;
                 }
-                else if vec[y] == ")" {
+                else if vec[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
                 }else if n % 2 == 1 {
                     file_s.push_str(vec[y].as_str());
@@ -1433,12 +1433,12 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
     for y in 0..text.len() {
         if skips == 0 {
             if skip == false {
-                if text[y] == "\"" || text[y] == "\'" || text[y] == r"\`" {
+                if (text[y] == "\"" || text[y] == "\'" || text[y] == r"\`") && text[y-1] != "\\" {
                     n = n + 1;
-                }else if text[y] == "(" {
+                }else if text[y] == "(" && n % 2 == 0 {
                     n1 = n1 + 1;
                 }
-                else if text[y] == ")" {
+                else if text[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
                 }else if n % 2 == 1 {
                     text_s.push_str(text[y].as_str());
@@ -1600,12 +1600,12 @@ pub fn get_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
     for y in 1..vec.len() {
         if skips == 0 {
             if skip == false {
-                if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
+                if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y-1] != "\\" {
                     n = n + 1;
-                }else if vec[y] == "(" {
+                }else if vec[y] == "(" && n % 2 == 0 {
                     n1 = n1 + 1;
                 }
-                else if vec[y] == ")" {
+                else if vec[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
                 }else if n % 2 == 1 {
                     string.push_str(vec[y].as_str());
@@ -1886,12 +1886,12 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
     for y in 0..imput.len() {
         if skips == 0 {
             if skip == false {
-                if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
+                if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y-1] != "\\" {
                     n = n + 1;
-                }else if vec[y] == "(" {
+                }else if vec[y] == "(" && n % 2 == 0 {
                     n1 = n1 + 1;
                 }
-                else if vec[y] == ")" {
+                else if vec[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
                 }else if n % 2 == 1 {
                     imput_s.push_str(vec[y].as_str());
@@ -2002,12 +2002,12 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
     for y in 0..find.len() {
         if skips == 0 {
             if skip == false {
-                if find[y] == "\"" || find[y] == "\'" || find[y] == r"\`" {
+                if (find[y] == "\"" || find[y] == "\'" || find[y] == r"\`") && find[y-1] != "\\" {
                     n = n + 1;
-                }else if find[y] == "(" {
+                }else if find[y] == "(" && n % 2 == 0 {
                     n1 = n1 + 1;
                 }
-                else if find[y] == ")" {
+                else if find[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
                 }else if n % 2 == 1 {
                     find_s.push_str(find[y].as_str());
@@ -2118,12 +2118,12 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
     for y in 0..replacer.len() {
         if skips == 0 {
             if skip == false {
-                if replacer[y] == "\"" || replacer[y] == "\'" || replacer[y] == r"\`" {
+                if (replacer[y] == "\"" || replacer[y] == "\'" || replacer[y] == r"\`") && replacer[y-1] != "\\" {
                     n = n + 1;
-                }else if replacer[y] == "(" {
+                }else if replacer[y] == "(" && n % 2 == 0 {
                     n1 = n1 + 1;
                 }
-                else if replacer[y] == ")" {
+                else if replacer[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
                 }else if n % 2 == 1 {
                     replacer_s.push_str(replacer[y].as_str());
@@ -2473,12 +2473,12 @@ pub fn trim(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
     for y in 0..vec.len() {
         if skips == 0 {
             if skip == false {
-                if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
+                if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y-1] != "\\" {
                     n = n + 1;
-                }else if vec[y] == "(" {
+                }else if vec[y] == "(" && n % 2 == 0 {
                     n1 = n1 + 1;
                 }
-                else if vec[y] == ")" {
+                else if vec[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
                 }else if n % 2 == 1 {
                     imput_s.push_str(vec[y].as_str());
