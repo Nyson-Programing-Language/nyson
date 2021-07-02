@@ -1,1 +1,1 @@
-log("Hello");
+POST("https://amtitan.free.beeceptor.com", "bob the builder");

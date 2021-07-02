@@ -150,3 +150,15 @@ log("What is your name?");
 dec str name: input();
 log("Hello, " name);
 ```
+
+## GET Request
+```
+dec str code: GET("https://www.rust-lang.org/");
+log("Rust Website code: " code);
+```
+
+## POST Request
+```
+POST("https://amtitan.free.beeceptor.com", "bob the builder");
+```
+this sends "bob the builder" to my beeceptor
