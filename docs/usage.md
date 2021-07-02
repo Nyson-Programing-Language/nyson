@@ -33,6 +33,14 @@ log("Hello, " name);
 dec anon: "bob";
 log("Hello, " bob);
 ```
+#### Edit variables
+```
+dec str name: "bob";
+log("Hello, " name);
+name: "billy";
+log("wait your name is, " name);
+```
+
 
 ## Random Number
 #### Print Random Number
