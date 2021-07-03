@@ -3506,19 +3506,7 @@ pub fn trim(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
             skips = skips -1;
         }
     }
-    let mut start_with_space = true;
-    while start_with_space {
-        start_with_space = false;
-        if imput_s.chars().nth(0).unwrap().to_string() == " " || imput_s.chars().nth(0).unwrap().to_string() == r"\t" || imput_s.chars().nth(0).unwrap().to_string() == r"\n" {
-            imput_s.remove(0);
-            start_with_space = true;
-        }
-        if imput_s.chars().nth(imput_s.len()-1).unwrap().to_string() == " " || imput_s.chars().nth(imput_s.len()-1).unwrap().to_string() == r"\t" || imput_s.chars().nth(imput_s.len()-1).unwrap().to_string() == r"\n" {
-            imput_s.remove(imput_s.len()-1);
-            start_with_space = true;
-        }
-    }
-    return imput_s;
+    return imput_s.trim().to_string();
 }
 
 pub fn get_line(x:usize, contents: Vec<String>) -> i32 {

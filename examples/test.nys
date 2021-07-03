@@ -1,3 +1,0 @@
-audio("doom.mp3");
-sleep(9325);
-log("DROP");
