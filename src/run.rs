@@ -1,4 +1,5 @@
 #![allow(warnings, unused)]
+extern crate termion;
 use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
 use crate::lexer;
@@ -9,6 +10,10 @@ use std::io::{Write, stdout, Read, BufReader};
 use std::str::SplitWhitespace;
 use std::process::Command;
 use curl::easy::Easy;
+use termion::event::Key;
+use termion::input::TermRead;
+use termion::raw::IntoRawMode;
+use std::io::{stdin};
 
 #[allow(unused)]
 
@@ -252,6 +257,32 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             skips = leng;
                                         } else if vec[y] == "trim" {
                                             string.push_str(trim(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev).to_string().as_str());
+                                            let mut leng = 0;
+                                            let mut n2 = 0;
+                                            let mut skip1 = false;
+                                            for f in y+1..vec.len() {
+                                                if skip1 == false {
+                                                    if vec[y+1] != "(" {
+                                                        println!("You have to put a parentheses after a log");
+                                                        std::process::exit(1);
+                                                    }
+                                                    if vec[f] == "(" {
+                                                        n2 = n2 +1;
+                                                    }
+                                                    else if vec[f] == ")" {
+                                                        n2 = n2-1;
+                                                    }
+                                                    if n2 == 0 {
+                                                        skip1 = true;
+                                                        for z in y+1..f+1 {
+                                                            leng = leng + 1;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            skips = leng;
+                                        } else if vec[y] == "key" {
+                                            string.push_str(key().to_string().as_str());
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
@@ -526,6 +557,10 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     }
                                     else if contents[position] == "trim" {
                                         value.push_str(trim(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                        n = 1;
+                                    }
+                                    else if contents[position] == "key" {
+                                        value.push_str(key().to_string().as_str());
                                         n = 1;
                                     }
                                     else if contents[position] == "getcont" {
@@ -842,6 +877,32 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                         }
                                         skips = leng;
+                                    } else if vec[y] == "key" {
+                                        string.push_str(key().to_string().as_str());
+                                        let mut leng = 0;
+                                        let mut n2 = 0;
+                                        let mut skip1 = false;
+                                        for f in y+1..vec.len() {
+                                            if skip1 == false {
+                                                if vec[y+1] != "(" {
+                                                    println!("You have to put a parentheses after a log");
+                                                    std::process::exit(1);
+                                                }
+                                                if vec[f] == "(" {
+                                                    n2 = n2 +1;
+                                                }
+                                                else if vec[f] == ")" {
+                                                    n2 = n2-1;
+                                                }
+                                                if n2 == 0 {
+                                                    skip1 = true;
+                                                    for z in y+1..f+1 {
+                                                        leng = leng + 1;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        skips = leng;
                                     } else if vec[y] == "getcont" {
                                         string.push_str(get_contents(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                                         let mut leng = 0;
@@ -1029,6 +1090,10 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                     }
                                                     else if contents[position] == "trim" {
                                                         value.push_str(trim(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else if contents[position] == "key" {
+                                                        value.push_str(key().to_string().as_str());
                                                         n = 1;
                                                     }
                                                     else if contents[position] == "getcont" {
@@ -1309,6 +1374,32 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
                     skips = leng;
                 } else if vec[y] == "trim" {
                     string.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "key" {
+                    string.push_str(key().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -1615,6 +1706,32 @@ pub fn exec(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "key" {
+                    string.push_str(key().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "getcont" {
                     string.push_str(get_contents(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
@@ -1857,6 +1974,24 @@ pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
                         }
                     }
                     skip = true;
+                } else if vec[y] == "key" {
+                    vec[y] = key().to_string();
+                    let skip1 = false;
+                    let mut t = 0;
+                    for y in x+1..vec.len() {
+                        if skip1 == false {
+                            if contents[y] == "(" {
+                                t = t +1;
+                            }
+                            else if contents[y] == ")" {
+                                t = t-1;
+                            }
+                            if t%2 == 0 {
+                                vec.remove(y);
+                            }
+                        }
+                    }
+                    skip = true;
                 } else if vec[y] == "getcont" {
                     vec[y] = get_contents(y, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
                     let skip1 = false;
@@ -2043,8 +2178,8 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "round" {
-                    file_s.push_str(round(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                } else if vec[y] == "replace" {
+                    file_s.push_str(replace(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -2054,10 +2189,10 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
-                            if contents[f] == "(" {
+                            if vec[f] == "(" {
                                 n2 = n2 +1;
                             }
-                            else if contents[f] == ")" {
+                            else if vec[f] == ")" {
                                 n2 = n2-1;
                             }
                             if n2 == 0 {
@@ -2069,8 +2204,8 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "GET" {
-                    file_s.push_str(get_request(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                } else if vec[y] == "input" {
+                    file_s.push_str(input(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -2080,10 +2215,114 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
-                            if contents[f] == "(" {
+                            if vec[f] == "(" {
                                 n2 = n2 +1;
                             }
-                            else if contents[f] == ")" {
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "exec" {
+                    file_s.push_str(exec(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "trim" {
+                    file_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "key" {
+                    file_s.push_str(key().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "getcont" {
+                    file_s.push_str(get_contents(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
                                 n2 = n2-1;
                             }
                             if n2 == 0 {
@@ -2211,8 +2450,8 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "round" {
-                    text_s.push_str(round(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                } else if vec[y] == "replace" {
+                    text_s.push_str(replace(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -2222,10 +2461,10 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
-                            if contents[f] == "(" {
+                            if vec[f] == "(" {
                                 n2 = n2 +1;
                             }
-                            else if contents[f] == ")" {
+                            else if vec[f] == ")" {
                                 n2 = n2-1;
                             }
                             if n2 == 0 {
@@ -2237,8 +2476,8 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "GET" {
-                    text_s.push_str(get_request(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                } else if vec[y] == "input" {
+                    text_s.push_str(input(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -2248,10 +2487,114 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
-                            if contents[f] == "(" {
+                            if vec[f] == "(" {
                                 n2 = n2 +1;
                             }
-                            else if contents[f] == ")" {
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "exec" {
+                    text_s.push_str(exec(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "trim" {
+                    text_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "key" {
+                    text_s.push_str(key().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "getcont" {
+                    text_s.push_str(get_contents(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
                                 n2 = n2-1;
                             }
                             if n2 == 0 {
@@ -2534,6 +2877,32 @@ pub fn get_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "key" {
+                    string.push_str(key().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "getcont" {
                     string.push_str(get_contents(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
@@ -2742,8 +3111,8 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "round" {
-                    imput_s.push_str(round(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                } else if vec[y] == "replace" {
+                    imput_s.push_str(replace(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -2753,10 +3122,10 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
-                            if contents[f] == "(" {
+                            if vec[f] == "(" {
                                 n2 = n2 +1;
                             }
-                            else if contents[f] == ")" {
+                            else if vec[f] == ")" {
                                 n2 = n2-1;
                             }
                             if n2 == 0 {
@@ -2768,8 +3137,8 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "GET" {
-                    imput_s.push_str(get_request(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                } else if vec[y] == "input" {
+                    imput_s.push_str(input(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -2779,10 +3148,114 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
-                            if contents[f] == "(" {
+                            if vec[f] == "(" {
                                 n2 = n2 +1;
                             }
-                            else if contents[f] == ")" {
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "exec" {
+                    imput_s.push_str(exec(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "trim" {
+                    imput_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "key" {
+                    imput_s.push_str(key().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "getcont" {
+                    imput_s.push_str(get_contents(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
                                 n2 = n2-1;
                             }
                             if n2 == 0 {
@@ -2910,8 +3383,8 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "round" {
-                    find_s.push_str(round(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                } else if vec[y] == "replace" {
+                    find_s.push_str(replace(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -2921,10 +3394,10 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
-                            if contents[f] == "(" {
+                            if vec[f] == "(" {
                                 n2 = n2 +1;
                             }
-                            else if contents[f] == ")" {
+                            else if vec[f] == ")" {
                                 n2 = n2-1;
                             }
                             if n2 == 0 {
@@ -2936,8 +3409,8 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "GET" {
-                    find_s.push_str(get_request(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                } else if vec[y] == "input" {
+                    find_s.push_str(input(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -2947,10 +3420,114 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
-                            if contents[f] == "(" {
+                            if vec[f] == "(" {
                                 n2 = n2 +1;
                             }
-                            else if contents[f] == ")" {
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "exec" {
+                    find_s.push_str(exec(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "trim" {
+                    find_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "key" {
+                    find_s.push_str(key().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "getcont" {
+                    find_s.push_str(get_contents(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
                                 n2 = n2-1;
                             }
                             if n2 == 0 {
@@ -3078,59 +3655,6 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "round" {
-                    replacer_s.push_str(round(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
-                    let mut leng = 0;
-                    let mut n2 = 0;
-                    let mut skip1 = false;
-                    for f in y+1..vec.len() {
-                        if skip1 == false {
-                            if vec[y+1] != "(" {
-                                println!("You have to put a parentheses after a log");
-                                std::process::exit(1);
-                            }
-                            if contents[f] == "(" {
-                                n2 = n2 +1;
-                            }
-                            else if contents[f] == ")" {
-                                n2 = n2-1;
-                            }
-                            if n2 == 0 {
-                                skip1 = true;
-                                for z in y+1..f+1 {
-                                    leng = leng + 1;
-                                }
-                            }
-                        }
-                    }
-                    skips = leng;
-                } else if vec[y] == "GET" {
-                    replacer_s.push_str(get_request(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
-                    let mut leng = 0;
-                    let mut n2 = 0;
-                    let mut skip1 = false;
-                    for f in y+1..vec.len() {
-                        if skip1 == false {
-                            if vec[y+1] != "(" {
-                                println!("You have to put a parentheses after a log");
-                                std::process::exit(1);
-                            }
-                            if contents[f] == "(" {
-                                n2 = n2 +1;
-                            }
-                            else if contents[f] == ")" {
-                                n2 = n2-1;
-                            }
-                            if n2 == 0 {
-                                skip1 = true;
-                                for z in y+1..f+1 {
-                                    leng = leng + 1;
-                                }
-                            }
-                        }
-                    }
-                    skips = leng;
-                } else {
                     let mut postion = memory_names.len();
                     let mut skip1 = false;
                     for pos in 0..memory_names.len() {
@@ -3485,6 +4009,162 @@ pub fn trim(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "replace" {
+                    imput_s.push_str(replace(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "input" {
+                    imput_s.push_str(input(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "exec" {
+                    imput_s.push_str(exec(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "trim" {
+                    imput_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "key" {
+                    imput_s.push_str(key().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "getcont" {
+                    imput_s.push_str(get_contents(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else {
                     let mut postion = memory_names.len();
                     let mut skip1 = false;
@@ -3727,6 +4407,32 @@ pub fn get_request(x:usize, contents: Vec<String>, memory_names: Vec<String>, me
                     skips = leng;
                 } else if vec[y] == "trim" {
                     string.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "key" {
+                    string.push_str(key().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -4165,4 +4871,33 @@ pub fn post_request(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
         Ok(data.read(buf).unwrap_or(0))
     }).unwrap();
     transfer.perform().unwrap();
+}
+
+fn key() -> String {
+    let stdin = stdin();
+    let mut stdout = stdout().into_raw_mode().unwrap();
+    let mut key:String = "".to_string();
+    for c in stdin.keys() {
+        match c.unwrap() {
+            Key::Char('q') => break,
+            Key::Char(c) => key = c.to_string().as_str().parse().unwrap(),
+            Key::Alt(c) => {
+                key = "^".parse().unwrap();
+                key.push_str(c.to_string().as_str());
+            },
+            Key::Ctrl(c) => {
+                key = "*".parse().unwrap();
+                key.push_str(c.to_string().as_str());
+            },
+            Key::Esc => key = "ESC".parse().unwrap(),
+            Key::Left => key = "←".parse().unwrap(),
+            Key::Right => key = "→".parse().unwrap(),
+            Key::Up => key = "↑".parse().unwrap(),
+            Key::Down => key = "↓".parse().unwrap(),
+            Key::Backspace => key = "×".parse().unwrap(),
+            _ => {}
+        }
+        break;
+    }
+    return key.trim().to_string();
 }
