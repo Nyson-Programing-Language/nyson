@@ -90,7 +90,13 @@ sayHello();
 ## If Statements
 ```
 dec str condition : "true";
-if condition : "true" {
+if (condition == "true") {
+    log("true");
+}
+```
+
+```
+if ("1" >= "1") {
     log("true");
 }
 ```

@@ -914,14 +914,19 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             if 0 < item {
                                 next = &result[item-1];
                             }
-                            if result[item] == "=" && result.len() > item {
-                                if result[item+1] == "=" || result[item+1] == "!" || result[item+1] == ">" || result[item+1] == "<" {
-                                    output.push(result[item + 1].to_owned() + &*"=".to_string());
+                            if result[item] == "=" && 0 < item {
+                                if result[item-1] == "=" || result[item-1] == "!" || result[item-1] == ">" || result[item-1] == "<" {
+                                    output.push(result[item - 1].to_owned() + &*"=".to_string());
                                 }
                             }
                             else if result[item] == "|" && 0 < item {
                                 if result[item+1] == "|" {
                                     output.push("||".parse().unwrap());
+                                }
+                            }
+                            else if (result[item] == ">" || result[item] == "<") && 0 < item {
+                                if result[item+1] != "=" {
+                                    output.push(result[item].to_owned());
                                 }
                             }
                             else if result[item] != "!" && result[item] != "<" && result[item] != ">" {
@@ -941,6 +946,12 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             }
 
                             else if output[item] == "<=" && output[item-1].parse::<i32>().unwrap() <= output[item+1].parse::<i32>().unwrap() {
+                                outcome = true;
+                            }
+                            else if output[item] == "<" && output[item-1].parse::<i32>().unwrap() < output[item+1].parse::<i32>().unwrap() {
+                                outcome = true;
+                            }
+                            else if output[item] == ">" && output[item-1].parse::<i32>().unwrap() > output[item+1].parse::<i32>().unwrap() {
                                 outcome = true;
                             }
                         }
