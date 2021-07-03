@@ -1,6 +1,13 @@
 ## Dependencies
-- Rust
-- Git
+
+#### Required
+
+- [Rust](https://www.rust-lang.org/tools/install)
+- [Git](https://git-scm.com/downloads)
+
+#### Optional
+
+- [VLC](https://www.videolan.org/vlc/) (for audio)
 
 ## --------------------
 
@@ -12,7 +19,7 @@ cargo build --release
 cd target/release
 ```
 
-it will be called Nylex
+it will be called Nyson
 
 ## Linux or Mac
 ```shell
