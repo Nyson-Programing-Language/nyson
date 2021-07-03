@@ -1,3 +1,10 @@
+# How to use
+in a terminal type
+```
+nyson test.nys
+```
+you might have to change the word nyson to your nyson file location and change test.nys to any file you want that has the .nys ending
+
 ## Print
 ```
 log("hello world");
