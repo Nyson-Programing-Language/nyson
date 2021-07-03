@@ -4,6 +4,7 @@
 
 - [Rust](https://www.rust-lang.org/tools/install)
 - [Git](https://git-scm.com/downloads)
+- Curl (most os should have it but if you dont search up how to get it with your os)
 
 #### Optional
 
