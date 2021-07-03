@@ -162,3 +162,11 @@ log("Rust Website code: " code);
 POST("https://amtitan.free.beeceptor.com", "bob the builder");
 ```
 this sends "bob the builder" to my beeceptor
+
+## Music
+```
+audio("doom.mp3");
+sleep(9325);
+log("DROP");
+```
+Playes a file but it dose not wait for the file to end to continue.

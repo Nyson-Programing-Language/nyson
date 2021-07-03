@@ -1,5 +1,3 @@
-log("What is your name?")
-dec str name: input();
-if (name == "Arthur") {
-    log("HEY!");
-}
+audio("doom.mp3");
+sleep(9325);
+log("DROP");
