@@ -1,5 +1,4 @@
 #![allow(warnings, unused)]
-extern crate termion;
 use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
 use crate::lexer;
@@ -10,10 +9,8 @@ use std::io::{Write, stdout, Read, BufReader};
 use std::str::SplitWhitespace;
 use std::process::Command;
 use curl::easy::Easy;
-use termion::event::Key;
-use termion::input::TermRead;
-use termion::raw::IntoRawMode;
 use std::io::{stdin};
+use rodio::{Decoder, OutputStream, source::Source};
 
 #[allow(unused)]
 
@@ -329,13 +326,25 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 }
                             }
                             let stringreturn = string;
-                            let mut vecs = stringreturn.replace("\n", " ");
-                            vecs = vecs.replace("\t", " ");
-                            let mut endvec: Vec<&str> = vecs.split(" ").collect();
-                            Command::new("cvlc")
-                                .args(endvec)
-                                .output()
-                                .expect("failed to execute process");
+                            use std::env;
+                            if env::consts::OS == "linux" {
+                                let mut vecs = stringreturn.replace("\n", " ");
+                                vecs = vecs.replace("\t", " ");
+                                let mut endvec: Vec<&str> = vecs.split(" ").collect();
+                                Command::new("cvlc")
+                                    .args(endvec)
+                                    .output()
+                                    .expect("failed to execute process");
+                            }
+                            else {
+                                let mut vecs = stringreturn.replace("\n", " ");
+                                vecs = vecs.replace("\t", " ");
+                                let mut endvec: Vec<&str> = vecs.split(" ").collect();
+                                let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+                                let file = BufReader::new(File::open(endvec[0]).unwrap());
+                                let source = Decoder::new(file).unwrap();
+                                stream_handle.play_raw(source.convert_samples());
+                            }
                         });
                         threads.push(handle);
                     }
