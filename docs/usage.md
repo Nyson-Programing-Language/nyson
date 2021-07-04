@@ -183,3 +183,8 @@ sleep(9325);
 log("DROP");
 ```
 Playes a file but it dose not wait for the file to end to continue. (this uses cvlc so if you want to change the volume or playing a directory see how to do it in cvlc)
+
+## Time
+```
+log(time());
+```
