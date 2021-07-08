@@ -369,13 +369,15 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 let mut vecs = stringreturn.replace("\n", " ");
                                 vecs = vecs.replace("\t", " ");
                                 let mut endvec: Vec<&str> = Vec::new();
+                                endvec.push("/C");
+                                endvec.push("\"%PROGRAMFILES%\\VideoLAN\\VLC\\vlc.exe\"");
                                 endvec.push("-I");
                                 endvec.push("dummy");
                                 endvec.push("--dummy-quiet");
                                 for item in vecs.split(" ") {
                                     endvec.push(item);
                                 }
-                                Command::new("\"%PROGRAMFILES%\\VideoLAN\\VLC\\vlc.exe\"")
+                                Command::new("cmd")
                                     .args(endvec)
                                     .output()
                                     .expect("failed to execute process");
