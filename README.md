@@ -12,7 +12,7 @@ https://github.com/AMTitan [![wakatime](https://wakatime.com/badge/github/AMTita
 
 Documentation:
 
-https://nyelsonon.github.io/nyson-programming-language
+https://nyson-programing-language.github.io/
 
 Repo:
 

@@ -1,0 +1,2 @@
+dec array hello: ["bob", "the", "builder"];
+log(hello(0));
