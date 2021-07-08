@@ -11,3 +11,6 @@ Cargo.lock
 
 # jet brains
 .idea
+
+# vs code smh
+.vscode
