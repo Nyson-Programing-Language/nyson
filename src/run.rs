@@ -32,10 +32,13 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                 if (contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`") && contents[x-1] != "\\" {
                     quotes = quotes + 1;
                 }
-                if (contents[x] == "{" || contents[x] == "}") && quotes%2 == 0 {
+                if (contents[x] == "{" || contents[x] == "[") && quotes%2 == 0 {
                     squigle = squigle + 1;
                 }
-                if quotes%2 == 0 && squigle%2 == 0 {
+                if (contents[x] == "}" || contents[x] == "]") && quotes%2 == 0 {
+                    squigle = squigle - 1;
+                }
+                if quotes%2 == 0 && squigle == 0 {
                     if contents[x] == "log" {
                         log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
                     }
