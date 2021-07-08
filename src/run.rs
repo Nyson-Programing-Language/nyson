@@ -24,6 +24,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
     let mut skiperwiper = false;
     let mut read = true;
     let mut threads = Vec::new();
+    let mut group_memory: Vec<String> = Vec::new();
     while read {
         read = false;
         skiperwiper = false;
@@ -567,6 +568,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let memory_values_save = memory_values.clone();
                         let mut types = false;
                         let mut position = x+1;
+                        let mut group = false;
                         if contents[position] == "int" {
                             memory_types.push(String::from("int"));
                             memory_names.push(String::from(contents[position+1].clone()));
@@ -577,10 +579,19 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             position = position + 2;
                             
                         }
+                        else if contents[position] == "inf"  {
+                            memory_types.push(String::from("inf"));
+                            memory_names.push(String::from(contents[position+1].clone()));
+                            position = position + 2;
+                            
+                        }
                         else if contents[position] == "anon"  {
                             memory_types.push(String::from("anon"));
                             types = true;
                             position = position + 1;
+                        }
+                        else if contents[position] == "group" {
+                            group = true;
                         }
                         let mut value = String::new();
                         let mut n = 0;
@@ -680,6 +691,48 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             println!("memory_types: {:?}", memory_types);
                             println!("memory_values: {:?}", memory_values);
                         }
+                    }
+                    else if contents[x] == "group" {
+                        let build_name = String::from(contents[x+1].clone());
+                        let mut end_pos: usize = 0;
+                        let mut objects: Vec<String> = Vec::new();
+                        for j in x+2..contents.len() {
+                            if contents[x] == "}" {
+                                break;
+                            }
+                            objects.push(String::from(contents[j].clone()))
+                        }
+                        println!("{:?}", objects);
+                        let mut objects_object: Vec<String> = Vec::new();
+                        for y in 0..objects.len() {
+                            if objects[y] == "," {
+
+                            } else if objects[y] == " " {
+
+                            } else if objects[y] == "\r" {
+
+                            } else if objects[y] == "\n" {
+
+                            } else if objects[y] == "\"" {
+                            
+                            }
+                            else if objects[y] == "{" {
+
+                            }
+                            else if objects[y] == "}" {
+
+                            }
+                            else {
+                                objects_object.push(objects[y].clone().to_string())
+                            }
+                        }
+                        let mut classifier = String::new();
+                        for d in 0..objects_object.len() {
+                            group_memory.push(build_name.clone());
+                            group_memory.push(objects_object[d].clone());
+                            group_memory.push("".to_string())
+                        }
+                        println!("{:?}", group_memory)
                     }
                     else if contents[x] == "if" {
                         let mut loc1 = 0;
