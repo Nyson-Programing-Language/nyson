@@ -2,7 +2,7 @@
 use std::ops::{Add, Sub, Mul, Div};
 use rand::Rng;
 use crate::lexer;
-use std::fs;
+use std::{fs, env};
 use std::thread;
 use std::fs::File;
 use std::io::{Write, stdout, Read, BufReader};
@@ -366,17 +366,11 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     .expect("failed to execute process");
                             }
                             else if env::consts::OS == "windows" {
-                                let mut vecs = stringreturn.replace("\n", " ");
-                                vecs = vecs.replace("\t", " ");
                                 let mut endvec: Vec<&str> = Vec::new();
                                 endvec.push("/C");
-                                endvec.push("\"%PROGRAMFILES%\\VideoLAN\\VLC\\vlc.exe\"");
-                                endvec.push("-I");
-                                endvec.push("dummy");
-                                endvec.push("--dummy-quiet");
-                                for item in vecs.split(" ") {
-                                    endvec.push(item);
-                                }
+                                let mut endstirng: String = "\"%PROGRAMFILES%\\VideoLAN\\VLC\\vlc.exe\" -I dummy --dummy-quiet ".to_string();
+                                endstirng.push_str(&stringreturn);
+                                endvec.push(&endstirng);
                                 Command::new("cmd")
                                     .args(endvec)
                                     .output()
@@ -1889,19 +1883,33 @@ pub fn exec(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
     let stringreturn = string;
     let mut vecs = stringreturn.replace("\n", " ");
     vecs = vecs.replace("\t", " ");
-    let mut endvec: Vec<&str> = vecs.split(" ").collect();
-    let commandname = endvec[0];
-    endvec.remove(0);
-    if dev {
-        println!("Command Name: {}", commandname);
-        println!("Command args: {:?}", endvec);
+    if env::consts::OS == "windows" {
+        let mut endvec: Vec<&str> = Vec::new();
+        endvec.push("/C");
+        endvec.push(&stringreturn);
+        if dev {
+            println!("Command args: {:?}", endvec);
+        }
+        let output = Command::new("cmd")
+            .args(endvec)
+            .output()
+            .expect("failed to execute process");
+        return String::from_utf8_lossy(&output.stdout).to_string();
     }
-    let output = Command::new(commandname)
-        .args(endvec)
-        .output()
-        .expect("failed to execute process");
-    
-    return String::from_utf8_lossy(&output.stdout).to_string();
+    else {
+        let mut endvec: Vec<&str> = vecs.split(" ").collect();
+        let commandname = endvec[0];
+        endvec.remove(0);
+        if dev {
+            println!("Command Name: {}", commandname);
+            println!("Command args: {:?}", endvec);
+        }
+        let output = Command::new(commandname)
+            .args(endvec)
+            .output()
+            .expect("failed to execute process");
+        return String::from_utf8_lossy(&output.stdout).to_string();
+    }
 }
 
 pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) -> i32 {
