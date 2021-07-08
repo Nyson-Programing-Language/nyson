@@ -8,9 +8,7 @@ loop(7) {
     loop(5-number) {
         loading: loading "-";
     }
-    if (loading != "#") {
-        log(loading);
-        sleep(1000);
-    }
+    log(loading);
+    sleep(1000);
     number = math(number+1);
 }
