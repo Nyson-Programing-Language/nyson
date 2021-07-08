@@ -10,7 +10,6 @@ use std::str::SplitWhitespace;
 use std::process::Command;
 use curl::easy::Easy;
 use std::io::{stdin};
-use rodio::{Decoder, OutputStream, source::Source};
 use std::time::{SystemTime, UNIX_EPOCH, Duration};
 
 #[allow(unused)]
@@ -353,6 +352,9 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 }
                             }
                             let stringreturn = string;
+                            let mut vecs = stringreturn.replace("\n", " ");
+                            vecs = vecs.replace("\t", " ");
+                            let mut endvec: Vec<&str> = vecs.split(" ").collect();
                             use std::env;
                             if env::consts::OS == "linux" {
                                 let mut vecs = stringreturn.replace("\n", " ");
@@ -363,14 +365,20 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     .output()
                                     .expect("failed to execute process");
                             }
-                            else {
+                            else if env::consts::OS == "windows" {
                                 let mut vecs = stringreturn.replace("\n", " ");
                                 vecs = vecs.replace("\t", " ");
-                                let mut endvec: Vec<&str> = vecs.split(" ").collect();
-                                let (_stream, stream_handle) = OutputStream::try_default().unwrap();
-                                let file = BufReader::new(File::open(endvec[0]).unwrap());
-                                let source = Decoder::new(file).unwrap();
-                                stream_handle.play_raw(source.convert_samples());
+                                let mut endvec: Vec<&str> = Vec::new();
+                                endvec.push("-I");
+                                endvec.push("dummy");
+                                endvec.push("--dummy-quiet");
+                                for item in vecs.split(" ") {
+                                    endvec.push(item);
+                                }
+                                Command::new("\"%PROGRAMFILES%\\VideoLAN\\VLC\\vlc.exe\"")
+                                    .args(endvec)
+                                    .output()
+                                    .expect("failed to execute process");
                             }
                         });
                         threads.push(handle);
