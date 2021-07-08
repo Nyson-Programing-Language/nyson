@@ -3881,12 +3881,32 @@ pub fn imp(x:usize, contents: Vec<String>, dev: bool) -> Vec<String> {
     if dev {
         println!("string: {}", string);
     }
-    let maybe_contents = fs::read_to_string(string);
-    let mut contents = if maybe_contents.is_ok() {
-        maybe_contents.unwrap()
-    } else {
-        panic!("Could not open file for reading.");
-    };
+    let mut contents:String = "".to_string();
+    if string.starts_with("https://") || string.starts_with("http://") {
+        let mut dst = Vec::new();
+        let mut easy = Easy::new();
+        easy.url(&*string).unwrap();
+
+        let mut transfer = easy.transfer();
+        transfer
+            .write_function(|data| {
+                dst.extend_from_slice(data);
+                Ok(data.len())
+            })
+            .unwrap();
+        transfer.perform().unwrap();
+        drop(transfer);
+
+        contents =  dst.iter().map(|&c| c as char).collect::<String>();
+    }
+    else {
+        let maybe_contents = fs::read_to_string(string);
+        contents = if maybe_contents.is_ok() {
+            maybe_contents.unwrap()
+        } else {
+            panic!("Could not open file for reading.");
+        };
+    }
     let mut space: String = " ".parse().unwrap();
     space.push_str(contents.as_str());
     contents = space;
