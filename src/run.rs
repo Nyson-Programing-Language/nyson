@@ -728,6 +728,9 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         } else if value_group.join("") != ""{
                             value_group.push(clone_class);
                             memory_values.push(value_group.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").clone());
+                            for d in 0..value_group.len()-1 {
+                                
+                            }
                         }
                         else {
                             memory_values.push(value.clone());

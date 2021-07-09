@@ -1,8 +1,1 @@
-group dog {
-    name,
-    age,
-    color,
-};
-
-dec grp doggo : {"dog", "dog", "dog"}, dog;
-log(doggo(1));
+log(doggo>name)
