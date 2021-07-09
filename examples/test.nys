@@ -1,1 +1,9 @@
-log(doggo>name)
+group dog {
+    name,
+    color,
+    age,
+};
+
+dec grp lucy: {"lucy", "yellow", "3"}, dog;
+
+log(lucy>age);

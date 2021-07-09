@@ -726,9 +726,24 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         if value_array.join("") != "" {
                             memory_values.push(value_array.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").clone());
                         } else if value_group.join("") != ""{
-                            value_group.push(clone_class);
+                            value_group.push(clone_class.clone());
                             memory_values.push(value_group.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").clone());
+                            let name_of_item = memory_names[memory_names.len()-1].clone();
                             for d in 0..value_group.len()-1 {
+                                let mut name:String = name_of_item.to_string();
+                                name.push_str(">");
+                                let mut location = 0;
+                                for items in 0..group_memory.len() {
+                                    if items < group_memory.len()-1 {
+                                        if group_memory[items+1].parse::<i32>().is_ok() && group_memory[items] == clone_class.clone() {
+                                            location = items + (d*2) + 3;
+                                        }
+                                    }
+                                }
+                                name.push_str(&*group_memory[location]);
+                                memory_names.push(name.clone());
+                                memory_values.push(value_group[d].clone());
+                                memory_names.push("str".parse().unwrap());
                                 
                             }
                         }
