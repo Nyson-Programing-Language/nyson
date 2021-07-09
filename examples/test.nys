@@ -4,6 +4,6 @@ group dog {
     age,
 }
 
-dec group lucy: {"lucy", "yellow", "3"}, dog;
+dec grp lucy: {"lucy", "yellow", "3"}, dog;
 
 log(lucy(1))
