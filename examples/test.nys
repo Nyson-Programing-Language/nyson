@@ -1,9 +1,9 @@
 group dog {
     name,
-    color,
     age,
-};
+    color,
+}
 
-dec grp lucy: {"lucy", "yellow", "3"}, dog;
+dec grp lucy : {"lucy", "3", "yellow"}, dog;
 
 log(lucy>name);

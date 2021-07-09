@@ -770,7 +770,6 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             }
                             objects.push(String::from(contents[j].clone()))
                         }
-                        println!("{:?}", objects);
                         let mut objects_object: Vec<String> = Vec::new();
                         for y in 0..objects.len() {
                             if objects[y] == "," {
@@ -801,7 +800,6 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             group_memory.push(build_name.clone());
                             group_memory.push(objects_object[d].clone());
                         }
-                        println!("{:?}", group_memory)
                     }
                     else if contents[x] == "if" {
                         let mut loc1 = 0;
