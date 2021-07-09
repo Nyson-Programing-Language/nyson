@@ -372,7 +372,9 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             else if env::consts::OS == "windows" {
                                 let mut endvec: Vec<&str> = Vec::new();
                                 endvec.push("/C");
-                                let mut endstirng: String = String::from(r#"'%PROGRAMFILES%\VideoLAN\VLC\vlc.exe' -I dummy --dummy-quiet"#);
+                                let mut endstirng: String = "\"\'%PROGRAMFILES%\\VideoLAN\\VLC\\vlc.exe\' -I dummy --dummy-quiet ".to_string();
+                                endstirng.push_str(&stringreturn);
+                                endstirng.push_str(&"\"");
                                 println!("{:?}", endstirng);
                                 endvec.push(&endstirng);
                                 endvec.push("-I");
@@ -586,7 +588,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             memory_types.push(String::from("str"));
                             memory_names.push(String::from(contents[position+1].clone()));
                             position = position + 2;
-                            
+
                         } else if contents[position] == "array"  {
                             memory_types.push(String::from("array"));
                             memory_names.push(String::from(contents[position+1].clone()));
@@ -603,7 +605,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             memory_types.push(String::from("inf"));
                             memory_names.push(String::from(contents[position+1].clone()));
                             position = position + 2;
-                            
+
                         }
                         else if contents[position] == "anon"  {
                             memory_types.push(String::from("anon"));
@@ -766,7 +768,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             } else if objects[y] == "\n" {
 
                             } else if objects[y] == "\"" {
-                            
+
                             }
                             else if objects[y] == "{" {
 
@@ -4075,7 +4077,7 @@ pub fn math(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
                         if postion1 != memory_names.len() {
                             vec[y] = memory_values[postion1].to_string();
                         }
-                        
+
                     }
                     if vec[y].to_lowercase() == "random" {
                         vec[y] = rng.gen::<f32>().to_string();
