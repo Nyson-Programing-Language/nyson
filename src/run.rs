@@ -598,13 +598,11 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             memory_types.push(String::from("grp"));
                             memory_names.push(String::from(contents[position+1].clone()));
                             position = position + 1;
-
                         }
                         else if contents[position] == "inf"  {
                             memory_types.push(String::from("inf"));
                             memory_names.push(String::from(contents[position+1].clone()));
                             position = position + 2;
-
                         }
                         else if contents[position] == "anon"  {
                             memory_types.push(String::from("anon"));
@@ -698,7 +696,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                                 }
                                                             }
                                                         }
-                                                        if positions != memory_names_save.len() {
+                                                        if positions != memory_names_save.len() && (contents[x+1].trim() == ":" || contents[x+1].trim() == "=") {
                                                             value.push_str(memory_values_save[positions].to_string().as_str());
                                                         }
                                                         else {
@@ -749,7 +747,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let mut end_pos: usize = 0;
                         let mut objects: Vec<String> = Vec::new();
                         for j in x+2..contents.len() {
-                            if contents[x] == "}" {
+                            if contents[j] == "}" {
                                 break;
                             }
                             objects.push(String::from(contents[j].clone()))
@@ -784,7 +782,6 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         for d in 0..objects_object.len() {
                             group_memory.push(build_name.clone());
                             group_memory.push(objects_object[d].clone());
-                            group_memory.push("".to_string())
                         }
                         println!("{:?}", group_memory)
                     }
