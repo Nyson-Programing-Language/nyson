@@ -1,9 +1,1 @@
-group dog {
-    name,
-    age,
-    color,
-}
-
-dec grp lucy : {"lucy", "3", "yellow"}, dog;
-
-log(lucy>name);
+sayHello();
