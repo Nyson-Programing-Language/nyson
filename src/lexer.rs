@@ -8,7 +8,7 @@ pub enum Tokens {
 }
 
 pub fn lexer(mut contents: String, dev: bool) -> Vec<String>{
-    let contents_literal = split(contents, dev);
+    let contents_literal = split(contents.clone(), dev);
     /*
     for n in 0..contents_literal.len() {
         let lex_vec: Vec<String> = Vec::new();
@@ -19,7 +19,7 @@ pub fn lexer(mut contents: String, dev: bool) -> Vec<String>{
     }
     */
     let mut outputs:Vec<String> = Vec::new();
-    for x in contents_literal {
+    for x in contents_literal.clone() {
         outputs.push(String::from(x));
     }
     outputs.remove(0);
@@ -59,7 +59,7 @@ fn no_extra_whitespace(mut input:Vec<String>, dev: bool) -> Vec<String> {
     return input;
 }
 
-fn split(text: String, dev: bool) -> Vec<String> {
+pub fn split(mut text: String, dev: bool) -> Vec<String> {
     let mut result = Vec::new();
     let mut last = 0;
     for (index, matched) in text.match_indices(|c: char| !(c.is_ascii())) {

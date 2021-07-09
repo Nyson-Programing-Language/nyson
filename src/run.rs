@@ -1258,8 +1258,49 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     }
                                 }
                                 if postion != func_names.len() {
-                                    let to_parse = lexer::lexer(func_code[postion].to_string(), dev);
-                                    run(to_parse, dev, memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone());
+                                    let mut space: String = " ".parse().unwrap();
+                                    space.push_str(func_code[postion].as_str());
+                                    let mut to_to_parse = space;
+                                    if dev {
+                                        println!("contents: {:?}", to_to_parse);
+                                    }
+                                    let to_parse = lexer::lexer(to_to_parse, dev);
+                                    readfrom = x;
+                                    skiperwiper = true;
+                                    read = true;
+                                    let mut delete = Vec::new();
+                                    let mut deleted = 0;
+                                    let mut skirt = false;
+                                    let mut n3 = 0;
+                                    delete.push(x);
+                                    for y1 in x+1..contents.len() {
+                                        if skirt == false {
+                                            if contents[y1] == "(" {
+                                                n3 = n3 + 1;
+                                            }
+                                            if n3 == 0 {
+                                                skirt = true;
+                                            }
+                                            if contents[y1] == ")" {
+                                                n3 = n3 - 1;
+                                            }
+                                            delete.push(y1);
+                                        }
+                                    }
+                                    for item in delete {
+                                        contents.remove(item - deleted);
+                                        deleted = deleted + 1 ;
+                                    }
+                                    let mut newVec = Vec::new();
+                                    for itom in 0..contents.len() {
+                                        if itom == x {
+                                            for item in to_parse.clone() {
+                                                newVec.push(item);
+                                            }
+                                        }
+                                        newVec.push(contents[itom].clone());
+                                    }
+                                    contents = newVec;
                                 }
                                 else {
                                     let mut postion = memory_names.len();

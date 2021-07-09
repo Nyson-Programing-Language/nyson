@@ -1,1 +1,2 @@
 sayHello();
+log("hi");

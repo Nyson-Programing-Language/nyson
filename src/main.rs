@@ -45,10 +45,9 @@ fn main() {
     } else {
         panic!("Could not open file for reading.");
     };
-    let mut space: String = " ".parse().unwrap();
+    let mut space: String = " imp(\"https://raw.githubusercontent.com/Nyson-Programing-Language/nyson/main/src/main.nys\");".parse().unwrap();
     space.push_str(contents.as_str());
     contents = space;
-    let contents = String::from(r#""imp("https://raw.githubusercontent.com/Nyson-Programing-Language/nyson/main/src/main.nys")"#) + contents.as_str();
     if dev {
         println!("contents: {:?}", contents);
     }
