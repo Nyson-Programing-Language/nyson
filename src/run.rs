@@ -743,7 +743,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 name.push_str(&*group_memory[location]);
                                 memory_names.push(name.clone());
                                 memory_values.push(value_group[d].clone());
-                                memory_names.push("str".parse().unwrap());
+                                memory_types.push("str".parse().unwrap());
                                 
                             }
                         }
