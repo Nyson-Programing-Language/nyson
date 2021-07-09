@@ -6,4 +6,4 @@ group dog {
 
 dec grp lucy: {"lucy", "yellow", "3"}, dog;
 
-log(lucy>age);
+log(lucy>name);
