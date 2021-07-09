@@ -631,7 +631,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             else if contents[position] == "}" {
                                 squig = squig-1;
                                 if group == true && squig == 0 && contents[position+1] == "," {
-                                    let mut clone_class = contents[position+2].clone().to_string();
+                                    clone_class = contents[position+2].clone().to_string();
                                 }
                             }
                             else{
@@ -723,10 +723,10 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 println!("position: {:?}", position);
                             }
                         }
-                        println!("{:?}", value_group);
                         if value_array.join("") != "" {
                             memory_values.push(value_array.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").clone());
                         } else if value_group.join("") != ""{
+                            value_group.push(clone_class);
                             memory_values.push(value_group.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").clone());
                         }
                         else {
@@ -1148,6 +1148,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     output.push(result[item - 1].to_owned() + &*"=".to_string());
                                 }
                             }
+                        
                             else if result[item] == "|" && 0 < item {
                                 if result[item+1] == "|" {
                                     output.push("||".parse().unwrap());
@@ -1255,7 +1256,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                         }
                                     }
-                                    if postion != memory_names.len() && (contents[x+1].trim() == ":" || contents[x+1].trim() == "=") && contents[x-2].trim() != "dec"{
+                                    if postion != memory_names.len() && (contents[x+1].trim() == ":" || contents[x+1].trim() == "=") && contents[x-2].trim() != "dec" {
                                         let mut position = x+2;
                                         let mut value = String::new();
                                         let mut n = 0;
@@ -1675,6 +1676,7 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
                     if postion != memory_names.len() {
                         if vec[y+1] == "(" {
                             let number_of_item = math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
+                            println!("{:?}", memory_values);
                             string.push_str(&*memory_values[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").nth(number_of_item.parse().unwrap()).unwrap().to_string());
                         }
                         else {
