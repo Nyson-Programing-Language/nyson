@@ -1,2 +1,9 @@
-dec array hello: ["bob", "the", "builder"];
-log(hello(0));
+group dog {
+    name,
+    color,
+    age,
+}
+
+dec group lucy: {"lucy", "yellow", "3"}, dog;
+
+log(lucy(1))
