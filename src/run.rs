@@ -582,11 +582,11 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         if contents[position] == "int" {
                             memory_types.push(String::from("int"));
                             memory_names.push(String::from(contents[position+1].clone()));
-                            position = position + 2;
+                            position = position + 1;
                         } else if contents[position] == "str"  {
                             memory_types.push(String::from("str"));
                             memory_names.push(String::from(contents[position+1].clone()));
-                            position = position + 2;
+                            position = position + 1;
 
                         } else if contents[position] == "array"  {
                             memory_types.push(String::from("array"));
@@ -602,7 +602,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         else if contents[position] == "inf"  {
                             memory_types.push(String::from("inf"));
                             memory_names.push(String::from(contents[position+1].clone()));
-                            position = position + 2;
+                            position = position + 1;
                         }
                         else if contents[position] == "anon"  {
                             memory_types.push(String::from("anon"));
