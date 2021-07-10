@@ -607,7 +607,6 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         else if contents[position] == "anon"  {
                             memory_types.push(String::from("anon"));
                             types = true;
-                            position = position + 1;
                         }
                         let mut clone_class = String::from("");
                         let mut value = String::new();
