@@ -470,6 +470,55 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             contents = newvec;
                         }
                     }
+                    else if contents[x] == "while" {
+                        readfrom = x;
+                        skiperwiper = true;
+                        read = true;
+                        let mut vec:Vec<String> = Vec::new();
+                        let mut skip = false;
+                        let mut n = 0;
+                        let mut reached = false;
+                        let mut loc1 = 0;
+                        let mut loc2 = 0;
+                        for y in x+1..contents.len() {
+                            if skip == false {
+                                if contents[y] == "{" {
+                                    n = n +1;
+                                    reached = true;
+                                    loc1 = y;
+                                }
+                                else if contents[y] == "}" {
+                                    n = n-1;
+                                }
+                                if n > 0 {
+                                    vec.push((&contents[y]).parse().unwrap());
+                                }
+                                else if reached == true {
+                                    skip = true;
+                                    loc2 = y;
+                                }
+                            }
+                        }
+                        let mut newvec = Vec::new();
+                        for t in 0..contents.clone().len() {
+                            if t == x {
+                                newvec.push("if".to_string())
+                            }
+                            else if t == loc2 {
+                                newvec.push(contents[loc2].clone());
+                                for q in x..loc2+1 {
+                                    newvec.push(contents[q].clone());
+                                }
+                            }
+                            else {
+                                newvec.push(contents[t].clone());
+                            }
+                        }
+                        if dev {
+                            println!("newvec: {:?}", newvec);
+                        }
+                        contents = newvec;
+                    }
                     else if contents[x] == "sleep" {
                         let number_of_times = math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
                         thread::sleep_ms(number_of_times as u32);
@@ -1275,7 +1324,6 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             else if output[item] == ">=" && output[item-1].parse::<i32>().unwrap() >= output[item+1].parse::<i32>().unwrap() {
                                 outcome = true;
                             }
-
                             else if output[item] == "<=" && output[item-1].parse::<i32>().unwrap() <= output[item+1].parse::<i32>().unwrap() {
                                 outcome = true;
                             }
@@ -1292,6 +1340,14 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             readfrom = loc1;
                             skiperwiper = true;
                             read = true;
+                        }
+                        else {
+                            if contents[loc2+1] == "while" {
+                                contents[loc2+1] = " ".parse().unwrap();
+                            }
+                            if contents[loc2+2] == "while" {
+                                contents[loc2+2] = " ".parse().unwrap();
+                            }
                         }
                         if dev {
                             println!("output: {:?}", output);
