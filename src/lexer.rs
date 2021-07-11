@@ -101,7 +101,7 @@ pub fn split(mut text: String, dev: bool) -> Vec<String> {
         let text = result[n + inc];
         let mut vec = Vec::new();
         let mut last = 0;
-        for (index, matched) in text.match_indices(|c: char| !(c.is_alphanumeric() || c == '\'' || c == ">".chars().nth(0).unwrap() || c == "_".chars().nth(0).unwrap())) {
+        for (index, matched) in text.match_indices(|c: char| !(c.is_alphanumeric() || c == '\'' || c == ".".chars().nth(0).unwrap() || c == "_".chars().nth(0).unwrap())) {
             if last != index {
                 vec.push(&text[last..index]);
             }

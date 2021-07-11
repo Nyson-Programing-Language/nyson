@@ -11,6 +11,9 @@ use std::process::Command;
 use curl::easy::Easy;
 use std::io::{stdin};
 use std::time::{SystemTime, UNIX_EPOCH, Duration};
+extern crate chrono;
+use chrono::prelude::DateTime;
+use chrono::Utc;
 
 #[allow(unused)]
 
@@ -258,6 +261,32 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             skips = leng;
                                         } else if vec[y] == "trim" {
                                             string.push_str(trim(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev).to_string().as_str());
+                                            let mut leng = 0;
+                                            let mut n2 = 0;
+                                            let mut skip1 = false;
+                                            for f in y+1..vec.len() {
+                                                if skip1 == false {
+                                                    if vec[y+1] != "(" {
+                                                        println!("You have to put a parentheses after a log");
+                                                        std::process::exit(1);
+                                                    }
+                                                    if vec[f] == "(" {
+                                                        n2 = n2 +1;
+                                                    }
+                                                    else if vec[f] == ")" {
+                                                        n2 = n2-1;
+                                                    }
+                                                    if n2 == 0 {
+                                                        skip1 = true;
+                                                        for z in y+1..f+1 {
+                                                            leng = leng + 1;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            skips = leng;
+                                        } else if vec[y] == "timeh" {
+                                            string.push_str(time_readable(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev).to_string().as_str());
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
@@ -671,6 +700,10 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                 value.push_str(trim(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                                 n = 1;
                                             }
+                                            else if contents[position] == "timeh" {
+                                                value.push_str(time_readable(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                n = 1;
+                                            }
                                             else if contents[position] == "time" {
                                                 value.push_str(time(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                                 n = 1;
@@ -730,7 +763,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             let name_of_item = memory_names[memory_names.len()-1].clone();
                             for d in 0..value_group.len()-1 {
                                 let mut name:String = name_of_item.to_string();
-                                name.push_str(">");
+                                name.push_str(".");
                                 let mut location = 0;
                                 for items in 0..group_memory.len() {
                                     if items < group_memory.len()-1 {
@@ -1059,6 +1092,32 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                         }
                                         skips = leng;
+                                    } else if vec[y] == "timeh" {
+                                        string.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        let mut leng = 0;
+                                        let mut n2 = 0;
+                                        let mut skip1 = false;
+                                        for f in y+1..vec.len() {
+                                            if skip1 == false {
+                                                if vec[y+1] != "(" {
+                                                    println!("You have to put a parentheses after a log");
+                                                    std::process::exit(1);
+                                                }
+                                                if vec[f] == "(" {
+                                                    n2 = n2 +1;
+                                                }
+                                                else if vec[f] == ")" {
+                                                    n2 = n2-1;
+                                                }
+                                                if n2 == 0 {
+                                                    skip1 = true;
+                                                    for z in y+1..f+1 {
+                                                        leng = leng + 1;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        skips = leng;
                                     } else if vec[y] == "time" {
                                         string.push_str(time(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                                         let mut leng = 0;
@@ -1360,6 +1419,11 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                         value.push_str(trim(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                                         n = 1;
                                                     }
+
+                                                    else if contents[position] == "timeh" {
+                                                        value.push_str(time_readable(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
                                                     else if contents[position] == "time" {
                                                         value.push_str(time(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
                                                         n = 1;
@@ -1642,6 +1706,32 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
                     skips = leng;
                 } else if vec[y] == "trim" {
                     string.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "timeh" {
+                    string.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -1981,6 +2071,32 @@ pub fn exec(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "timeh" {
+                    string.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "time" {
                     string.push_str(time(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
@@ -2253,6 +2369,24 @@ pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
                     skip = true;
                 } else if vec[y] == "trim" {
                     vec[y] = trim(y, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
+                    let skip1 = false;
+                    let mut t = 0;
+                    for y in x+1..vec.len() {
+                        if skip1 == false {
+                            if contents[y] == "(" {
+                                t = t +1;
+                            }
+                            else if contents[y] == ")" {
+                                t = t-1;
+                            }
+                            if t%2 == 0 {
+                                vec.remove(y);
+                            }
+                        }
+                    }
+                    skip = true;
+                } else if vec[y] == "timeh" {
+                    vec[y] = time_readable(y, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
                     let skip1 = false;
                     let mut t = 0;
                     for y in x+1..vec.len() {
@@ -2577,6 +2711,32 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "timeh" {
+                    file_s.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "time" {
                     file_s.push_str(time(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
@@ -2825,6 +2985,32 @@ pub fn set_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                     skips = leng;
                 } else if vec[y] == "trim" {
                     text_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "timeh" {
+                    file_s.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -3148,6 +3334,32 @@ pub fn get_contents(x:usize, contents: Vec<String>, memory_names: Vec<String>, m
                     skips = leng;
                 } else if vec[y] == "trim" {
                     string.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "timeh" {
+                    string.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -3516,6 +3728,32 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "timeh" {
+                    imput_s.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "time" {
                     imput_s.push_str(time(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
@@ -3764,6 +4002,32 @@ pub fn replace(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory
                     skips = leng;
                 } else if vec[y] == "trim" {
                     find_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "timeh" {
+                    find_s.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -4556,6 +4820,32 @@ pub fn trim(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "timeh" {
+                    imput_s.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "time" {
                     imput_s.push_str(time(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
@@ -4630,6 +4920,16 @@ pub fn trim(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_va
         }
     }
     return imput_s.trim().to_string();
+}
+
+pub fn time_readable(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) -> String {
+    let time = time(x, contents, memory_names, memory_values, memory_types, dev);
+    let d = UNIX_EPOCH + Duration::from_millis(time as u64);
+    // Create DateTime from SystemTime
+    let datetime = DateTime::<Utc>::from(d);
+    // Formats the combined date and time with the specified format string.
+    let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
+    return timestamp_str;
 }
 
 pub fn array_fn(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) -> Vec<String> {
@@ -4835,6 +5135,32 @@ pub fn array_fn(x:usize, contents: Vec<String>, memory_names: Vec<String>, memor
                         skips = leng;
                     } else if vec[y] == "trim" {
                         imput_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                        let mut leng = 0;
+                        let mut n2 = 0;
+                        let mut skip1 = false;
+                        for f in y+1..vec.len() {
+                            if skip1 == false {
+                                if vec[y+1] != "(" {
+                                    println!("You have to put a parentheses after a log");
+                                    std::process::exit(1);
+                                }
+                                if vec[f] == "(" {
+                                    n2 = n2 +1;
+                                }
+                                else if vec[f] == ")" {
+                                    n2 = n2-1;
+                                }
+                                if n2 == 0 {
+                                    skip1 = true;
+                                    for z in y+1..f+1 {
+                                        leng = leng + 1;
+                                    }
+                                }
+                            }
+                        }
+                        skips = leng;
+                    } else if vec[y] == "timeh" {
+                        imput_s.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                         let mut leng = 0;
                         let mut n2 = 0;
                         let mut skip1 = false;
@@ -5095,6 +5421,32 @@ pub fn array_fn(x:usize, contents: Vec<String>, memory_names: Vec<String>, memor
                         skips = leng;
                     } else if vec[y] == "trim" {
                         imput_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                        let mut leng = 0;
+                        let mut n2 = 0;
+                        let mut skip1 = false;
+                        for f in y+1..vec.len() {
+                            if skip1 == false {
+                                if vec[y+1] != "(" {
+                                    println!("You have to put a parentheses after a log");
+                                    std::process::exit(1);
+                                }
+                                if vec[f] == "(" {
+                                    n2 = n2 +1;
+                                }
+                                else if vec[f] == ")" {
+                                    n2 = n2-1;
+                                }
+                                if n2 == 0 {
+                                    skip1 = true;
+                                    for z in y+1..f+1 {
+                                        leng = leng + 1;
+                                    }
+                                }
+                            }
+                        }
+                        skips = leng;
+                    } else if vec[y] == "timeh" {
+                        imput_s.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                         let mut leng = 0;
                         let mut n2 = 0;
                         let mut skip1 = false;
@@ -5415,6 +5767,32 @@ pub fn get_request(x:usize, contents: Vec<String>, memory_names: Vec<String>, me
                     skips = leng;
                 } else if vec[y] == "trim" {
                     string.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y+1..vec.len() {
+                        if skip1 == false {
+                            if vec[y+1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 = n2 +1;
+                            }
+                            else if vec[f] == ")" {
+                                n2 = n2-1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for z in y+1..f+1 {
+                                    leng = leng + 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "timeh" {
+                    string.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -6123,6 +6501,32 @@ pub fn group_fn(x:usize, contents: Vec<String>, memory_names: Vec<String>, memor
                             }
                         }
                         skips = leng;
+                    } else if vec[y] == "timeh" {
+                        imput_s.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                        let mut leng = 0;
+                        let mut n2 = 0;
+                        let mut skip1 = false;
+                        for f in y+1..vec.len() {
+                            if skip1 == false {
+                                if vec[y+1] != "(" {
+                                    println!("You have to put a parentheses after a log");
+                                    std::process::exit(1);
+                                }
+                                if vec[f] == "(" {
+                                    n2 = n2 +1;
+                                }
+                                else if vec[f] == ")" {
+                                    n2 = n2-1;
+                                }
+                                if n2 == 0 {
+                                    skip1 = true;
+                                    for z in y+1..f+1 {
+                                        leng = leng + 1;
+                                    }
+                                }
+                            }
+                        }
+                        skips = leng;
                     } else if vec[y] == "time" {
                         imput_s.push_str(time(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                         let mut leng = 0;
@@ -6359,6 +6763,32 @@ pub fn group_fn(x:usize, contents: Vec<String>, memory_names: Vec<String>, memor
                         skips = leng;
                     } else if vec[y] == "trim" {
                         imput_s.push_str(trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                        let mut leng = 0;
+                        let mut n2 = 0;
+                        let mut skip1 = false;
+                        for f in y+1..vec.len() {
+                            if skip1 == false {
+                                if vec[y+1] != "(" {
+                                    println!("You have to put a parentheses after a log");
+                                    std::process::exit(1);
+                                }
+                                if vec[f] == "(" {
+                                    n2 = n2 +1;
+                                }
+                                else if vec[f] == ")" {
+                                    n2 = n2-1;
+                                }
+                                if n2 == 0 {
+                                    skip1 = true;
+                                    for z in y+1..f+1 {
+                                        leng = leng + 1;
+                                    }
+                                }
+                            }
+                        }
+                        skips = leng;
+                    } else if vec[y] == "timeh" {
+                        imput_s.push_str(time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                         let mut leng = 0;
                         let mut n2 = 0;
                         let mut skip1 = false;
