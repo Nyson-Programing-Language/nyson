@@ -415,6 +415,20 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     .output()
                                     .expect("failed to execute process");
                             }
+                            else if env::consts::OS == "macos" {
+                                let mut vecs = stringreturn.replace("\n", " ");
+                                vecs = vecs.replace("\t", " ");
+                                let mut endvec: Vec<&str> = Vec::new();
+                                endvec.push("-I");
+                                endvec.push("rc");
+                                for q in vecs.split(" ") {
+                                    endvec.push(q);
+                                }
+                                Command::new("/Applications/VLC.app/Contents/MacOS/VLC")
+                                    .args(endvec)
+                                    .output()
+                                    .expect("failed to execute process");
+                            }
                         });
                         threads.push(handle);
                     }
