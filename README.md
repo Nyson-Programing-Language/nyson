@@ -7,7 +7,7 @@ The official home of the Nyson Programming Language, built off Rust.
 
 ## Contributors:
 
-### List of all people who have helped with this project!
+### List of users who contributed to this project! 👍
 
 AMtitan: [![wakatime](https://wakatime.com/badge/github/AMTitan/nyson-programming-language.svg)](https://wakatime.com/badge/github/AMTitan/nyson-programming-language)
 
