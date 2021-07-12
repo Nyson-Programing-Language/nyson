@@ -6,8 +6,8 @@ The official home of the Nyson Programming Language, built off Rust.
 
 ## Contributors:
 
-<a href = "https://github.com/Tanu-N-Prabhu/Python/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo = https://github.com/Nyson-Programing-Language/nyson"/>
+<a href="https://github.com/Nyson-Programing-Language/nyson/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Nyson-Programing-Language/nyson" />
 </a>
 
 [![wakatime](https://wakatime.com/badge/github/Nyelsonon/nyson-programming-language.svg)](https://wakatime.com/badge/github/Nyelsonon/nyson-programming-language)
