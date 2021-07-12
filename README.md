@@ -1,5 +1,6 @@
 # Nyson Programming Language
 The official home of the Nyson Programming Language, built off Rust.
+(created by nyelsonon and AMtitan, 2021)
 
 ![Logo](https://github.com/Nyelsonon/nyson-programming-language/blob/main/Logos/NysonLogo.png)
 
@@ -11,10 +12,8 @@ The official home of the Nyson Programming Language, built off Rust.
   <img src="https://contrib.rocks/image?repo=Nyson-Programing-Language/nyson" />
 </a>
 
-nyelsonon: [![wakatime](https://wakatime.com/badge/github/Nyelsonon/nyson-programming-language.svg)](https://wakatime.com/badge/github/Nyelsonon/nyson-programming-language)
-
 amtitan: [![wakatime](https://wakatime.com/badge/github/AMTitan/nyson-programming-language.svg)](https://wakatime.com/badge/github/AMTitan/nyson-programming-language)
-
+nyelsonon: [![wakatime](https://wakatime.com/badge/github/Nyelsonon/nyson-programming-language.svg)](https://wakatime.com/badge/github/Nyelsonon/nyson-programming-language)
 
 ## Documentation:
 
