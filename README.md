@@ -27,6 +27,6 @@ https://github.com/Nyelsonon/nyson-programming-language
 
 ## Support Us ❤️:
 
-Nyelsonon: 
+Nyelsonon: https://venmo.com/code?user_id=3150553001492480241&created=1626114671.90623&printed=1
 
 AMtitan: 
