@@ -1545,6 +1545,130 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         memory_values[postion] = value;
                                     }
+                                    else if postion != memory_names.len() && contents[x+1].trim() == "(" && contents[x-2].trim() != "dec" {
+                                        let id = math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                                        let mut skipz = false;
+                                        let mut nigro = 0;
+                                        let mut pos = x;
+                                        for nx in x+1..contents.len() {
+                                            if skipz == false {
+                                                if contents[nx] == "(" {
+                                                    nigro = nigro + 1;
+                                                }
+                                                else if contents[nx] == ")" {
+                                                    nigro = nigro - 1;
+                                                }
+                                                if nigro == 0 {
+                                                    pos = nx;
+                                                    skipz = true;
+                                                }
+                                            }
+                                        }
+                                        let mut position = pos+2;
+                                        let mut value = String::new();
+                                        let mut n = 0;
+                                        let mut quote = 0;
+                                        let memory_names_save = memory_names.clone();
+                                        let mut memory_values_save = memory_values.clone();
+                                        let memmory_types_save = memory_types.clone();
+                                        loop {
+                                            if contents[position] == ";" {
+                                                if dev {
+                                                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
+                                                }
+                                                break;
+                                            }
+                                            else {
+                                                if (contents[position] == "\"" || contents[position] == "\'" || contents[position] == r"\`") && contents[position-1] != "\\" {
+                                                    quote = quote + 1;
+                                                }
+                                                else {
+                                                    if contents[position] == "math" {
+                                                        value.push_str(math(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else if contents[position] == "round" {
+                                                        value.push_str(round(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else if contents[position] == "GET" {
+                                                        value.push_str(get_request(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else if contents[position] == "replace" {
+                                                        value.push_str(replace(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else if contents[position] == "input" {
+                                                        value.push_str(input(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else if contents[position] == "exec" {
+                                                        value.push_str(exec(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else if contents[position] == "trim" {
+                                                        value.push_str(trim(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+
+                                                    else if contents[position] == "timeh" {
+                                                        value.push_str(time_readable(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else if contents[position] == "time" {
+                                                        value.push_str(time(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else if contents[position] == "getcont" {
+                                                        value.push_str(get_contents(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                        n = 1;
+                                                    }
+                                                    else {
+                                                        if n == 0 {
+                                                            if quote%2 == 1 {
+                                                                value.push_str(contents[position].as_str());
+                                                            }
+                                                            else {
+                                                                let mut positions = memory_names_save.len();
+                                                                let mut skip = false;
+                                                                for pos in 0..memory_names_save.len() {
+                                                                    if skip == false {
+                                                                        if memory_names_save[pos].to_string() == contents[position].to_string() {
+                                                                            positions = pos;
+                                                                            skip = true;
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if positions != memory_names_save.len() {
+                                                                    value.push_str(memory_values_save[positions].to_string().as_str());
+                                                                }
+                                                                else {
+                                                                    value.push_str(contents[position].as_str());
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    if n >= 1 && contents[position] == "(" {
+                                                        n = n + 1
+                                                    }
+                                                    else if n >= 1 && contents[position] == ")" {
+                                                        n = n - 1;
+                                                        if n == 1 {
+                                                            n = 0;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            position = position+1;
+                                            if dev {
+                                                println!("position: {:?}", position);
+                                            }
+                                        }
+                                        let mut new_value = memory_values[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").collect::<Vec<&str>>();
+                                        new_value[id as usize] = &value;
+                                        memory_values[postion] = new_value.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                                    }
                                 }
                             }
                         }
@@ -1892,7 +2016,6 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
                     if postion != memory_names.len() {
                         if vec[y+1] == "(" {
                             let number_of_item = math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
-                            println!("{:?}", memory_values);
                             string.push_str(&*memory_values[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").nth(number_of_item.parse().unwrap()).unwrap().to_string());
                         }
                         else {
