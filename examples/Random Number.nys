@@ -1,5 +1,4 @@
 dec int random_number: round(math(random*100));
-log(random_number);
 dec int number_picked: input();
 while(number_picked != random_number) {
     if (number_picked > random_number) {
@@ -10,4 +9,4 @@ while(number_picked != random_number) {
     }
     number_picked: input();
 }
-log("You got it right!");
+log("You got it right! (it was " random_number ")");
