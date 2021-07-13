@@ -759,16 +759,16 @@ pub fn round(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_v
     }
     let mut n = 0;
     let mut what_to_do_first = Vec::new();
-    if vec[0] == "\"" || vec[0] == "\'" || vec[0] == r"\`"{
-        vec.remove(0);
-        vec.remove(vec.len()-1);
-    }
+    vec.remove(0);
+    vec.remove(vec.len()-1);
     for y in 0..vec.len() {
-        if vec[y] == "(" && vec[y-1] != "\\" {
-            n = n +1;
-        }
-        else if vec[y] == ")" && vec[y-1] != "\\" {
-            n = n-1;
+        if y > 0 {
+            if vec[y] == "(" && vec[y-1] != "\\" {
+                n = n +1;
+            }
+            else if vec[y] == ")" && vec[y-1] != "\\" {
+                n = n-1;
+            }
         }
         what_to_do_first.push(n);
     }

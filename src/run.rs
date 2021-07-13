@@ -15,6 +15,7 @@ use std::time::{SystemTime, UNIX_EPOCH, Duration};
 extern crate chrono;
 use chrono::prelude::DateTime;
 use chrono::Utc;
+use crate::run::functions::*;
 
 #[allow(unused)]
 
@@ -34,6 +35,12 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
         skiperwiper = false;
         for mut x in readfrom..contents.len() {
             if skiperwiper == false {
+                if dev {
+                    println!("contents[x]: {}", contents[x]);
+                    println!("x: {}", x);
+                    println!("quotes: {}", quotes);
+                    println!("squigle: {}", squigle);
+                }
                 if (contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`") && contents[x-1] != "\\" {
                     quotes = quotes + 1;
                 }
@@ -708,6 +715,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let mut n = 0;
                         let mut quote = 0;
                         let mut squig = 0;
+                        let mut brakets = 0;
                         position = position+2;
                         let mut group = false;
                         loop {
@@ -726,6 +734,12 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     clone_class = contents[position+2].clone().to_string();
                                 }
                             }
+                            else if contents[position] == "(" {
+                                brakets = brakets + 1;
+                            }
+                            else if contents[position] == ")" {
+                                brakets = brakets - 1;
+                            }
                             else{
                                 if square_brackets == 0 {
                                     if contents[position] == ";" {
@@ -739,7 +753,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             quote = quote + 1;
                                         }
 
-                                        else {
+                                        else if brakets == 0 {
                                             if contents[position] == "math" {
                                                 value.push_str(functions::math(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
                                                 n = 1;
@@ -907,19 +921,21 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         for y in x+1..contents.len() {
                             if skip == false {
                                 if contents[y] == "{" {
+                                    if n == 0 {
+                                        reached = true;
+                                        loc1 = y;
+                                    }
                                     n = n +1;
-                                    reached = true;
-                                    loc1 = y;
                                 }
                                 else if contents[y] == "}" {
                                     n = n-1;
+                                    if n == 0 {
+                                        skip = true;
+                                        loc2 = y;
+                                    }
                                 }
                                 if n > 0 {
                                     vec.push((&contents[y]).parse().unwrap());
-                                }
-                                else if reached == true {
-                                    skip = true;
-                                    loc2 = y;
                                 }
                             }
                         }
@@ -1451,10 +1467,10 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         let mut memory_values_save = memory_values.clone();
                                         let memmory_types_save = memory_types.clone();
                                         loop {
+                                            if dev {
+                                                println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
+                                            }
                                             if contents[position] == ";" {
-                                                if dev {
-                                                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
-                                                }
                                                 break;
                                             }
                                             else {

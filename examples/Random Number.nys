@@ -1,0 +1,13 @@
+dec int random_number: round(math(random*100));
+log(random_number);
+dec int number_picked: input();
+while(number_picked != random_number) {
+    if (number_picked > random_number) {
+        log("You need to pick a smaller number");
+    }
+    if (number_picked < random_number) {
+        log("You need to pick a bigger number");
+    }
+    number_picked: input();
+}
+log("You got it right!");
