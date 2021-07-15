@@ -54,6 +54,9 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                     if contents[x] == "log" {
                         functions::log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
                     }
+                    else if contents[x] == "exit" {
+                        std::process::exit(1);
+                    }
                     else if contents[x] == "audio" {
                         let contents_save = contents.clone();
                         let x_save = x.clone();
@@ -631,6 +634,45 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             println!("func_code: {:?}", func_code);
                             println!("func_names: {:?}", func_names);
                         }
+                    }
+                    else if contents[x] == "eval" {
+                        let imp = functions::eval(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                        readfrom = x;
+                        skiperwiper = true;
+                        read = true;
+                        let mut delete = Vec::new();
+                        let mut deleted = 0;
+                        let mut skirt = false;
+                        let mut n3 = 0;
+                        delete.push(x);
+                        for y1 in x+1..contents.len() {
+                            if skirt == false {
+                                if contents[y1] == "(" {
+                                    n3 = n3 + 1;
+                                }
+                                if n3 == 0 {
+                                    skirt = true;
+                                }
+                                if contents[y1] == ")" {
+                                    n3 = n3 - 1;
+                                }
+                                delete.push(y1);
+                            }
+                        }
+                        for item in delete {
+                            contents.remove(item - deleted);
+                            deleted = deleted + 1 ;
+                        }
+                        let mut newVec = Vec::new();
+                        for itom in 0..contents.len() {
+                            if itom == x {
+                                for item in imp.clone() {
+                                    newVec.push(item);
+                                }
+                            }
+                            newVec.push(contents[itom].clone());
+                        }
+                        contents = newVec;
                     }
                     else if contents[x] == "imp" {
                         let imp = functions::imp(x, contents.clone(), dev);

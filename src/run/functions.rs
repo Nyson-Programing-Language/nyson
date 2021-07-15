@@ -364,6 +364,73 @@ pub fn log(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_val
     println!("{}", string);
 }
 
+pub fn eval(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) -> Vec<String> {
+    let mut vec: Vec<String> = Vec::new();
+    let mut skip = false;
+    let mut n = 0;
+    for y in x + 1..contents.len() {
+        if skip == false {
+            if contents[x + 1] != "(" {
+                println!("You have to put a parentheses after a log");
+                std::process::exit(1);
+            }
+            if contents[y] == "(" {
+                n = n + 1;
+            } else if contents[y] == ")" {
+                n = n - 1;
+            }
+            if n == 0 {
+                skip = true;
+                for z in x + 1..y + 1 {
+                    vec.push((&contents[z]).parse().unwrap());
+                }
+            }
+        }
+    }
+    if dev {
+        println!("vec: {:?}", vec);
+    }
+    let mut z = 0;
+    for y in vec.to_vec() {
+        if y == "(" || y == ")" {
+            z = z + 1;
+        }
+    }
+    skip = false;
+    let mut string = Vec::new();
+    let mut n = 0;
+    let mut n1 = 1;
+    let mut skips = 0;
+    for y in 1..vec.len() {
+        if skips == 0 {
+            if skip == false {
+                let mut postion = memory_names.len();
+                let mut skip1 = false;
+                for pos in 0..memory_names.len() {
+                    if skip1 == false {
+                        if memory_names[pos].to_string() == vec[y].to_string() {
+                            postion = pos;
+                            skip1 = true;
+                        }
+                    }
+                }
+                if postion != memory_names.len() {
+                    let mut var = &*memory_values[postion].clone();
+                    if vec[y + 1] == "(" {
+                        let number_of_item = math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
+                        string.push(var.split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").nth(number_of_item.parse().unwrap()).unwrap().to_string());
+                    } else {
+                        string.push(var.to_string());
+                    }
+                }
+            }
+        } else {
+            skips = skips - 1;
+        }
+    }
+    return string;
+}
+
 pub fn exec(x:usize, contents: Vec<String>, memory_names: Vec<String>, memory_values: Vec<String>, memory_types: Vec<String>, dev: bool) -> String {
     let mut vec:Vec<String> = Vec::new();
     let mut skip = false;
