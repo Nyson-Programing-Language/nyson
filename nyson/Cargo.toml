@@ -1,0 +1,13 @@
+[package]
+name = "nyson"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4.19"
+clippy = "0.0.302"
+curl = "0.4.38"
+pbr = "1.0.4"
+rand = "0.8.4"

@@ -1,3 +1,5 @@
+#![allow(warnings, unused)]
+
 mod lexer;
 mod run;
 
@@ -67,7 +69,7 @@ fn main() {
     } else {
         panic!("Could not open file for reading.");
     };
-    let mut space: String = " imp(\"https://raw.githubusercontent.com/Nyson-Programing-Language/nyson/main/src/main.nyn\");".parse().unwrap();
+    let mut space: String = " imp(\"https://raw.githubusercontent.com/Nyson-Programing-Language/nyson/main/src/main.nys\");".parse().unwrap();
     space.push_str(contents.as_str());
     contents = space;
     if dev {

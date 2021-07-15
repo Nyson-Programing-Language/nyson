@@ -688,8 +688,8 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             memory_names.push(String::from(contents[position+1].clone()));
                             position = position + 1;
 
-                        } else if contents[position] == "arr"  {
-                            memory_types.push(String::from("arr"));
+                        } else if contents[position] == "array"  {
+                            memory_types.push(String::from("array"));
                             memory_names.push(String::from(contents[position+1].clone()));
                             position = position + 1;
 
@@ -909,28 +909,6 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         for d in 0..objects_object.len() {
                             group_memory.push(build_name.clone());
                             group_memory.push(objects_object[d].clone());
-                        }
-                    }
-                    else if contents[x] == "append" {
-                        let mut params: Vec<String> = Vec::new();
-                        for item in x..contents.len() {
-                            if contents[item].is_empty() || contents[item] == "," || contents[item] == "(" || contents[item] == "append" || contents[item] == "\""{
-
-                            }
-                            else if contents[item] == ")" {
-                                break;
-                            }
-                            else {
-                                params.push(contents[item].clone());
-                            }
-                        }
-                        let mut bobject = 0;
-                        for object in 0..memory_names.len() {
-                            if memory_names[object] == params[0] {
-                                // zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v
-                                memory_values[object] = memory_values[object].clone() + "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v" + params[1].as_str();
-                                break;
-                            }
                         }
                     }
                     else if contents[x] == "if" {
