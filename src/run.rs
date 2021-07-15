@@ -54,6 +54,9 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                     if contents[x] == "log" {
                         functions::log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
                     }
+                    else if contents[x] == "exit" {
+                        std::process::exit(1);
+                    }
                     else if contents[x] == "audio" {
                         let contents_save = contents.clone();
                         let x_save = x.clone();
