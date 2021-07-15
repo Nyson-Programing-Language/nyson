@@ -1,5 +1,0 @@
-func(sayHello()) {
-  log("hello");
-}
-
-continue
