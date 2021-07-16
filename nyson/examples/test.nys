@@ -1,3 +1,0 @@
-dec arr tests : ["poggers", "loggers"];
-append(tests, "troggers");
-log(tests(2));

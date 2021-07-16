@@ -966,7 +966,6 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 params.push(contents[item].clone());
                             }
                         }
-                        let mut bobject = 0;
                         for object in 0..memory_names.len() {
                             if memory_names[object] == params[0] {
                                 // zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v
@@ -974,6 +973,46 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 break;
                             }
                         }
+                    }
+                    else if contents[x] == "cut" {
+                        let mut parameters: Vec<String> = Vec::new();
+                        for item in x..contents.len() {
+                            if contents[item].is_empty() || contents[item] == "," || contents[item] == "(" || contents[item] == "cut" || contents[item] == "\""{
+
+                            }
+                            else if contents[item] == ")" {
+                                break;
+                            }
+                            else {
+                                parameters.push(contents[item].clone());
+                            }
+                        }
+                        let mut find = String::new();
+                        let mut id_save: Vec<&str> = Vec::new();
+                        let mut change = String::new();
+                        let mut count = 0;
+                        for object in 0..memory_names.len() {
+                            if memory_names[object] == parameters[0] {
+                            //    identify.replace("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v", "");
+                                let mut identify_split = memory_values[object].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                                let id_vec: Vec<&str> = identify_split.collect();
+                                id_save = id_vec;
+                                let mut id_save_string : Vec<String> = Vec::new();
+                                for thing in 0..id_save.len() {
+                                    id_save_string.push(id_save[thing].to_string());
+                                }
+                                id_save_string.remove(parameters[1].parse().unwrap());
+                                let mut temp = String::new();
+                                for elem in 0..id_save_string.len() {
+                                    temp.push_str(id_save_string[elem].as_str());
+                                    temp.push_str("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                                }
+                                change = temp;
+                                count = object;
+                            }
+
+                        }
+                        memory_values[count] = change;
                     }
                     else if contents[x] == "if" {
                         let mut loc1 = 0;
