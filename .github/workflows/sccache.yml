@@ -1,0 +1,9 @@
+- name: Configure sccache
+  uses: visvirial/sccache-action@v1
+  with:
+    # Optional
+    cache-key: sccache-ubuntu-latest
+    # Optional
+    release-name: latest
+    # Optional
+    arch: x86_64-unknown-linux-musl
