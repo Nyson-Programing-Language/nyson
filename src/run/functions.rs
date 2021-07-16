@@ -5989,44 +5989,8 @@ pub fn post_request(
                             memory_types.clone(),
                             dev,
                         )
-                        .to_string()
-                        .as_str(),
-                    );
-                    let mut leng = 0;
-                    let mut n2 = 0;
-                    let mut skip1 = false;
-                    for f in y + 1..vec.len() {
-                        if skip1 == false {
-                            if vec[y + 1] != "(" {
-                                println!("You have to put a parentheses after a log");
-                                std::process::exit(1);
-                            }
-                            if contents[f] == "(" {
-                                n2 = n2 + 1;
-                            } else if contents[f] == ")" {
-                                n2 = n2 - 1;
-                            }
-                            if n2 == 0 {
-                                skip1 = true;
-                                for z in y + 1..f + 1 {
-                                    leng = leng + 1;
-                                }
-                            }
-                        }
-                    }
-                    skips = leng;
-                } else if vec[y] == "round" {
-                    imput_s.push_str(
-                        round(
-                            y,
-                            vec.to_vec(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            memory_types.clone(),
-                            dev,
-                        )
-                        .to_string()
-                        .as_str(),
+                            .to_string()
+                            .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
