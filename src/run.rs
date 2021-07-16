@@ -1,25 +1,34 @@
 #![allow(warnings, unused)]
 mod functions;
-use std::ops::{Add, Sub, Mul, Div};
-use rand::Rng;
 use crate::lexer;
-use std::{fs, env};
-use std::thread;
-use std::fs::File;
-use std::io::{Write, stdout, Read, BufReader};
-use std::str::{SplitWhitespace, Split};
-use std::process::Command;
 use curl::easy::Easy;
-use std::io::{stdin};
-use std::time::{SystemTime, UNIX_EPOCH, Duration};
+use rand::Rng;
+use std::fs::File;
+use std::io::stdin;
+use std::io::{stdout, BufReader, Read, Write};
+use std::ops::{Add, Div, Mul, Sub};
+use std::process::Command;
+use std::str::{Split, SplitWhitespace};
+use std::thread;
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::{env, fs};
 extern crate chrono;
+use crate::run::functions::*;
 use chrono::prelude::DateTime;
 use chrono::Utc;
-use crate::run::functions::*;
 
 #[allow(unused)]
 
-pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, mut memory_values: Vec<String>, mut memory_types: Vec<String>, mut func_names: Vec<String>, mut func_par: Vec<String>, mut func_code: Vec<String>) {
+pub fn run(
+    mut contents: Vec<String>,
+    dev: bool,
+    mut memory_names: Vec<String>,
+    mut memory_values: Vec<String>,
+    mut memory_types: Vec<String>,
+    mut func_names: Vec<String>,
+    mut func_par: Vec<String>,
+    mut func_code: Vec<String>,
+) {
     if dev {
         println!("contents: {:?}", contents);
     }
@@ -41,23 +50,30 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                     println!("quotes: {}", quotes);
                     println!("squigle: {}", squigle);
                 }
-                if (contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`") && contents[x-1] != "\\" {
+                if (contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`")
+                    && contents[x - 1] != "\\"
+                {
                     quotes = quotes + 1;
                 }
-                if (contents[x] == "{" || contents[x] == "[") && quotes%2 == 0 {
+                if (contents[x] == "{" || contents[x] == "[") && quotes % 2 == 0 {
                     squigle = squigle + 1;
                 }
-                if (contents[x] == "}" || contents[x] == "]") && quotes%2 == 0 {
+                if (contents[x] == "}" || contents[x] == "]") && quotes % 2 == 0 {
                     squigle = squigle - 1;
                 }
-                if quotes%2 == 0 && squigle == 0 {
+                if quotes % 2 == 0 && squigle == 0 {
                     if contents[x] == "log" {
-                        functions::log(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
-                    }
-                    else if contents[x] == "exit" {
+                        functions::log(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                        );
+                    } else if contents[x] == "exit" {
                         std::process::exit(1);
-                    }
-                    else if contents[x] == "audio" {
+                    } else if contents[x] == "audio" {
                         let contents_save = contents.clone();
                         let x_save = x.clone();
                         let memory_types_save = memory_types.clone();
@@ -65,31 +81,30 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let memory_names_save = memory_names.clone();
                         let dev_save = dev.clone();
                         let handle = thread::spawn(move || {
-                            let mut vec:Vec<String> = Vec::new();
+                            let mut vec: Vec<String> = Vec::new();
                             let mut skip = false;
                             let mut n = 0;
-                            for y in x+1..contents_save.len() {
+                            for y in x + 1..contents_save.len() {
                                 if skip == false {
-                                    if contents_save[x+1] != "(" {
+                                    if contents_save[x + 1] != "(" {
                                         println!("You have to put a parentheses after a log");
                                         std::process::exit(1);
                                     }
                                     if contents_save[y] == "(" {
-                                        n = n +1;
-                                    }
-                                    else if contents_save[y] == ")" {
-                                        n = n-1;
+                                        n = n + 1;
+                                    } else if contents_save[y] == ")" {
+                                        n = n - 1;
                                     }
                                     if n == 0 {
                                         skip = true;
-                                        for z in x+1..y+1 {
+                                        for z in x + 1..y + 1 {
                                             vec.push((&contents_save[z]).parse().unwrap());
                                         }
                                     }
                                 }
                             }
                             if dev {
-                                println!("vec: {:?}",  vec);
+                                println!("vec: {:?}", vec);
                             }
                             let mut z = 0;
                             for y in vec.to_vec() {
@@ -105,35 +120,46 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             for y in 1..vec.len() {
                                 if skips == 0 {
                                     if skip == false {
-                                        if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y-1] != "\\" {
+                                        if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`")
+                                            && vec[y - 1] != "\\"
+                                        {
                                             n = n + 1;
-                                        }else if vec[y] == "(" && n % 2 == 0 {
+                                        } else if vec[y] == "(" && n % 2 == 0 {
                                             n1 = n1 + 1;
-                                        }
-                                        else if vec[y] == ")" && n % 2 == 0 {
+                                        } else if vec[y] == ")" && n % 2 == 0 {
                                             n1 = n1 - 1;
-                                        }else if n % 2 == 1 {
+                                        } else if n % 2 == 1 {
                                             string.push_str(vec[y].as_str());
                                         } else if vec[y] == "math" {
-                                            string.push_str(functions::math(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev_save).to_string().as_str());
+                                            string.push_str(
+                                                functions::math(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev_save,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if vec[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if vec[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if vec[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -141,25 +167,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             skips = leng;
                                         } else if vec[y] == "round" {
-                                            string.push_str(functions::round(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev_save).to_string().as_str());
+                                            string.push_str(
+                                                functions::round(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev_save,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if contents_save[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if contents_save[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if contents_save[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -167,25 +203,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             skips = leng;
                                         } else if vec[y] == "GET" {
-                                            string.push_str(functions::get_request(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev_save).to_string().as_str());
+                                            string.push_str(
+                                                functions::get_request(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev_save,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if contents_save[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if contents_save[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if contents_save[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -193,25 +239,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             skips = leng;
                                         } else if vec[y] == "replace" {
-                                            string.push_str(functions::replace(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev_save).to_string().as_str());
+                                            string.push_str(
+                                                functions::replace(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev_save,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if vec[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if vec[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if vec[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -219,25 +275,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             skips = leng;
                                         } else if vec[y] == "input" {
-                                            string.push_str(functions::input(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev_save).to_string().as_str());
+                                            string.push_str(
+                                                functions::input(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev_save,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if vec[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if vec[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if vec[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -245,25 +311,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             skips = leng;
                                         } else if vec[y] == "exec" {
-                                            string.push_str(functions::exec(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev_save).to_string().as_str());
+                                            string.push_str(
+                                                functions::exec(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev_save,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if vec[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if vec[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if vec[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -271,25 +347,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             skips = leng;
                                         } else if vec[y] == "trim" {
-                                            string.push_str(functions::trim(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev).to_string().as_str());
+                                            string.push_str(
+                                                functions::trim(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if vec[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if vec[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if vec[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -297,25 +383,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             skips = leng;
                                         } else if vec[y] == "timeh" {
-                                            string.push_str(functions::time_readable(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev).to_string().as_str());
+                                            string.push_str(
+                                                functions::time_readable(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if vec[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if vec[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if vec[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -323,25 +419,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             skips = leng;
                                         } else if vec[y] == "time" {
-                                            string.push_str(functions::time(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev).to_string().as_str());
+                                            string.push_str(
+                                                functions::time(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if vec[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if vec[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if vec[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -349,25 +455,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             skips = leng;
                                         } else if vec[y] == "getcont" {
-                                            string.push_str(functions::get_contents(y, vec.to_vec(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev_save).to_string().as_str());
+                                            string.push_str(
+                                                functions::get_contents(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names_save.clone(),
+                                                    memory_values_save.clone(),
+                                                    memory_types_save.clone(),
+                                                    dev_save,
+                                                )
+                                                .to_string()
+                                                .as_str(),
+                                            );
                                             let mut leng = 0;
                                             let mut n2 = 0;
                                             let mut skip1 = false;
-                                            for f in y+1..vec.len() {
+                                            for f in y + 1..vec.len() {
                                                 if skip1 == false {
-                                                    if vec[y+1] != "(" {
+                                                    if vec[y + 1] != "(" {
                                                         println!("You have to put a parentheses after a log");
                                                         std::process::exit(1);
                                                     }
                                                     if vec[f] == "(" {
-                                                        n2 = n2 +1;
-                                                    }
-                                                    else if vec[f] == ")" {
-                                                        n2 = n2-1;
+                                                        n2 = n2 + 1;
+                                                    } else if vec[f] == ")" {
+                                                        n2 = n2 - 1;
                                                     }
                                                     if n2 == 0 {
                                                         skip1 = true;
-                                                        for z in y+1..f+1 {
+                                                        for z in y + 1..f + 1 {
                                                             leng = leng + 1;
                                                         }
                                                     }
@@ -379,20 +495,23 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             let mut skip1 = false;
                                             for pos in 0..memory_names_save.len() {
                                                 if skip1 == false {
-                                                    if memory_names_save[pos].to_string() == vec[y].to_string() {
+                                                    if memory_names_save[pos].to_string()
+                                                        == vec[y].to_string()
+                                                    {
                                                         postion = pos;
                                                         skip1 = true;
                                                     }
                                                 }
                                             }
                                             if postion != memory_names_save.len() {
-                                                string.push_str(&*memory_values_save[postion].to_string());
+                                                string.push_str(
+                                                    &*memory_values_save[postion].to_string(),
+                                                );
                                             }
                                         }
                                     }
-                                }
-                                else {
-                                    skips = skips -1;
+                                } else {
+                                    skips = skips - 1;
                                 }
                             }
                             let stringreturn = string;
@@ -408,8 +527,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     .args(endvec)
                                     .output()
                                     .expect("failed to execute process");
-                            }
-                            else if env::consts::OS == "windows" {
+                            } else if env::consts::OS == "windows" {
                                 let mut endvec: Vec<&str> = Vec::new();
                                 endvec.push("/C");
                                 let mut endstirng: String = r"'%PROGRAMFILES%\VideoLAN\VLC\vlc.exe' -I dummy --dummy-quiet ".to_string();
@@ -425,8 +543,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     .args(endvec)
                                     .output()
                                     .expect("failed to execute process");
-                            }
-                            else if env::consts::OS == "macos" {
+                            } else if env::consts::OS == "macos" {
                                 let mut vecs = stringreturn.replace("\n", " ");
                                 vecs = vecs.replace("\t", " ");
                                 let mut endvec: Vec<&str> = Vec::new();
@@ -442,33 +559,37 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             }
                         });
                         threads.push(handle);
-                    }
-                    else if contents[x] == "loop" {
-                        readfrom = x+1;
+                    } else if contents[x] == "loop" {
+                        readfrom = x + 1;
                         skiperwiper = true;
                         read = true;
-                        let mut vec:Vec<String> = Vec::new();
+                        let mut vec: Vec<String> = Vec::new();
                         let mut skip = false;
-                        let number_of_times = functions::math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                        let number_of_times = functions::math(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                        );
                         if number_of_times > 0 as f32 {
                             let mut n = 0;
                             let mut reached = false;
                             let mut loc1 = 0;
                             let mut loc2 = 0;
-                            for y in x+1..contents.len() {
+                            for y in x + 1..contents.len() {
                                 if skip == false {
                                     if contents[y] == "{" {
-                                        n = n +1;
+                                        n = n + 1;
                                         reached = true;
                                         loc1 = y;
-                                    }
-                                    else if contents[y] == "}" {
-                                        n = n-1;
+                                    } else if contents[y] == "}" {
+                                        n = n - 1;
                                     }
                                     if n > 0 {
                                         vec.push((&contents[y]).parse().unwrap());
-                                    }
-                                    else if reached == true {
+                                    } else if reached == true {
                                         skip = true;
                                         loc2 = y;
                                     }
@@ -483,8 +604,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             newvec.push(y);
                                         }
                                     }
-                                }
-                                else {
+                                } else {
                                     newvec.push(contents[t].clone());
                                 }
                             }
@@ -494,31 +614,28 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             }
                             contents = newvec;
                         }
-                    }
-                    else if contents[x] == "while" {
+                    } else if contents[x] == "while" {
                         readfrom = x;
                         skiperwiper = true;
                         read = true;
-                        let mut vec:Vec<String> = Vec::new();
+                        let mut vec: Vec<String> = Vec::new();
                         let mut skip = false;
                         let mut n = 0;
                         let mut reached = false;
                         let mut loc1 = 0;
                         let mut loc2 = 0;
-                        for y in x+1..contents.len() {
+                        for y in x + 1..contents.len() {
                             if skip == false {
                                 if contents[y] == "{" {
-                                    n = n +1;
+                                    n = n + 1;
                                     reached = true;
                                     loc1 = y;
-                                }
-                                else if contents[y] == "}" {
-                                    n = n-1;
+                                } else if contents[y] == "}" {
+                                    n = n - 1;
                                 }
                                 if n > 0 {
                                     vec.push((&contents[y]).parse().unwrap());
-                                }
-                                else if reached == true {
+                                } else if reached == true {
                                     skip = true;
                                     loc2 = y;
                                 }
@@ -528,14 +645,12 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         for t in 0..contents.clone().len() {
                             if t == x {
                                 newvec.push("if".to_string())
-                            }
-                            else if t == loc2 {
+                            } else if t == loc2 {
                                 newvec.push(contents[loc2].clone());
-                                for q in x..loc2+1 {
+                                for q in x..loc2 + 1 {
                                     newvec.push(contents[q].clone());
                                 }
-                            }
-                            else {
+                            } else {
                                 newvec.push(contents[t].clone());
                             }
                         }
@@ -543,80 +658,100 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             println!("newvec: {:?}", newvec);
                         }
                         contents = newvec;
-                    }
-                    else if contents[x] == "sleep" {
-                        let number_of_times = functions::math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                    } else if contents[x] == "sleep" {
+                        let number_of_times = functions::math(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                        );
                         thread::sleep_ms(number_of_times as u32);
-                    }else if contents[x] == "exec" {
-                        let stringreturn = functions::exec(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
-                    }
-                    else if contents[x] == "setcont" {
-                        functions::set_contents(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
-                    }
-                    else if contents[x] == "POST" {
-                        functions::post_request(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
-                    }
-                    else if contents[x] == "func" {
-                        let vec:Vec<String> = Vec::new();
+                    } else if contents[x] == "exec" {
+                        let stringreturn = functions::exec(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                        );
+                    } else if contents[x] == "setcont" {
+                        functions::set_contents(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                        );
+                    } else if contents[x] == "POST" {
+                        functions::post_request(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                        );
+                    } else if contents[x] == "func" {
+                        let vec: Vec<String> = Vec::new();
                         let mut skip = false;
                         let mut n = 1;
                         let mut reached = false;
-                        let mut name:String = "".parse().unwrap();
-                        for y in x+2..contents.len() {
+                        let mut name: String = "".parse().unwrap();
+                        for y in x + 2..contents.len() {
                             if skip == false {
                                 if contents[y] == "(" {
-                                    n = n -1;
+                                    n = n - 1;
                                     reached = true;
-                                }
-                                else if contents[y] == ")" {
-                                    n = n-1;
+                                } else if contents[y] == ")" {
+                                    n = n - 1;
                                 }
                                 if n > 0 {
                                     name.push_str(&contents[y]);
-                                }
-                                else if reached == true {
+                                } else if reached == true {
                                     skip = true;
                                 }
                             }
                         }
-                        let mut code:String = "".parse().unwrap();
+                        let mut code: String = "".parse().unwrap();
                         skip = false;
                         n = 0;
                         reached = false;
-                        for y in x+1..contents.len() {
+                        for y in x + 1..contents.len() {
                             if skip == false {
                                 if contents[y] == "}" {
-                                    n = n-1;
+                                    n = n - 1;
                                 }
                                 if n > 0 {
                                     code.push_str(&contents[y]);
-                                }
-                                else if reached == true {
+                                } else if reached == true {
                                     skip = true;
                                 }
                                 if contents[y] == "{" {
-                                    n = n +1;
+                                    n = n + 1;
                                     reached = true;
                                 }
                             }
                         }
-                        let mut par:String = "".parse().unwrap();
+                        let mut par: String = "".parse().unwrap();
                         skip = false;
                         n = 0;
                         reached = false;
-                        for y in x+2..contents.len() {
+                        for y in x + 2..contents.len() {
                             if skip == false {
                                 if contents[y] == ")" {
-                                    n = n-1;
+                                    n = n - 1;
                                 }
                                 if n > 0 {
                                     par.push_str(&contents[y]);
-                                }
-                                else if reached == true {
+                                } else if reached == true {
                                     skip = true;
                                 }
                                 if contents[y] == "(" {
-                                    n = n +1;
+                                    n = n + 1;
                                     reached = true;
                                 }
                             }
@@ -634,9 +769,15 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             println!("func_code: {:?}", func_code);
                             println!("func_names: {:?}", func_names);
                         }
-                    }
-                    else if contents[x] == "eval" {
-                        let imp = functions::eval(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                    } else if contents[x] == "eval" {
+                        let imp = functions::eval(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                        );
                         readfrom = x;
                         skiperwiper = true;
                         read = true;
@@ -645,7 +786,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let mut skirt = false;
                         let mut n3 = 0;
                         delete.push(x);
-                        for y1 in x+1..contents.len() {
+                        for y1 in x + 1..contents.len() {
                             if skirt == false {
                                 if contents[y1] == "(" {
                                     n3 = n3 + 1;
@@ -661,7 +802,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         }
                         for item in delete {
                             contents.remove(item - deleted);
-                            deleted = deleted + 1 ;
+                            deleted = deleted + 1;
                         }
                         let mut newVec = Vec::new();
                         for itom in 0..contents.len() {
@@ -673,8 +814,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             newVec.push(contents[itom].clone());
                         }
                         contents = newVec;
-                    }
-                    else if contents[x] == "imp" {
+                    } else if contents[x] == "imp" {
                         let imp = functions::imp(x, contents.clone(), dev);
                         readfrom = x;
                         skiperwiper = true;
@@ -684,7 +824,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let mut skirt = false;
                         let mut n3 = 0;
                         delete.push(x);
-                        for y1 in x+1..contents.len() {
+                        for y1 in x + 1..contents.len() {
                             if skirt == false {
                                 if contents[y1] == "(" {
                                     n3 = n3 + 1;
@@ -700,7 +840,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         }
                         for item in delete {
                             contents.remove(item - deleted);
-                            deleted = deleted + 1 ;
+                            deleted = deleted + 1;
                         }
                         let mut newVec = Vec::new();
                         for itom in 0..contents.len() {
@@ -712,41 +852,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             newVec.push(contents[itom].clone());
                         }
                         contents = newVec;
-                    }
-                    else if contents[x] == "dec" {
+                    } else if contents[x] == "dec" {
                         let memory_names_save = memory_names.clone();
                         let memory_types_save = memory_types.clone();
                         let memory_values_save = memory_values.clone();
                         let mut types = false;
-                        let mut position = x+1;
+                        let mut position = x + 1;
                         let mut group = false;
                         let mut square_brackets = 0;
                         if contents[position] == "int" {
                             memory_types.push(String::from("int"));
-                            memory_names.push(String::from(contents[position+1].clone()));
+                            memory_names.push(String::from(contents[position + 1].clone()));
                             position = position + 1;
-                        } else if contents[position] == "str"  {
+                        } else if contents[position] == "str" {
                             memory_types.push(String::from("str"));
-                            memory_names.push(String::from(contents[position+1].clone()));
+                            memory_names.push(String::from(contents[position + 1].clone()));
                             position = position + 1;
-
-                        } else if contents[position] == "arr"  {
+                        } else if contents[position] == "arr" {
                             memory_types.push(String::from("arr"));
-                            memory_names.push(String::from(contents[position+1].clone()));
+                            memory_names.push(String::from(contents[position + 1].clone()));
                             position = position + 1;
-
-                        } 
-                        else if contents[position] == "grp"  {
+                        } else if contents[position] == "grp" {
                             memory_types.push(String::from("grp"));
-                            memory_names.push(String::from(contents[position+1].clone()));
+                            memory_names.push(String::from(contents[position + 1].clone()));
                             position = position + 1;
-                        }
-                        else if contents[position] == "inf"  {
+                        } else if contents[position] == "inf" {
                             memory_types.push(String::from("inf"));
-                            memory_names.push(String::from(contents[position+1].clone()));
+                            memory_names.push(String::from(contents[position + 1].clone()));
                             position = position + 1;
-                        }
-                        else if contents[position] == "anon"  {
+                        } else if contents[position] == "anon" {
                             memory_types.push(String::from("anon"));
                             types = true;
                         }
@@ -758,109 +892,219 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let mut quote = 0;
                         let mut squig = 0;
                         let mut brakets = 0;
-                        position = position+2;
+                        position = position + 2;
                         let mut group = false;
                         loop {
                             if contents[position] == "[" {
-                                value_array = functions::array_fn(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                                value_array = functions::array_fn(
+                                    position,
+                                    contents.clone(),
+                                    memory_names.clone(),
+                                    memory_values.clone(),
+                                    memory_types.clone(),
+                                    dev,
+                                );
                                 break;
-                            }
-                            else if contents[position] == "{" {
-                                value_group = functions::group_fn(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                            } else if contents[position] == "{" {
+                                value_group = functions::group_fn(
+                                    position,
+                                    contents.clone(),
+                                    memory_names.clone(),
+                                    memory_values.clone(),
+                                    memory_types.clone(),
+                                    dev,
+                                );
                                 group = true;
-                                squig = squig+1;
-                            }
-                            else if contents[position] == "}" {
-                                squig = squig-1;
-                                if group == true && squig == 0 && contents[position+1] == "," {
-                                    clone_class = contents[position+2].clone().to_string();
+                                squig = squig + 1;
+                            } else if contents[position] == "}" {
+                                squig = squig - 1;
+                                if group == true && squig == 0 && contents[position + 1] == "," {
+                                    clone_class = contents[position + 2].clone().to_string();
                                 }
-                            }
-                            else if contents[position] == "(" {
+                            } else if contents[position] == "(" {
                                 brakets = brakets + 1;
-                            }
-                            else if contents[position] == ")" {
+                            } else if contents[position] == ")" {
                                 brakets = brakets - 1;
-                            }
-                            else{
+                            } else {
                                 if square_brackets == 0 {
                                     if contents[position] == ";" {
                                         if dev {
                                             println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
                                         }
                                         break;
-                                    }
-                                    else if group == false {
-                                        if (contents[position] == "\"" || contents[position] == "\'" || contents[position] == r"\`") && contents[position-1] != "\\" {
+                                    } else if group == false {
+                                        if (contents[position] == "\""
+                                            || contents[position] == "\'"
+                                            || contents[position] == r"\`")
+                                            && contents[position - 1] != "\\"
+                                        {
                                             quote = quote + 1;
-                                        }
-
-                                        else if brakets == 0 {
+                                        } else if brakets == 0 {
                                             if contents[position] == "math" {
-                                                value.push_str(functions::math(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                                value.push_str(
+                                                    functions::math(
+                                                        position,
+                                                        contents.clone(),
+                                                        memory_names.clone(),
+                                                        memory_values.clone(),
+                                                        memory_types.clone(),
+                                                        dev,
+                                                    )
+                                                    .to_string()
+                                                    .as_str(),
+                                                );
                                                 n = 1;
-                                            }
-                                            else if contents[position] == "round" {
-                                                value.push_str(functions::round(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            } else if contents[position] == "round" {
+                                                value.push_str(
+                                                    functions::round(
+                                                        position,
+                                                        contents.clone(),
+                                                        memory_names.clone(),
+                                                        memory_values.clone(),
+                                                        memory_types.clone(),
+                                                        dev,
+                                                    )
+                                                    .to_string()
+                                                    .as_str(),
+                                                );
                                                 n = 1;
-                                            }
-                                            else if contents[position] == "replace" {
-                                                value.push_str(functions::replace(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            } else if contents[position] == "replace" {
+                                                value.push_str(
+                                                    functions::replace(
+                                                        position,
+                                                        contents.clone(),
+                                                        memory_names.clone(),
+                                                        memory_values.clone(),
+                                                        memory_types.clone(),
+                                                        dev,
+                                                    )
+                                                    .to_string()
+                                                    .as_str(),
+                                                );
                                                 n = 1;
-                                            }
-                                            else if contents[position] == "input" {
-                                                value.push_str(functions::input(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            } else if contents[position] == "input" {
+                                                value.push_str(
+                                                    functions::input(
+                                                        position,
+                                                        contents.clone(),
+                                                        memory_names.clone(),
+                                                        memory_values.clone(),
+                                                        memory_types.clone(),
+                                                        dev,
+                                                    )
+                                                    .to_string()
+                                                    .as_str(),
+                                                );
                                                 n = 1;
-                                            }
-                                            else if contents[position] == "exec" {
-                                                value.push_str(functions::exec(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            } else if contents[position] == "exec" {
+                                                value.push_str(
+                                                    functions::exec(
+                                                        position,
+                                                        contents.clone(),
+                                                        memory_names.clone(),
+                                                        memory_values.clone(),
+                                                        memory_types.clone(),
+                                                        dev,
+                                                    )
+                                                    .to_string()
+                                                    .as_str(),
+                                                );
                                                 n = 1;
-                                            }
-                                            else if contents[position] == "trim" {
-                                                value.push_str(functions::trim(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            } else if contents[position] == "trim" {
+                                                value.push_str(
+                                                    functions::trim(
+                                                        position,
+                                                        contents.clone(),
+                                                        memory_names.clone(),
+                                                        memory_values.clone(),
+                                                        memory_types.clone(),
+                                                        dev,
+                                                    )
+                                                    .to_string()
+                                                    .as_str(),
+                                                );
                                                 n = 1;
-                                            }
-                                            else if contents[position] == "timeh" {
-                                                value.push_str(functions::time_readable(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            } else if contents[position] == "timeh" {
+                                                value.push_str(
+                                                    functions::time_readable(
+                                                        position,
+                                                        contents.clone(),
+                                                        memory_names.clone(),
+                                                        memory_values.clone(),
+                                                        memory_types.clone(),
+                                                        dev,
+                                                    )
+                                                    .to_string()
+                                                    .as_str(),
+                                                );
                                                 n = 1;
-                                            }
-                                            else if contents[position] == "time" {
-                                                value.push_str(functions::time(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            } else if contents[position] == "time" {
+                                                value.push_str(
+                                                    functions::time(
+                                                        position,
+                                                        contents.clone(),
+                                                        memory_names.clone(),
+                                                        memory_values.clone(),
+                                                        memory_types.clone(),
+                                                        dev,
+                                                    )
+                                                    .to_string()
+                                                    .as_str(),
+                                                );
                                                 n = 1;
-                                            }
-                                            else if contents[position] == "getcont" {
-                                                value.push_str(functions::get_contents(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                            } else if contents[position] == "getcont" {
+                                                value.push_str(
+                                                    functions::get_contents(
+                                                        position,
+                                                        contents.clone(),
+                                                        memory_names.clone(),
+                                                        memory_values.clone(),
+                                                        memory_types.clone(),
+                                                        dev,
+                                                    )
+                                                    .to_string()
+                                                    .as_str(),
+                                                );
                                                 n = 1;
-                                            }
-                                            else {
+                                            } else {
                                                 if n == 0 {
-                                                    if quote%2 == 1 {
+                                                    if quote % 2 == 1 {
                                                         value.push_str(contents[position].as_str());
-                                                    }
-                                                    else {
+                                                    } else {
                                                         let mut positions = memory_names_save.len();
                                                         let mut skip = false;
                                                         for pos in 0..memory_names_save.len() {
                                                             if skip == false {
-                                                                if memory_names_save[pos].to_string() == contents[position].to_string() {
+                                                                if memory_names_save[pos]
+                                                                    .to_string()
+                                                                    == contents[position]
+                                                                        .to_string()
+                                                                {
                                                                     positions = pos;
                                                                     skip = true;
                                                                 }
                                                             }
                                                         }
-                                                        if positions != memory_names_save.len() && (contents[x+1].trim() == ":" || contents[x+1].trim() == "=") {
-                                                            value.push_str(memory_values_save[positions].to_string().as_str());
-                                                        }
-                                                        else {
-                                                            value.push_str(contents[position].as_str());
+                                                        if positions != memory_names_save.len()
+                                                            && (contents[x + 1].trim() == ":"
+                                                                || contents[x + 1].trim() == "=")
+                                                        {
+                                                            value.push_str(
+                                                                memory_values_save[positions]
+                                                                    .to_string()
+                                                                    .as_str(),
+                                                            );
+                                                        } else {
+                                                            value.push_str(
+                                                                contents[position].as_str(),
+                                                            );
                                                         }
                                                     }
                                                 }
                                             }
                                             if n >= 1 && contents[position] == "(" {
                                                 n = n + 1
-                                            }
-                                            else if n >= 1 && contents[position] == ")" {
+                                            } else if n >= 1 && contents[position] == ")" {
                                                 n = n - 1;
                                                 if n == 1 {
                                                     n = 0;
@@ -870,25 +1114,35 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     }
                                 }
                             }
-                            position = position+1;
+                            position = position + 1;
                             if dev {
                                 println!("position: {:?}", position);
                             }
                         }
                         if value_array.join("") != "" {
-                            memory_values.push(value_array.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").clone());
-                        } else if value_group.join("") != ""{
+                            memory_values.push(
+                                value_array
+                                    .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                    .clone(),
+                            );
+                        } else if value_group.join("") != "" {
                             value_group.push(clone_class.clone());
-                            memory_values.push(value_group.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").clone());
-                            let name_of_item = memory_names[memory_names.len()-1].clone();
-                            for d in 0..value_group.len()-1 {
-                                let mut name:String = name_of_item.to_string();
+                            memory_values.push(
+                                value_group
+                                    .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                    .clone(),
+                            );
+                            let name_of_item = memory_names[memory_names.len() - 1].clone();
+                            for d in 0..value_group.len() - 1 {
+                                let mut name: String = name_of_item.to_string();
                                 name.push_str(".");
                                 let mut location = 0;
                                 for items in 0..group_memory.len() {
-                                    if items < group_memory.len()-1 {
-                                        if group_memory[items+1].parse::<i32>().is_ok() && group_memory[items] == clone_class.clone() {
-                                            location = items + (d*2) + 3;
+                                    if items < group_memory.len() - 1 {
+                                        if group_memory[items + 1].parse::<i32>().is_ok()
+                                            && group_memory[items] == clone_class.clone()
+                                        {
+                                            location = items + (d * 2) + 3;
                                         }
                                     }
                                 }
@@ -896,13 +1150,11 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 memory_names.push(name.clone());
                                 memory_values.push(value_group[d].clone());
                                 memory_types.push("str".parse().unwrap());
-                                
                             }
-                        }
-                        else {
+                        } else {
                             memory_values.push(value.clone());
                         }
-                        
+
                         if types {
                             memory_names.push(value.clone());
                         }
@@ -911,12 +1163,11 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             println!("memory_types: {:?}", memory_types);
                             println!("memory_values: {:?}", memory_values);
                         }
-                    }
-                    else if contents[x] == "group" {
-                        let build_name = String::from(contents[x+1].clone());
+                    } else if contents[x] == "group" {
+                        let build_name = String::from(contents[x + 1].clone());
                         let mut end_pos: usize = 0;
                         let mut objects: Vec<String> = Vec::new();
-                        for j in x+2..contents.len() {
+                        for j in x + 2..contents.len() {
                             if contents[j] == "}" {
                                 break;
                             }
@@ -925,23 +1176,13 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let mut objects_object: Vec<String> = Vec::new();
                         for y in 0..objects.len() {
                             if objects[y] == "," {
-
                             } else if objects[y] == " " {
-
                             } else if objects[y] == "\r" {
-
                             } else if objects[y] == "\n" {
-
                             } else if objects[y] == "\"" {
-
-                            }
-                            else if objects[y] == "{" {
-
-                            }
-                            else if objects[y] == "}" {
-
-                            }
-                            else {
+                            } else if objects[y] == "{" {
+                            } else if objects[y] == "}" {
+                            } else {
                                 objects_object.push(objects[y].clone().to_string())
                             }
                         }
@@ -952,38 +1193,42 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             group_memory.push(build_name.clone());
                             group_memory.push(objects_object[d].clone());
                         }
-                    }
-                    else if contents[x] == "append" {
+                    } else if contents[x] == "append" {
                         let mut params: Vec<String> = Vec::new();
                         for item in x..contents.len() {
-                            if contents[item].is_empty() || contents[item] == "," || contents[item] == "(" || contents[item] == "append" || contents[item] == "\""{
-
-                            }
-                            else if contents[item] == ")" {
+                            if contents[item].is_empty()
+                                || contents[item] == ","
+                                || contents[item] == "("
+                                || contents[item] == "append"
+                                || contents[item] == "\""
+                            {
+                            } else if contents[item] == ")" {
                                 break;
-                            }
-                            else {
+                            } else {
                                 params.push(contents[item].clone());
                             }
                         }
                         for object in 0..memory_names.len() {
                             if memory_names[object] == params[0] {
                                 // zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v
-                                memory_values[object] = memory_values[object].clone() + "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v" + params[1].as_str();
+                                memory_values[object] = memory_values[object].clone()
+                                    + "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v"
+                                    + params[1].as_str();
                                 break;
                             }
                         }
-                    }
-                    else if contents[x] == "cut" {
+                    } else if contents[x] == "cut" {
                         let mut parameters: Vec<String> = Vec::new();
                         for item in x..contents.len() {
-                            if contents[item].is_empty() || contents[item] == "," || contents[item] == "(" || contents[item] == "cut" || contents[item] == "\""{
-
-                            }
-                            else if contents[item] == ")" {
+                            if contents[item].is_empty()
+                                || contents[item] == ","
+                                || contents[item] == "("
+                                || contents[item] == "cut"
+                                || contents[item] == "\""
+                            {
+                            } else if contents[item] == ")" {
                                 break;
-                            }
-                            else {
+                            } else {
                                 parameters.push(contents[item].clone());
                             }
                         }
@@ -993,11 +1238,12 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         let mut count = 0;
                         for object in 0..memory_names.len() {
                             if memory_names[object] == parameters[0] {
-                            //    identify.replace("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v", "");
-                                let mut identify_split = memory_values[object].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                                //    identify.replace("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v", "");
+                                let mut identify_split = memory_values[object]
+                                    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
                                 let id_vec: Vec<&str> = identify_split.collect();
                                 id_save = id_vec;
-                                let mut id_save_string : Vec<String> = Vec::new();
+                                let mut id_save_string: Vec<String> = Vec::new();
                                 for thing in 0..id_save.len() {
                                     id_save_string.push(id_save[thing].to_string());
                                 }
@@ -1010,28 +1256,25 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 change = temp;
                                 count = object;
                             }
-
                         }
                         memory_values[count] = change;
-                    }
-                    else if contents[x] == "if" {
+                    } else if contents[x] == "if" {
                         let mut loc1 = 0;
                         let mut loc2 = 0;
-                        let mut vec:Vec<String> = Vec::new();
+                        let mut vec: Vec<String> = Vec::new();
                         let mut skip = false;
                         let mut n = 0;
                         let mut reached = false;
-                        for y in x+1..contents.len() {
+                        for y in x + 1..contents.len() {
                             if skip == false {
                                 if contents[y] == "{" {
                                     if n == 0 {
                                         reached = true;
                                         loc1 = y;
                                     }
-                                    n = n +1;
-                                }
-                                else if contents[y] == "}" {
-                                    n = n-1;
+                                    n = n + 1;
+                                } else if contents[y] == "}" {
+                                    n = n - 1;
                                     if n == 0 {
                                         skip = true;
                                         loc2 = y;
@@ -1044,31 +1287,30 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         }
                         vec.remove(0);
                         let code = vec.clone();
-                        let mut vec:Vec<String> = Vec::new();
+                        let mut vec: Vec<String> = Vec::new();
                         let mut skip = false;
                         let mut n = 0;
-                        for y in x+1..contents.len() {
+                        for y in x + 1..contents.len() {
                             if skip == false {
-                                if contents[x+1] != "(" {
+                                if contents[x + 1] != "(" {
                                     println!("You have to put a parentheses after a log");
                                     std::process::exit(1);
                                 }
                                 if contents[y] == "(" {
-                                    n = n +1;
-                                }
-                                else if contents[y] == ")" {
-                                    n = n-1;
+                                    n = n + 1;
+                                } else if contents[y] == ")" {
+                                    n = n - 1;
                                 }
                                 if n == 0 {
                                     skip = true;
-                                    for z in x+1..y+1 {
+                                    for z in x + 1..y + 1 {
                                         vec.push((&contents[z]).parse().unwrap());
                                     }
                                 }
                             }
                         }
                         if dev {
-                            println!("vec: {:?}",  vec);
+                            println!("vec: {:?}", vec);
                         }
                         let mut z = 0;
                         for y in vec.to_vec() {
@@ -1084,35 +1326,48 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         for y in 1..vec.len() {
                             if skips == 0 {
                                 if skip == false {
-                                    if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y-1] != "\\" {
+                                    if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`")
+                                        && vec[y - 1] != "\\"
+                                    {
                                         n = n + 1;
-                                    }else if vec[y] == "(" && n % 2 == 0 {
+                                    } else if vec[y] == "(" && n % 2 == 0 {
                                         n1 = n1 + 1;
-                                    }
-                                    else if vec[y] == ")" && n % 2 == 0 {
+                                    } else if vec[y] == ")" && n % 2 == 0 {
                                         n1 = n1 - 1;
-                                    }else if n % 2 == 1 {
+                                    } else if n % 2 == 1 {
                                         string.push_str(vec[y].as_str());
                                     } else if vec[y] == "math" {
-                                        string.push_str(functions::math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::math(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if vec[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if vec[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if vec[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
@@ -1120,25 +1375,37 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         skips = leng;
                                     } else if vec[y] == "round" {
-                                        string.push_str(functions::round(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::round(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if contents[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if contents[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if contents[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
@@ -1146,25 +1413,37 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         skips = leng;
                                     } else if vec[y] == "GET" {
-                                        string.push_str(functions::get_request(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::get_request(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if contents[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if contents[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if contents[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
@@ -1172,25 +1451,37 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         skips = leng;
                                     } else if vec[y] == "replace" {
-                                        string.push_str(functions::replace(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::replace(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if vec[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if vec[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if vec[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
@@ -1198,25 +1489,37 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         skips = leng;
                                     } else if vec[y] == "input" {
-                                        string.push_str(functions::input(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::input(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if vec[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if vec[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if vec[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
@@ -1224,25 +1527,37 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         skips = leng;
                                     } else if vec[y] == "exec" {
-                                        string.push_str(functions::exec(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::exec(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if vec[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if vec[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if vec[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
@@ -1250,25 +1565,37 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         skips = leng;
                                     } else if vec[y] == "trim" {
-                                        string.push_str(functions::trim(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::trim(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if vec[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if vec[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if vec[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
@@ -1276,25 +1603,37 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         skips = leng;
                                     } else if vec[y] == "timeh" {
-                                        string.push_str(functions::time_readable(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::time_readable(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if vec[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if vec[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if vec[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
@@ -1302,25 +1641,37 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         skips = leng;
                                     } else if vec[y] == "time" {
-                                        string.push_str(functions::time(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::time(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if vec[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if vec[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if vec[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
@@ -1328,63 +1679,102 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         }
                                         skips = leng;
                                     } else if vec[y] == "getcont" {
-                                        string.push_str(functions::get_contents(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                        string.push_str(
+                                            functions::get_contents(
+                                                y,
+                                                vec.to_vec(),
+                                                memory_names.clone(),
+                                                memory_values.clone(),
+                                                memory_types.clone(),
+                                                dev,
+                                            )
+                                            .to_string()
+                                            .as_str(),
+                                        );
                                         let mut leng = 0;
                                         let mut n2 = 0;
                                         let mut skip1 = false;
-                                        for f in y+1..vec.len() {
+                                        for f in y + 1..vec.len() {
                                             if skip1 == false {
-                                                if vec[y+1] != "(" {
-                                                    println!("You have to put a parentheses after a log");
+                                                if vec[y + 1] != "(" {
+                                                    println!(
+                                                        "You have to put a parentheses after a log"
+                                                    );
                                                     std::process::exit(1);
                                                 }
                                                 if vec[f] == "(" {
-                                                    n2 = n2 +1;
-                                                }
-                                                else if vec[f] == ")" {
-                                                    n2 = n2-1;
+                                                    n2 = n2 + 1;
+                                                } else if vec[f] == ")" {
+                                                    n2 = n2 - 1;
                                                 }
                                                 if n2 == 0 {
                                                     skip1 = true;
-                                                    for z in y+1..f+1 {
+                                                    for z in y + 1..f + 1 {
                                                         leng = leng + 1;
                                                     }
                                                 }
                                             }
                                         }
                                         skips = leng;
-                                    } else if vec[y] == "=" || vec[y] == "!" || vec[y] == ">" || vec[y] == "<" {
+                                    } else if vec[y] == "="
+                                        || vec[y] == "!"
+                                        || vec[y] == ">"
+                                        || vec[y] == "<"
+                                    {
                                         string.push(vec[y].parse().unwrap());
                                     } else {
                                         let mut postion = memory_names.len();
                                         let mut skip1 = false;
                                         for pos in 0..memory_names.len() {
                                             if skip1 == false {
-                                                if memory_names[pos].to_string() == vec[y].to_string() {
+                                                if memory_names[pos].to_string()
+                                                    == vec[y].to_string()
+                                                {
                                                     postion = pos;
                                                     skip1 = true;
                                                 }
                                             }
                                         }
                                         if postion != memory_names.len() {
-                                            if vec[y+1] == "(" {
-                                                let number_of_item = functions::math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string();
-                                                string.push_str(&*memory_values[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").nth(number_of_item.parse().unwrap()).unwrap().to_string());
-                                            }
-                                            else {
-                                                string.push_str(&*memory_values[postion].to_string());
+                                            if vec[y + 1] == "(" {
+                                                let number_of_item = functions::math(
+                                                    y,
+                                                    vec.to_vec(),
+                                                    memory_names.clone(),
+                                                    memory_values.clone(),
+                                                    memory_types.clone(),
+                                                    dev,
+                                                )
+                                                .to_string();
+                                                string.push_str(
+                                                    &*memory_values[postion]
+                                                        .split(
+                                                            "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
+                                                        )
+                                                        .nth(number_of_item.parse().unwrap())
+                                                        .unwrap()
+                                                        .to_string(),
+                                                );
+                                            } else {
+                                                string
+                                                    .push_str(&*memory_values[postion].to_string());
                                             }
                                         }
                                     }
                                 }
-                            }
-                            else {
-                                skips = skips -1;
+                            } else {
+                                skips = skips - 1;
                             }
                         }
-                        let mut result:Vec<String> = Vec::new();
+                        let mut result: Vec<String> = Vec::new();
                         let mut last = 0;
-                        for (index, matched) in string.match_indices(|c: char| c == "=".chars().nth(0).unwrap() || c == "!".chars().nth(0).unwrap() || c == ">".chars().nth(0).unwrap() || c == "<".chars().nth(0).unwrap() || c == "|".chars().nth(0).unwrap()) {
+                        for (index, matched) in string.match_indices(|c: char| {
+                            c == "=".chars().nth(0).unwrap()
+                                || c == "!".chars().nth(0).unwrap()
+                                || c == ">".chars().nth(0).unwrap()
+                                || c == "<".chars().nth(0).unwrap()
+                                || c == "|".chars().nth(0).unwrap()
+                        }) {
                             if last != index {
                                 result.push((&string[last..index]).parse().unwrap());
                             }
@@ -1398,25 +1788,28 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                         for item in 0..result.len() {
                             let mut next = &result[item];
                             if 0 < item {
-                                next = &result[item-1];
+                                next = &result[item - 1];
                             }
                             if result[item] == "=" && 0 < item {
-                                if result[item-1] == "=" || result[item-1] == "!" || result[item-1] == ">" || result[item-1] == "<" {
+                                if result[item - 1] == "="
+                                    || result[item - 1] == "!"
+                                    || result[item - 1] == ">"
+                                    || result[item - 1] == "<"
+                                {
                                     output.push(result[item - 1].to_owned() + &*"=".to_string());
                                 }
-                            }
-                        
-                            else if result[item] == "|" && 0 < item {
-                                if result[item+1] == "|" {
+                            } else if result[item] == "|" && 0 < item {
+                                if result[item + 1] == "|" {
                                     output.push("||".parse().unwrap());
                                 }
-                            }
-                            else if (result[item] == ">" || result[item] == "<") && 0 < item {
-                                if result[item+1] != "=" {
+                            } else if (result[item] == ">" || result[item] == "<") && 0 < item {
+                                if result[item + 1] != "=" {
                                     output.push(result[item].to_owned());
                                 }
-                            }
-                            else if result[item] != "!" && result[item] != "<" && result[item] != ">" {
+                            } else if result[item] != "!"
+                                && result[item] != "<"
+                                && result[item] != ">"
+                            {
                                 output.push(result[item].parse().unwrap());
                             }
                         }
@@ -1427,8 +1820,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             for c in if_number {
                                 if (char::is_numeric(c) || c == '.') && if_number_bool == true {
                                     if_number_bool = true;
-                                }
-                                else {
+                                } else {
                                     if_number_bool = false;
                                 }
                             }
@@ -1437,7 +1829,8 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                 let mut skip = false;
                                 for pos in 0..memory_names.len() {
                                     if skip == false {
-                                        if memory_names[pos].to_string() == output[item].to_string() {
+                                        if memory_names[pos].to_string() == output[item].to_string()
+                                        {
                                             postion1 = pos;
                                             skip = true;
                                         }
@@ -1449,22 +1842,29 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             }
                         }
                         for item in 0..output.len() {
-                            if output[item] == "==" && output[item-1] == output[item+1] {
+                            if output[item] == "==" && output[item - 1] == output[item + 1] {
                                 outcome = true;
-                            }
-                            else if output[item] == "!=" && output[item-1] != output[item+1] {
+                            } else if output[item] == "!=" && output[item - 1] != output[item + 1] {
                                 outcome = true;
-                            }
-                            else if output[item] == ">=" && output[item-1].parse::<i32>().unwrap() >= output[item+1].parse::<i32>().unwrap() {
+                            } else if output[item] == ">="
+                                && output[item - 1].parse::<i32>().unwrap()
+                                    >= output[item + 1].parse::<i32>().unwrap()
+                            {
                                 outcome = true;
-                            }
-                            else if output[item] == "<=" && output[item-1].parse::<i32>().unwrap() <= output[item+1].parse::<i32>().unwrap() {
+                            } else if output[item] == "<="
+                                && output[item - 1].parse::<i32>().unwrap()
+                                    <= output[item + 1].parse::<i32>().unwrap()
+                            {
                                 outcome = true;
-                            }
-                            else if output[item] == "<" && output[item-1].parse::<i32>().unwrap() < output[item+1].parse::<i32>().unwrap() {
+                            } else if output[item] == "<"
+                                && output[item - 1].parse::<i32>().unwrap()
+                                    < output[item + 1].parse::<i32>().unwrap()
+                            {
                                 outcome = true;
-                            }
-                            else if output[item] == ">" && output[item-1].parse::<i32>().unwrap() > output[item+1].parse::<i32>().unwrap() {
+                            } else if output[item] == ">"
+                                && output[item - 1].parse::<i32>().unwrap()
+                                    > output[item + 1].parse::<i32>().unwrap()
+                            {
                                 outcome = true;
                             }
                         }
@@ -1474,13 +1874,12 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             readfrom = loc1;
                             skiperwiper = true;
                             read = true;
-                        }
-                        else {
-                            if contents[loc2+1] == "while" {
-                                contents[loc2+1] = " ".parse().unwrap();
+                        } else {
+                            if contents[loc2 + 1] == "while" {
+                                contents[loc2 + 1] = " ".parse().unwrap();
                             }
-                            if contents[loc2+2] == "while" {
-                                contents[loc2+2] = " ".parse().unwrap();
+                            if contents[loc2 + 2] == "while" {
+                                contents[loc2 + 2] = " ".parse().unwrap();
                             }
                         }
                         if dev {
@@ -1491,10 +1890,9 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                             println!("contents[loc2]: {:?}", contents[loc2]);
                             println!("contents: {:?}", contents);
                         }
-                    }
-                    else {
+                    } else {
                         if x > 2 {
-                            if contents[x-2] != "func" {
+                            if contents[x - 2] != "func" {
                                 let mut postion = func_names.len();
                                 let mut skip = false;
                                 for pos in 0..func_names.len() {
@@ -1521,7 +1919,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     let mut skirt = false;
                                     let mut n3 = 0;
                                     delete.push(x);
-                                    for y1 in x+1..contents.len() {
+                                    for y1 in x + 1..contents.len() {
                                         if skirt == false {
                                             if contents[y1] == "(" {
                                                 n3 = n3 + 1;
@@ -1537,7 +1935,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                     }
                                     for item in delete {
                                         contents.remove(item - deleted);
-                                        deleted = deleted + 1 ;
+                                        deleted = deleted + 1;
                                     }
                                     let mut newVec = Vec::new();
                                     for itom in 0..contents.len() {
@@ -1549,20 +1947,25 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                         newVec.push(contents[itom].clone());
                                     }
                                     contents = newVec;
-                                }
-                                else {
+                                } else {
                                     let mut postion = memory_names.len();
                                     let mut skip = false;
                                     for pos in 0..memory_names.len() {
                                         if skip == false {
-                                            if memory_names[pos].to_string() == contents[x].to_string() {
+                                            if memory_names[pos].to_string()
+                                                == contents[x].to_string()
+                                            {
                                                 postion = pos;
                                                 skip = true;
                                             }
                                         }
                                     }
-                                    if postion != memory_names.len() && (contents[x+1].trim() == ":" || contents[x+1].trim() == "=") && contents[x-2].trim() != "dec" {
-                                        let mut position = x+2;
+                                    if postion != memory_names.len()
+                                        && (contents[x + 1].trim() == ":"
+                                            || contents[x + 1].trim() == "=")
+                                        && contents[x - 2].trim() != "dec"
+                                    {
+                                        let mut position = x + 2;
                                         let mut value = String::new();
                                         let mut n = 0;
                                         let mut quote = 0;
@@ -1575,82 +1978,198 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                             }
                                             if contents[position] == ";" {
                                                 break;
-                                            }
-                                            else {
-                                                if (contents[position] == "\"" || contents[position] == "\'" || contents[position] == r"\`") && contents[position-1] != "\\" {
+                                            } else {
+                                                if (contents[position] == "\""
+                                                    || contents[position] == "\'"
+                                                    || contents[position] == r"\`")
+                                                    && contents[position - 1] != "\\"
+                                                {
                                                     quote = quote + 1;
-                                                }
-                                                else {
+                                                } else {
                                                     if contents[position] == "math" {
-                                                        value.push_str(functions::math(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                                        value.push_str(
+                                                            functions::math(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "round" {
-                                                        value.push_str(functions::round(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "round" {
+                                                        value.push_str(
+                                                            functions::round(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "GET" {
-                                                        value.push_str(functions::get_request(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "GET" {
+                                                        value.push_str(
+                                                            functions::get_request(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "replace" {
-                                                        value.push_str(functions::replace(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "replace" {
+                                                        value.push_str(
+                                                            functions::replace(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "input" {
-                                                        value.push_str(functions::input(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "input" {
+                                                        value.push_str(
+                                                            functions::input(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "exec" {
-                                                        value.push_str(functions::exec(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "exec" {
+                                                        value.push_str(
+                                                            functions::exec(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "trim" {
-                                                        value.push_str(functions::trim(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "trim" {
+                                                        value.push_str(
+                                                            functions::trim(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-
-                                                    else if contents[position] == "timeh" {
-                                                        value.push_str(functions::time_readable(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "timeh" {
+                                                        value.push_str(
+                                                            functions::time_readable(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "time" {
-                                                        value.push_str(functions::time(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "time" {
+                                                        value.push_str(
+                                                            functions::time(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "getcont" {
-                                                        value.push_str(functions::get_contents(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "getcont" {
+                                                        value.push_str(
+                                                            functions::get_contents(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else {
+                                                    } else {
                                                         if n == 0 {
-                                                            if quote%2 == 1 {
-                                                                value.push_str(contents[position].as_str());
-                                                            }
-                                                            else {
-                                                                let mut positions = memory_names_save.len();
+                                                            if quote % 2 == 1 {
+                                                                value.push_str(
+                                                                    contents[position].as_str(),
+                                                                );
+                                                            } else {
+                                                                let mut positions =
+                                                                    memory_names_save.len();
                                                                 let mut skip = false;
-                                                                for pos in 0..memory_names_save.len() {
+                                                                for pos in
+                                                                    0..memory_names_save.len()
+                                                                {
                                                                     if skip == false {
-                                                                        if memory_names_save[pos].to_string() == contents[position].to_string() {
+                                                                        if memory_names_save[pos]
+                                                                            .to_string()
+                                                                            == contents[position]
+                                                                                .to_string()
+                                                                        {
                                                                             positions = pos;
                                                                             skip = true;
                                                                         }
                                                                     }
                                                                 }
-                                                                if positions != memory_names_save.len() {
-                                                                    value.push_str(memory_values_save[positions].to_string().as_str());
-                                                                }
-                                                                else {
-                                                                    value.push_str(contents[position].as_str());
+                                                                if positions
+                                                                    != memory_names_save.len()
+                                                                {
+                                                                    value.push_str(
+                                                                        memory_values_save
+                                                                            [positions]
+                                                                            .to_string()
+                                                                            .as_str(),
+                                                                    );
+                                                                } else {
+                                                                    value.push_str(
+                                                                        contents[position].as_str(),
+                                                                    );
                                                                 }
                                                             }
                                                         }
                                                     }
                                                     if n >= 1 && contents[position] == "(" {
                                                         n = n + 1
-                                                    }
-                                                    else if n >= 1 && contents[position] == ")" {
+                                                    } else if n >= 1 && contents[position] == ")" {
                                                         n = n - 1;
                                                         if n == 1 {
                                                             n = 0;
@@ -1658,24 +2177,32 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                     }
                                                 }
                                             }
-                                            position = position+1;
+                                            position = position + 1;
                                             if dev {
                                                 println!("position: {:?}", position);
                                             }
                                         }
                                         memory_values[postion] = value;
-                                    }
-                                    else if postion != memory_names.len() && contents[x+1].trim() == "(" && contents[x-2].trim() != "dec" {
-                                        let id = functions::math(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev);
+                                    } else if postion != memory_names.len()
+                                        && contents[x + 1].trim() == "("
+                                        && contents[x - 2].trim() != "dec"
+                                    {
+                                        let id = functions::math(
+                                            x,
+                                            contents.clone(),
+                                            memory_names.clone(),
+                                            memory_values.clone(),
+                                            memory_types.clone(),
+                                            dev,
+                                        );
                                         let mut skipz = false;
                                         let mut nigro = 0;
                                         let mut pos = x;
-                                        for nx in x+1..contents.len() {
+                                        for nx in x + 1..contents.len() {
                                             if skipz == false {
                                                 if contents[nx] == "(" {
                                                     nigro = nigro + 1;
-                                                }
-                                                else if contents[nx] == ")" {
+                                                } else if contents[nx] == ")" {
                                                     nigro = nigro - 1;
                                                 }
                                                 if nigro == 0 {
@@ -1684,7 +2211,7 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                 }
                                             }
                                         }
-                                        let mut position = pos+2;
+                                        let mut position = pos + 2;
                                         let mut value = String::new();
                                         let mut n = 0;
                                         let mut quote = 0;
@@ -1697,82 +2224,198 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                     println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
                                                 }
                                                 break;
-                                            }
-                                            else {
-                                                if (contents[position] == "\"" || contents[position] == "\'" || contents[position] == r"\`") && contents[position-1] != "\\" {
+                                            } else {
+                                                if (contents[position] == "\""
+                                                    || contents[position] == "\'"
+                                                    || contents[position] == r"\`")
+                                                    && contents[position - 1] != "\\"
+                                                {
                                                     quote = quote + 1;
-                                                }
-                                                else {
+                                                } else {
                                                     if contents[position] == "math" {
-                                                        value.push_str(functions::math(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev).to_string().as_str());
+                                                        value.push_str(
+                                                            functions::math(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "round" {
-                                                        value.push_str(functions::round(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "round" {
+                                                        value.push_str(
+                                                            functions::round(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "GET" {
-                                                        value.push_str(functions::get_request(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "GET" {
+                                                        value.push_str(
+                                                            functions::get_request(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "replace" {
-                                                        value.push_str(functions::replace(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "replace" {
+                                                        value.push_str(
+                                                            functions::replace(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "input" {
-                                                        value.push_str(functions::input(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "input" {
+                                                        value.push_str(
+                                                            functions::input(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "exec" {
-                                                        value.push_str(functions::exec(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "exec" {
+                                                        value.push_str(
+                                                            functions::exec(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "trim" {
-                                                        value.push_str(functions::trim(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "trim" {
+                                                        value.push_str(
+                                                            functions::trim(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-
-                                                    else if contents[position] == "timeh" {
-                                                        value.push_str(functions::time_readable(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "timeh" {
+                                                        value.push_str(
+                                                            functions::time_readable(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "time" {
-                                                        value.push_str(functions::time(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "time" {
+                                                        value.push_str(
+                                                            functions::time(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else if contents[position] == "getcont" {
-                                                        value.push_str(functions::get_contents(position, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(),  dev).to_string().as_str());
+                                                    } else if contents[position] == "getcont" {
+                                                        value.push_str(
+                                                            functions::get_contents(
+                                                                position,
+                                                                contents.clone(),
+                                                                memory_names.clone(),
+                                                                memory_values.clone(),
+                                                                memory_types.clone(),
+                                                                dev,
+                                                            )
+                                                            .to_string()
+                                                            .as_str(),
+                                                        );
                                                         n = 1;
-                                                    }
-                                                    else {
+                                                    } else {
                                                         if n == 0 {
-                                                            if quote%2 == 1 {
-                                                                value.push_str(contents[position].as_str());
-                                                            }
-                                                            else {
-                                                                let mut positions = memory_names_save.len();
+                                                            if quote % 2 == 1 {
+                                                                value.push_str(
+                                                                    contents[position].as_str(),
+                                                                );
+                                                            } else {
+                                                                let mut positions =
+                                                                    memory_names_save.len();
                                                                 let mut skip = false;
-                                                                for pos in 0..memory_names_save.len() {
+                                                                for pos in
+                                                                    0..memory_names_save.len()
+                                                                {
                                                                     if skip == false {
-                                                                        if memory_names_save[pos].to_string() == contents[position].to_string() {
+                                                                        if memory_names_save[pos]
+                                                                            .to_string()
+                                                                            == contents[position]
+                                                                                .to_string()
+                                                                        {
                                                                             positions = pos;
                                                                             skip = true;
                                                                         }
                                                                     }
                                                                 }
-                                                                if positions != memory_names_save.len() {
-                                                                    value.push_str(memory_values_save[positions].to_string().as_str());
-                                                                }
-                                                                else {
-                                                                    value.push_str(contents[position].as_str());
+                                                                if positions
+                                                                    != memory_names_save.len()
+                                                                {
+                                                                    value.push_str(
+                                                                        memory_values_save
+                                                                            [positions]
+                                                                            .to_string()
+                                                                            .as_str(),
+                                                                    );
+                                                                } else {
+                                                                    value.push_str(
+                                                                        contents[position].as_str(),
+                                                                    );
                                                                 }
                                                             }
                                                         }
                                                     }
                                                     if n >= 1 && contents[position] == "(" {
                                                         n = n + 1
-                                                    }
-                                                    else if n >= 1 && contents[position] == ")" {
+                                                    } else if n >= 1 && contents[position] == ")" {
                                                         n = n - 1;
                                                         if n == 1 {
                                                             n = 0;
@@ -1780,14 +2423,17 @@ pub fn run(mut contents: Vec<String>, dev: bool, mut memory_names: Vec<String>, 
                                                     }
                                                 }
                                             }
-                                            position = position+1;
+                                            position = position + 1;
                                             if dev {
                                                 println!("position: {:?}", position);
                                             }
                                         }
-                                        let mut new_value = memory_values[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").collect::<Vec<&str>>();
+                                        let mut new_value = memory_values[postion]
+                                            .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                            .collect::<Vec<&str>>();
                                         new_value[id as usize] = &value;
-                                        memory_values[postion] = new_value.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                                        memory_values[postion] =
+                                            new_value.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
                                     }
                                 }
                             }

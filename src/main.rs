@@ -5,31 +5,29 @@ mod run;
 
 use std::env;
 use std::fs;
-use std::process::Command;
 use std::fs::File;
-use std::io::{Write, Bytes};
+use std::io::{Bytes, Write};
+use std::process::Command;
 extern crate pbr;
 
 use pbr::ProgressBar;
-use std::thread;
 use std::path::Path;
+use std::thread;
 
 #[allow(unused_variables)]
 #[allow(unused)]
 
 fn main() {
     let maybe_file = env::args().nth(1);
-    let args= env::args();
+    let args = env::args();
     let mut dev = false;
     let mut compile = false;
     for arg in args {
         if arg == "-dev" {
             dev = true;
-        }
-        else if arg == "-compile" {
+        } else if arg == "-compile" {
             compile = true;
-        }
-        else if arg == "-help" {
+        } else if arg == "-help" {
             println!("                            HELP                            ");
             println!("------------------------------------------------------------");
             println!("| -help      - shows you help                              |");
@@ -50,8 +48,7 @@ fn main() {
             line = line.trim().parse().unwrap();
             if line == "exit" || line == "quit" {
                 std::process::exit(1);
-            }
-            else {
+            } else {
                 let mut space: String = " ".parse().unwrap();
                 space.push_str(&line);
                 let contents = space;
@@ -59,7 +56,16 @@ fn main() {
                     println!("contents: {:?}", contents);
                 }
                 let to_parse = lexer::lexer(contents, dev);
-                run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
+                run::run(
+                    to_parse,
+                    dev,
+                    Vec::new(),
+                    Vec::new(),
+                    Vec::new(),
+                    Vec::new(),
+                    Vec::new(),
+                    Vec::new(),
+                );
             }
         }
     };
@@ -77,24 +83,49 @@ fn main() {
     }
     if compile == false {
         let to_parse = lexer::lexer(contents, dev);
-        run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
-    }
-    else {
+        run::run(
+            to_parse,
+            dev,
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+        );
+    } else {
         let mut pb = ProgressBar::new(5);
         Command::new("git")
-            .args(["clone", "https://github.com/Nyson-Programing-Language/nyson.git"])
+            .args([
+                "clone",
+                "https://github.com/Nyson-Programing-Language/nyson.git",
+            ])
             .output()
             .expect("failed to execute process");
         pb.inc();
-        set_cont("nyson/src/main.rs".to_string(), get_new_code(contents.clone()));
+        set_cont(
+            "nyson/src/main.rs".to_string(),
+            get_new_code(contents.clone()),
+        );
         pb.inc();
         Command::new("cargo")
-            .args(["build", "--release", "--manifest-path", "./nyson/Cargo.toml"])
+            .args([
+                "build",
+                "--release",
+                "--manifest-path",
+                "./nyson/Cargo.toml",
+            ])
             .output()
             .expect("failed to execute process");
         pb.inc();
-        copy("nyson/target/release/nyson.exe".to_string(), "nysonProgram.exe".to_string());
-        copy("nyson/target/release/nyson".to_string(), "nysonProgram".to_string());
+        copy(
+            "nyson/target/release/nyson.exe".to_string(),
+            "nysonProgram.exe".to_string(),
+        );
+        copy(
+            "nyson/target/release/nyson".to_string(),
+            "nysonProgram".to_string(),
+        );
         pb.inc();
         delete("nyson".to_string());
         pb.inc();
@@ -102,7 +133,7 @@ fn main() {
     }
 }
 
-fn get_new_code(content:String) -> String {
+fn get_new_code(content: String) -> String {
     let mut ruturns = "mod lexer;
 mod run;
 
@@ -115,7 +146,8 @@ use std::process::Command;
 
 fn main() {
     let mut dev = false;
-    let to_parse = lexer::lexer(\"".to_string();
+    let to_parse = lexer::lexer(\""
+        .to_string();
     ruturns.push_str(content.replace("\"", "\\\"").as_str());
     ruturns.push_str("\".to_string(), dev);
         run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
@@ -123,18 +155,18 @@ fn main() {
     return ruturns;
 }
 
-fn set_cont(loc:String, cont:String) -> std::io::Result<()> {
+fn set_cont(loc: String, cont: String) -> std::io::Result<()> {
     let mut file = File::create(loc)?;
     file.write_all(cont.as_bytes())?;
     Ok(())
 }
 
-fn copy(path1:String, path2:String) -> std::io::Result<()> {
-    fs::copy(path1, path2)?;  // Copy foo.txt to bar.txt
+fn copy(path1: String, path2: String) -> std::io::Result<()> {
+    fs::copy(path1, path2)?; // Copy foo.txt to bar.txt
     Ok(())
 }
 
-fn delete(Path:String) -> std::io::Result<()> {
+fn delete(Path: String) -> std::io::Result<()> {
     fs::remove_dir_all(Path)?;
     Ok(())
 }
