@@ -1,3 +1,5 @@
+on: push
+name: auto-update
 jobs:
   auto-update:
     runs-on: ubuntu-latest
