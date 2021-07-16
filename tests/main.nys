@@ -1,0 +1,5 @@
+log("whileloop.nys")
+imp("tests/whileloop.nys");
+log("numberguess.nys")
+imp("tests/numberguess.nys");
+log("DONE")

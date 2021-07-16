@@ -1,0 +1,14 @@
+dec int random_number: round(math(random*100));
+dec int number_picked: 50;
+while(number_picked != random_number) {
+    if (number_picked > random_number) {
+        log("You need to pick a smaller number");
+        number_picked: math(number_picked-1);
+    }
+    if (number_picked < random_number) {
+        log("You need to pick a bigger number");
+        number_picked: math(number_picked+1);
+    }
+    log(number_picked);
+}
+log("You got it right! (it was " random_number ")");
