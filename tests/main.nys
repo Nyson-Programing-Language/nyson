@@ -1,5 +1,11 @@
-log("whileloop.nys")
+log("<---whileloop.nys--->")
 imp("tests/whileloop.nys");
-log("numberguess.nys")
+log("<---numberguess.nys--->")
 imp("tests/numberguess.nys");
-log("DONE")
+log("<---exec.nys--->")
+imp("tests/exec.nys");
+log("<---loadingbar.nys--->")
+imp("tests/loadingbar.nys");
+log("<---cut.nys--->")
+imp("tests/cut.nys");
+log("<---DONE--->")
