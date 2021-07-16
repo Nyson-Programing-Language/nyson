@@ -13,21 +13,18 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
-
+      # the action needs a nightly toolchain with llvm-tools
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: nightly
           components: llvm-tools-preview
-          override: true
 
-      - uses: Swatinem/rust-cache@v1
+      # runs cargo with defaults flags, using the default `lcov` output
+      - uses: Swatinem/fucov@v1
 
-      - uses: ./
-
+      # afterwards, upload the report to codecov
       - uses: codecov/codecov-action@v1
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           directory: coverage
+
