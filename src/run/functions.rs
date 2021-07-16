@@ -5989,8 +5989,8 @@ pub fn post_request(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;

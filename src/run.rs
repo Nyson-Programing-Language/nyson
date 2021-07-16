@@ -1175,7 +1175,14 @@ pub fn run(
                         }
                         let mut objects_object: Vec<String> = Vec::new();
                         for y in 0..objects.len() {
-                            if objects[y] != "," && objects[y] != " " && objects[y] != "\r" && objects[y] != "\n" && objects[y] != "\"" && objects[y] != "{" && objects[y] != "}" {
+                            if objects[y] != ","
+                                && objects[y] != " "
+                                && objects[y] != "\r"
+                                && objects[y] != "\n"
+                                && objects[y] != "\""
+                                && objects[y] != "{"
+                                && objects[y] != "}"
+                            {
                                 objects_object.push(objects[y].clone().to_string())
                             }
                         }
