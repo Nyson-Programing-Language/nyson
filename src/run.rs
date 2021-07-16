@@ -1842,7 +1842,21 @@ pub fn run(
                             }
                         }
                         for item in 0..output.len() {
-                            if (output[item] == "==" && output[item - 1] == output[item + 1]) || (output[item] == "!=" && output[item - 1] != output[item + 1]) || (output[item] == ">=" && output[item - 1].parse::<i32>().unwrap() >= output[item + 1].parse::<i32>().unwrap()) || (output[item] == "<=" && output[item - 1].parse::<i32>().unwrap() <= output[item + 1].parse::<i32>().unwrap()) || (output[item] == "<" && output[item - 1].parse::<i32>().unwrap() < output[item + 1].parse::<i32>().unwrap()) || (output[item] == ">" && output[item - 1].parse::<i32>().unwrap() > output[item + 1].parse::<i32>().unwrap()) {
+                            if (output[item] == "==" && output[item - 1] == output[item + 1])
+                                || (output[item] == "!=" && output[item - 1] != output[item + 1])
+                                || (output[item] == ">="
+                                    && output[item - 1].parse::<i32>().unwrap()
+                                        >= output[item + 1].parse::<i32>().unwrap())
+                                || (output[item] == "<="
+                                    && output[item - 1].parse::<i32>().unwrap()
+                                        <= output[item + 1].parse::<i32>().unwrap())
+                                || (output[item] == "<"
+                                    && output[item - 1].parse::<i32>().unwrap()
+                                        < output[item + 1].parse::<i32>().unwrap())
+                                || (output[item] == ">"
+                                    && output[item - 1].parse::<i32>().unwrap()
+                                        > output[item + 1].parse::<i32>().unwrap())
+                            {
                                 outcome = true;
                             }
                         }
