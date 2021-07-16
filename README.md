@@ -30,3 +30,13 @@ https://github.com/Nyelsonon/nyson-programming-language
 Nyelsonon: https://venmo.com/code?user_id=3150553001492480241&created=1626114671.90623&printed=1
 
 AMTitan: https://paypal.me/AMTitan
+
+## Other Repos:
+
+Setup Code: https://github.com/Nyson-Programing-Language/nyson-setup
+
+Docs Code: https://github.com/Nyson-Programing-Language/nyson-programing-language.github.io
+
+IDE Code: https://github.com/Nyson-Programing-Language/Nyson-IDE
+
+VS Code Syntax Code: https://github.com/Nyson-Programing-Language/VS-Code-Nyson-Syntax
