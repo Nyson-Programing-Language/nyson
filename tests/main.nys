@@ -8,4 +8,6 @@ log("<---loadingbar.nys--->")
 imp("tests/loadingbar.nys");
 log("<---cut.nys--->")
 imp("tests/cut.nys");
+log("<---replace.nys--->")
+imp("tests/replace.nys");
 log("<---DONE--->")

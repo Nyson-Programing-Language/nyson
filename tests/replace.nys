@@ -1,0 +1,1 @@
+log(replace("I am really bad", "bad", "good"));

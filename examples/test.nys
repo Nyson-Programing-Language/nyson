@@ -1,3 +1,1 @@
-dec arr testing : ["test", "is", "best"];
-cut(testing, 1);
-log(testing(1));
+audio("examples/betrayal.mp3")
