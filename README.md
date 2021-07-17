@@ -33,14 +33,13 @@ AMTitan: https://paypal.me/AMTitan
 
 ## Other Repos:
 ```
-Setup Code: https://github.com/Nyson-Programing-Language/nyson-setup
+Setup Code: [https://github.com/Nyson-Programing-Language/nyson-setup](https://github.com/Nyson-Programing-Language/nyson-setup)
 
 Docs Code: https://github.com/Nyson-Programing-Language/nyson-programing-language.github.io
 
 IDE Code: https://github.com/Nyson-Programing-Language/Nyson-IDE
 
 VS Code Syntax Code: https://github.com/Nyson-Programing-Language/VS-Code-Nyson-Syntax
-
 ```
 
 ## License: 
