@@ -81,7 +81,18 @@ pub fn run(
                         let memory_names_save = memory_names.clone();
                         let dev_save = dev.clone();
                         let handle = thread::spawn(move || {
-                            let stringreturn = functions::getstring(x, contents_save.clone(), memory_names_save.clone(), memory_values_save.clone(), memory_types_save.clone(), dev, 0).first().unwrap().to_string();
+                            let stringreturn = functions::getstring(
+                                x,
+                                contents_save.clone(),
+                                memory_names_save.clone(),
+                                memory_values_save.clone(),
+                                memory_types_save.clone(),
+                                dev,
+                                0,
+                            )
+                            .first()
+                            .unwrap()
+                            .to_string();
                             let mut vecs = stringreturn.replace("\n", " ");
                             vecs = vecs.replace("\t", " ");
                             let mut endvec: Vec<&str> = vecs.split(" ").collect();
@@ -382,12 +393,14 @@ pub fn run(
                         }
                         contents = newVec;
                     } else if contents[x] == "imp" {
-                        let imp = functions::imp(x,
-                                                 contents.clone(),
-                                                 memory_names.clone(),
-                                                 memory_values.clone(),
-                                                 memory_types.clone(),
-                                                 dev);
+                        let imp = functions::imp(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                        );
                         readfrom = x;
                         skiperwiper = true;
                         read = true;
@@ -469,7 +482,7 @@ pub fn run(
                         loop {
                             if contents[position] == "[" {
                                 value_array = functions::array_fn(
-                                    position-1,
+                                    position - 1,
                                     contents.clone(),
                                     memory_names.clone(),
                                     memory_values.clone(),
@@ -479,7 +492,7 @@ pub fn run(
                                 break;
                             } else if contents[position] == "{" {
                                 value_group = functions::group_fn(
-                                    position-1,
+                                    position - 1,
                                     contents.clone(),
                                     memory_names.clone(),
                                     memory_values.clone(),
@@ -890,7 +903,18 @@ pub fn run(
                                 z = z + 1;
                             }
                         }
-                        let mut string: String = functions::getstring(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), dev, 2).first().unwrap().to_string();
+                        let mut string: String = functions::getstring(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                            2,
+                        )
+                        .first()
+                        .unwrap()
+                        .to_string();
                         let mut result: Vec<String> = Vec::new();
                         let mut last = 0;
                         for (index, matched) in string.match_indices(|c: char| {

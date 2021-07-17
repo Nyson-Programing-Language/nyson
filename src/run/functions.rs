@@ -32,7 +32,18 @@ pub fn log(
     memory_types: Vec<String>,
     dev: bool,
 ) {
-    let string = getstring(x, contents, memory_names, memory_values, memory_types, dev, 0).first().unwrap().to_string();
+    let string = getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    )
+    .first()
+    .unwrap()
+    .to_string();
     println!("{}", string);
 }
 
@@ -43,12 +54,12 @@ pub fn getstring(
     memory_values: Vec<String>,
     memory_types: Vec<String>,
     dev: bool,
-    int: i32
+    int: i32,
 ) -> Vec<String> {
     let mut vec: Vec<String> = Vec::new();
     let mut skip = false;
     let mut n = 0;
-    for y in x+1..contents.len() {
+    for y in x + 1..contents.len() {
         if skip == false {
             if int == 0 || int == 2 {
                 if contents[y] == "(" {
@@ -56,8 +67,7 @@ pub fn getstring(
                 } else if contents[y] == ")" {
                     n = n - 1;
                 }
-            }
-            else if int == 1 {
+            } else if int == 1 {
                 if contents[y] == "[" {
                     n = n + 1;
                 } else if contents[y] == "]" {
@@ -90,23 +100,28 @@ pub fn getstring(
                 if n % 2 == 0 && vec[y] == "," {
                     output_array.push(imput_s);
                     imput_s = "".to_string();
-                } else if int == 2 && (vec[y] == "=" || vec[y] == ">" || vec[y] == "<" || vec[y] == "!" || vec[y] == "|" || vec[y] == "&") {
+                } else if int == 2
+                    && (vec[y] == "="
+                        || vec[y] == ">"
+                        || vec[y] == "<"
+                        || vec[y] == "!"
+                        || vec[y] == "|"
+                        || vec[y] == "&")
+                {
                     imput_s.push_str(vec[y].as_str());
                 } else if y < 1 {
                     if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
                         n = n + 1;
                         continues = false;
                     }
-                }else {
+                } else {
                     if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y - 1] != "\\" {
                         n = n + 1;
                         continues = false;
                     }
                 }
                 if continues == false {
-                    
-                }
-                else if vec[y] == "(" && n % 2 == 0 {
+                } else if vec[y] == "(" && n % 2 == 0 {
                     n1 = n1 + 1;
                 } else if vec[y] == ")" && n % 2 == 0 {
                     n1 = n1 - 1;
@@ -122,8 +137,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -158,8 +173,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -194,8 +209,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -230,8 +245,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -266,8 +281,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -302,8 +317,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -338,8 +353,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -374,8 +389,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -410,8 +425,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -446,8 +461,8 @@ pub fn getstring(
                             memory_types.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -484,7 +499,7 @@ pub fn getstring(
                         }
                     }
                     if postion != memory_names.len() {
-                        if y+1 < vec.len() {
+                        if y + 1 < vec.len() {
                             if vec[y + 1] == "(" {
                                 let number_of_item = math(
                                     y,
@@ -494,7 +509,7 @@ pub fn getstring(
                                     memory_types.clone(),
                                     dev,
                                 )
-                                    .to_string();
+                                .to_string();
                                 imput_s.push_str(
                                     &*memory_values[postion]
                                         .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -527,7 +542,21 @@ pub fn eval(
     memory_types: Vec<String>,
     dev: bool,
 ) -> Vec<String> {
-    return lexer::lexer(getstring(x, contents, memory_names, memory_values, memory_types, dev, 0).first().unwrap().to_string(), dev);
+    return lexer::lexer(
+        getstring(
+            x,
+            contents,
+            memory_names,
+            memory_values,
+            memory_types,
+            dev,
+            0,
+        )
+        .first()
+        .unwrap()
+        .to_string(),
+        dev,
+    );
 }
 
 pub fn exec(
@@ -538,7 +567,18 @@ pub fn exec(
     memory_types: Vec<String>,
     dev: bool,
 ) -> String {
-    let string = getstring(x, contents, memory_names, memory_values, memory_types, dev, 0).first().unwrap().to_string();
+    let string = getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    )
+    .first()
+    .unwrap()
+    .to_string();
     let stringreturn = string;
     let mut vecs = stringreturn.replace("\n", " ");
     vecs = vecs.replace("\t", " ");
@@ -578,7 +618,18 @@ pub fn round(
     memory_types: Vec<String>,
     dev: bool,
 ) -> i32 {
-    return getstring(x, contents, memory_names, memory_values, memory_types, dev, 0)[0].parse::<f32>().unwrap().round() as i32;
+    return getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    )[0]
+    .parse::<f32>()
+    .unwrap()
+    .round() as i32;
 }
 
 pub fn set_contents(
@@ -589,7 +640,15 @@ pub fn set_contents(
     memory_types: Vec<String>,
     dev: bool,
 ) -> std::io::Result<()> {
-    let vec = getstring(x, contents, memory_names, memory_values, memory_types, dev, 0);
+    let vec = getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    );
     let file_s = vec[0].to_string();
     let text_s = vec[1].to_string();
     if dev {
@@ -623,7 +682,18 @@ pub fn get_contents(
     memory_types: Vec<String>,
     dev: bool,
 ) -> String {
-    let string = getstring(x, contents, memory_names, memory_values, memory_types, dev, 0).first().unwrap().to_string();
+    let string = getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    )
+    .first()
+    .unwrap()
+    .to_string();
     let maybe_contents = fs::read_to_string(string);
     let mut contents = if maybe_contents.is_ok() {
         maybe_contents.unwrap()
@@ -641,7 +711,15 @@ pub fn replace(
     memory_types: Vec<String>,
     dev: bool,
 ) -> String {
-    let mut vec = getstring(x, contents, memory_names, memory_values, memory_types, dev, 0);
+    let mut vec = getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    );
     let imput_s = vec[0].to_string();
     let find_s = vec[1].to_string();
     let replacer_s = vec[2].to_string();
@@ -654,13 +732,26 @@ pub fn replace(
     return imput_s.replace(&*find_s, &*replacer_s);
 }
 
-pub fn imp(x: usize,
-           contents: Vec<String>,
-           memory_names: Vec<String>,
-           memory_values: Vec<String>,
-           memory_types: Vec<String>,
-           dev: bool) -> Vec<String> {
-    let string = getstring(x, contents, memory_names, memory_values, memory_types, dev, 0).first().unwrap().to_string();
+pub fn imp(
+    x: usize,
+    contents: Vec<String>,
+    memory_names: Vec<String>,
+    memory_values: Vec<String>,
+    memory_types: Vec<String>,
+    dev: bool,
+) -> Vec<String> {
+    let string = getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    )
+    .first()
+    .unwrap()
+    .to_string();
     if dev {
         println!("string: {}", string);
     }
@@ -996,7 +1087,20 @@ pub fn trim(
     memory_types: Vec<String>,
     dev: bool,
 ) -> String {
-    return getstring(x, contents, memory_names, memory_values, memory_types, dev, 0).first().unwrap().to_string().trim().to_string();
+    return getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    )
+    .first()
+    .unwrap()
+    .to_string()
+    .trim()
+    .to_string();
 }
 
 pub fn time_readable(
@@ -1024,7 +1128,15 @@ pub fn array_fn(
     memory_types: Vec<String>,
     dev: bool,
 ) -> Vec<String> {
-    return getstring(x, contents, memory_names, memory_values, memory_types, dev, 1);
+    return getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        1,
+    );
 }
 
 pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
@@ -1045,7 +1157,18 @@ pub fn get_request(
     memory_types: Vec<String>,
     dev: bool,
 ) -> String {
-    let string = getstring(x, contents, memory_names, memory_values, memory_types, dev, 0).first().unwrap().to_string();
+    let string = getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    )
+    .first()
+    .unwrap()
+    .to_string();
     let mut dst = Vec::new();
     let mut easy = Easy::new();
     easy.url(&*string).unwrap();
@@ -1071,7 +1194,15 @@ pub fn post_request(
     memory_types: Vec<String>,
     dev: bool,
 ) {
-    let reply = getstring(x, contents, memory_names, memory_values, memory_types, dev, 0);
+    let reply = getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        0,
+    );
     let imput_s = reply[0].to_string();
     let find_s = reply[1].to_string();
     if dev {
@@ -1116,5 +1247,13 @@ pub fn group_fn(
     memory_types: Vec<String>,
     dev: bool,
 ) -> Vec<String> {
-    return getstring(x, contents, memory_names, memory_values, memory_types, dev, 1);
+    return getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        dev,
+        1,
+    );
 }
