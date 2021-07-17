@@ -32,7 +32,7 @@ Nyelsonon: https://venmo.com/code?user_id=3150553001492480241&created=1626114671
 AMTitan: https://paypal.me/AMTitan
 
 ## Other Repos:
-
+```
 Setup Code: https://github.com/Nyson-Programing-Language/nyson-setup
 
 Docs Code: https://github.com/Nyson-Programing-Language/nyson-programing-language.github.io
@@ -40,6 +40,8 @@ Docs Code: https://github.com/Nyson-Programing-Language/nyson-programing-languag
 IDE Code: https://github.com/Nyson-Programing-Language/Nyson-IDE
 
 VS Code Syntax Code: https://github.com/Nyson-Programing-Language/VS-Code-Nyson-Syntax
+
+```
 
 ## License: 
 ```
