@@ -40,3 +40,6 @@ Docs Code: https://github.com/Nyson-Programing-Language/nyson-programing-languag
 IDE Code: https://github.com/Nyson-Programing-Language/Nyson-IDE
 
 VS Code Syntax Code: https://github.com/Nyson-Programing-Language/VS-Code-Nyson-Syntax
+
+## License: 
+
