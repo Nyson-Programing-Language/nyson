@@ -31,7 +31,7 @@ fn remove_whitespace(s: &str) -> String {
     s.split_whitespace().collect()
 }
 
-fn no_extra_whitespace(mut input: Vec<String>, dev: bool) -> Vec<String> {
+pub fn no_extra_whitespace(mut input: Vec<String>, dev: bool) -> Vec<String> {
     if dev {
         println!("input: {:?}", input);
     }

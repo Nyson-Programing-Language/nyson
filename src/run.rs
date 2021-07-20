@@ -1588,3 +1588,113 @@ pub fn run(
         i.join().unwrap();
     }
 }
+
+pub(crate) fn hard(
+    mut contents: Vec<String>,
+    dev: bool,
+    mut memory_names: Vec<String>,
+    mut memory_values: Vec<String>,
+    mut memory_types: Vec<String>,
+    mut func_names: Vec<String>,
+    mut func_par: Vec<String>,
+    mut func_code: Vec<String>,
+) -> String {
+
+    if dev {
+        println!("contents: {:?}", contents);
+    }
+    let mut quotes = 0;
+    let mut squigle = 0;
+    let mut readfrom = 0;
+    let mut skiperwiper = false;
+    let mut read = true;
+    let mut group_memory: Vec<String> = Vec::new();
+    while read {
+        read = false;
+        skiperwiper = false;
+        for mut x in readfrom..contents.len() {
+            if skiperwiper == false {
+                if dev {
+                    println!("contents[x]: {}", contents[x]);
+                    println!("x: {}", x);
+                    println!("quotes: {}", quotes);
+                    println!("squigle: {}", squigle);
+                }
+                if (contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`")
+                    && contents[x - 1] != "\\"
+                {
+                    quotes = quotes + 1;
+                }
+                if (contents[x] == "{" || contents[x] == "[") && quotes % 2 == 0 {
+                    squigle = squigle + 1;
+                }
+                if (contents[x] == "}" || contents[x] == "]") && quotes % 2 == 0 {
+                    squigle = squigle - 1;
+                }
+                if quotes % 2 == 0 && squigle == 0 {
+                    if contents[x] == "imp" {
+                        let imp = functions::imp(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                        );
+                        readfrom = x;
+                        skiperwiper = true;
+                        read = true;
+                        let mut delete = Vec::new();
+                        let mut deleted = 0;
+                        let mut skirt = false;
+                        let mut n3 = 0;
+                        delete.push(x);
+                        for y1 in x + 1..contents.len() {
+                            if skirt == false {
+                                if contents[y1] == "(" {
+                                    n3 = n3 + 1;
+                                }
+                                if n3 == 0 {
+                                    skirt = true;
+                                }
+                                if contents[y1] == ")" {
+                                    n3 = n3 - 1;
+                                }
+                                delete.push(y1);
+                            }
+                        }
+                        for item in delete {
+                            contents.remove(item - deleted);
+                            deleted = deleted + 1;
+                        }
+                        let mut newVec = Vec::new();
+                        for itom in 0..contents.len() {
+                            if itom == x {
+                                for item in imp.clone() {
+                                    newVec.push(item);
+                                }
+                            }
+                            newVec.push(contents[itom].clone());
+                        }
+                        contents = newVec;
+                    }
+                }
+            }
+        }
+    }
+    let mut newvec:Vec<String> = Vec::new();
+    let mut quotes = 0;
+    for x in 0..contents.len() {
+        if (contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`")
+            && contents[x - 1] != "\\"
+        {
+            quotes = quotes + 1;
+        }
+        else if quotes%2 == 0 { 
+            newvec.push(" ".to_string());
+        }
+        
+        newvec.push(contents[x].clone());
+    }
+    return newvec.join("");
+}

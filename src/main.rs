@@ -22,11 +22,14 @@ fn main() {
     let args = env::args();
     let mut dev = false;
     let mut compile = false;
+    let mut hard = false;
     for arg in args {
         if arg == "-dev" {
             dev = true;
         } else if arg == "-compile" {
             compile = true;
+        } else if arg == "-hard" {
+            hard = true;
         } else if arg == "-help" {
             println!("                            HELP                            ");
             println!("------------------------------------------------------------");
@@ -34,6 +37,8 @@ fn main() {
             println!("| -dev       - shows you some dev stuff so if you make a   |");
             println!("|              issue on github we will need you to do this |");
             println!("| -compile   - compiles the code into a binary or exe      |");
+            println!("| -hard      - (need -compile b4) but compiles with imp aka|");
+            println!("|              apps offline if you use a imp from the web  |");
             println!("------------------------------------------------------------");
             std::process::exit(1);
         }
@@ -91,10 +96,17 @@ fn main() {
             Vec::new(),
             Vec::new(),
             Vec::new(),
-            Vec::new(),
+            Vec::new()
         );
     } else {
-        let mut pb = ProgressBar::new(5);
+        let mut pb;
+        if hard == true {
+            pb = ProgressBar::new(7);
+        }
+        else {
+            pb = ProgressBar::new(6);
+        }
+        pb.inc();
         Command::new("git")
             .args([
                 "clone",
@@ -103,6 +115,19 @@ fn main() {
             .output()
             .expect("failed to execute process");
         pb.inc();
+        if hard == true {
+            contents = run::hard(
+                lexer::lexer(contents.clone(), dev),
+                dev,
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new()
+            );
+            pb.inc();
+        }
         set_cont(
             "nyson/src/main.rs".to_string(),
             get_new_code(contents.clone()),

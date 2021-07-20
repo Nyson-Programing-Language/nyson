@@ -1,1 +1,2 @@
-audio("examples/betrayal.mp3")
+imp("https://raw.githubusercontent.com/Nyson-Programing-Language/nyson/main/examples/Random%20Number.nys");
+log("done");
