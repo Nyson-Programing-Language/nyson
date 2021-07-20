@@ -96,14 +96,13 @@ fn main() {
             Vec::new(),
             Vec::new(),
             Vec::new(),
-            Vec::new()
+            Vec::new(),
         );
     } else {
         let mut pb;
         if hard == true {
             pb = ProgressBar::new(7);
-        }
-        else {
+        } else {
             pb = ProgressBar::new(6);
         }
         pb.inc();
@@ -124,7 +123,7 @@ fn main() {
                 Vec::new(),
                 Vec::new(),
                 Vec::new(),
-                Vec::new()
+                Vec::new(),
             );
             pb.inc();
         }

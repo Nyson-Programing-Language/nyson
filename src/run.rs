@@ -1599,7 +1599,6 @@ pub(crate) fn hard(
     mut func_par: Vec<String>,
     mut func_code: Vec<String>,
 ) -> String {
-
     if dev {
         println!("contents: {:?}", contents);
     }
@@ -1682,18 +1681,17 @@ pub(crate) fn hard(
             }
         }
     }
-    let mut newvec:Vec<String> = Vec::new();
+    let mut newvec: Vec<String> = Vec::new();
     let mut quotes = 0;
     for x in 0..contents.len() {
         if (contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`")
             && contents[x - 1] != "\\"
         {
             quotes = quotes + 1;
-        }
-        else if quotes%2 == 0 { 
+        } else if quotes % 2 == 0 {
             newvec.push(" ".to_string());
         }
-        
+
         newvec.push(contents[x].clone());
     }
     return newvec.join("");
