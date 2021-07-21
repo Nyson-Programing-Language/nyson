@@ -1,3 +1,4 @@
+log("This is the random number game please pick a number between 0 and 100");
 dec int random_number: round(math(random*100));
 dec int number_picked: input();
 while(number_picked != random_number) {

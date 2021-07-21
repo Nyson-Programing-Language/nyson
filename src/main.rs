@@ -191,7 +191,7 @@ fn set_cont(loc: String, cont: String) -> std::io::Result<()> {
 }
 
 fn copy(path1: String, path2: String) -> std::io::Result<()> {
-    fs::copy(path1, path2)?; // Copy foo.txt to bar.txt
+    fs::copy(path1, path2)?;
     Ok(())
 }
 
