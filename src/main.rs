@@ -101,10 +101,10 @@ fn main() {
     } else {
         let mut pb;
         if hard == true {
-            pb = ProgressBar::new(7);
+            pb = ProgressBar::new(9);
         }
         else {
-            pb = ProgressBar::new(6);
+            pb = ProgressBar::new(8);
         }
         pb.inc();
         Command::new("git")
@@ -115,9 +115,11 @@ fn main() {
             .output()
             .expect("failed to execute process");
         pb.inc();
+        let mut contents = lexer::lexer(contents.clone(), dev);
+        pb.inc();
         if hard == true {
             contents = run::hard(
-                lexer::lexer(contents.clone(), dev),
+                contents,
                 dev,
                 Vec::new(),
                 Vec::new(),
@@ -128,12 +130,16 @@ fn main() {
             );
             pb.inc();
         }
+        for item in 0..contents.len() {
+            contents[item] = contents[item].replace("\"", "\\\"");
+        }
+        pb.inc();
         set_cont(
             "nyson/src/main.rs".to_string(),
             get_new_code(contents.clone()),
         );
         pb.inc();
-        Command::new("cargo")
+        let cargo = Command::new("cargo")
             .args([
                 "build",
                 "--release",
@@ -158,7 +164,7 @@ fn main() {
     }
 }
 
-fn get_new_code(content: String) -> String {
+fn get_new_code(content: Vec<String>) -> String {
     let mut ruturns = "mod lexer;
 mod run;
 
@@ -171,11 +177,9 @@ use std::process::Command;
 
 fn main() {
     let mut dev = false;
-    let to_parse = lexer::lexer(\""
-        .to_string();
-    ruturns.push_str(content.replace("\"", "\\\"").as_str());
-    ruturns.push_str("\".to_string(), dev);
-        run::run(to_parse, dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
+    run::run([\"".to_string();
+    ruturns.push_str(content.join("\", \"").as_str());
+    ruturns.push_str("\"].to_vec().iter().map(|s| s.to_string()).collect(), dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
     }");
     return ruturns;
 }
