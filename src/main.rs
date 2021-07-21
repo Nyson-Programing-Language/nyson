@@ -96,14 +96,13 @@ fn main() {
             Vec::new(),
             Vec::new(),
             Vec::new(),
-            Vec::new()
+            Vec::new(),
         );
     } else {
         let mut pb;
         if hard == true {
             pb = ProgressBar::new(9);
-        }
-        else {
+        } else {
             pb = ProgressBar::new(8);
         }
         pb.inc();
@@ -126,7 +125,7 @@ fn main() {
                 Vec::new(),
                 Vec::new(),
                 Vec::new(),
-                Vec::new()
+                Vec::new(),
             );
             pb.inc();
         }
@@ -177,7 +176,8 @@ use std::process::Command;
 
 fn main() {
     let mut dev = false;
-    run::run([\"".to_string();
+    run::run([\""
+        .to_string();
     ruturns.push_str(content.join("\", \"").as_str());
     ruturns.push_str("\"].to_vec().iter().map(|s| s.to_string()).collect(), dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
     }");

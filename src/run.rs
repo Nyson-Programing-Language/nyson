@@ -1599,7 +1599,6 @@ pub(crate) fn hard(
     mut func_par: Vec<String>,
     mut func_code: Vec<String>,
 ) -> Vec<String> {
-
     if dev {
         println!("contents: {:?}", contents);
     }
