@@ -12,11 +12,11 @@ extern crate pbr;
 extern crate serde_json;
 use std::collections::HashMap;
 
+use git2::Repository;
 use pbr::ProgressBar;
+use serde_json::{Map, Value};
 use std::path::Path;
 use std::thread;
-use serde_json::{Value, Map};
-use git2::Repository;
 
 #[allow(unused_variables)]
 #[allow(unused)]
@@ -37,9 +37,14 @@ fn main() {
         } else if arg == "-install" {
             fs::remove_dir_all("dep");
             fs::create_dir("dep");
-            let json: serde_json::Value = serde_json::from_str(String::from_utf8_lossy((&fs::read_to_string("Nyson.json").unwrap()).as_ref()).to_string().as_str())
-                .expect("file should be proper JSON");
-            let json: HashMap<String, String> = serde_json::from_str(json["dep"].to_string().as_str()).unwrap();
+            let json: serde_json::Value = serde_json::from_str(
+                String::from_utf8_lossy((&fs::read_to_string("Nyson.json").unwrap()).as_ref())
+                    .to_string()
+                    .as_str(),
+            )
+            .expect("file should be proper JSON");
+            let json: HashMap<String, String> =
+                serde_json::from_str(json["dep"].to_string().as_str()).unwrap();
             for item in json {
                 let mut new_path = "dep/".to_string();
                 new_path.push_str(item.0.as_str());
@@ -53,7 +58,10 @@ fn main() {
         } else if arg == "-init" {
             set_cont("Nyson.json".to_string(), "{\n\t\"name\": \"My Program\",\n\t\"dep\": {\n\t\t\"Example\": \"https://github.com/Nyson-Programing-Language/example-dep.git\"\n\t}\n}".to_string());
             fs::create_dir("src");
-            set_cont("src/main.nys".to_string(), "log(\"Hello World\");".to_string());
+            set_cont(
+                "src/main.nys".to_string(),
+                "log(\"Hello World\");".to_string(),
+            );
             compile = true;
             std::process::exit(1);
         } else if arg == "-help" {

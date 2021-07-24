@@ -745,18 +745,21 @@ pub fn imp(
     if begining.clone().len() != 0 {
         string.push_str("/");
     }
-    string.push_str(getstring(
-        x.clone(),
-        contents.clone(),
-        memory_names.clone(),
-        memory_values.clone(),
-        memory_types.clone(),
-        dev.clone(),
-        0,
-    )
+    string.push_str(
+        getstring(
+            x.clone(),
+            contents.clone(),
+            memory_names.clone(),
+            memory_values.clone(),
+            memory_types.clone(),
+            dev.clone(),
+            0,
+        )
         .first()
         .unwrap()
-        .to_string().as_str());
+        .to_string()
+        .as_str(),
+    );
     if dev {
         println!("string: {}", string);
     }
@@ -790,8 +793,7 @@ pub fn imp(
         let mut newstring = begining.clone();
         if begining.clone().len() == 0 {
             newstring.push_str("dep/");
-        }
-        else {
+        } else {
             newstring.push_str("/dep/");
         }
         newstring.push_str(string.clone().as_str());
@@ -847,8 +849,7 @@ pub fn imp(
                             let mut new_loc = begining.clone();
                             if begining.clone().len() == 0 {
                                 new_loc.push_str("dep/");
-                            }
-                            else {
+                            } else {
                                 new_loc.push_str("/dep/");
                             }
                             new_loc.push_str(string.clone().as_str());
@@ -859,7 +860,7 @@ pub fn imp(
                                 memory_values.clone(),
                                 memory_types.clone(),
                                 dev,
-                                new_loc
+                                new_loc,
                             );
                             readfrom = x;
                             skiperwiper = true;
