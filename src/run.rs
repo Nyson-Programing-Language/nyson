@@ -400,6 +400,7 @@ pub fn run(
                             memory_values.clone(),
                             memory_types.clone(),
                             dev,
+                            "".to_string()
                         );
                         readfrom = x;
                         skiperwiper = true;
@@ -1639,6 +1640,7 @@ pub(crate) fn hard(
                             memory_values.clone(),
                             memory_types.clone(),
                             dev,
+                            "".to_string()
                         );
                         readfrom = x;
                         skiperwiper = true;

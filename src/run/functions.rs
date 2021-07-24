@@ -739,27 +739,33 @@ pub fn imp(
     memory_values: Vec<String>,
     memory_types: Vec<String>,
     dev: bool,
+    begining: String,
 ) -> Vec<String> {
-    let string = getstring(
-        x,
-        contents,
-        memory_names,
-        memory_values,
-        memory_types,
-        dev,
+    let mut string = begining.clone();
+    if begining.clone().len() != 0 {
+        string.push_str("/");
+    }
+    string.push_str(getstring(
+        x.clone(),
+        contents.clone(),
+        memory_names.clone(),
+        memory_values.clone(),
+        memory_types.clone(),
+        dev.clone(),
         0,
     )
-    .first()
-    .unwrap()
-    .to_string();
+        .first()
+        .unwrap()
+        .to_string().as_str());
     if dev {
         println!("string: {}", string);
     }
     let mut contents: String = "".to_string();
-    if string.starts_with("https://") || string.starts_with("http://") {
+    let mut came_from_imp = false;
+    if string.clone().starts_with("https://") || string.starts_with("http://") {
         let mut dst = Vec::new();
         let mut easy = Easy::new();
-        easy.url(&*string).unwrap();
+        easy.url(&*string.clone()).unwrap();
 
         let mut transfer = easy.transfer();
         transfer
@@ -772,8 +778,25 @@ pub fn imp(
         drop(transfer);
 
         contents = dst.iter().map(|&c| c as char).collect::<String>();
+    } else if string.clone().ends_with(".nys") {
+        let maybe_contents = fs::read_to_string(string.clone());
+        contents = if maybe_contents.is_ok() {
+            maybe_contents.unwrap()
+        } else {
+            panic!("Could not open file for reading.");
+        };
     } else {
-        let maybe_contents = fs::read_to_string(string);
+        came_from_imp = true;
+        let mut newstring = begining.clone();
+        if begining.clone().len() == 0 {
+            newstring.push_str("dep/");
+        }
+        else {
+            newstring.push_str("/dep/");
+        }
+        newstring.push_str(string.clone().as_str());
+        newstring.push_str("/src/main.nys");
+        let maybe_contents = fs::read_to_string(newstring);
         contents = if maybe_contents.is_ok() {
             maybe_contents.unwrap()
         } else {
@@ -786,9 +809,99 @@ pub fn imp(
     if dev {
         println!("contents: {:?}", contents);
     }
-    let to_parse = lexer::lexer(contents, dev);
+    let mut to_parse = lexer::lexer(contents, dev);
     if dev {
         println!("to_parse: {:?}", to_parse);
+    }
+    if came_from_imp {
+        let mut quotes = 0;
+        let mut squigle = 0;
+        let mut readfrom = 0;
+        let mut skiperwiper = false;
+        let mut read = true;
+        let mut group_memory: Vec<String> = Vec::new();
+        while read {
+            read = false;
+            skiperwiper = false;
+            for mut x in readfrom..to_parse.len() {
+                if skiperwiper == false {
+                    if dev {
+                        println!("contents[x]: {}", to_parse[x]);
+                        println!("x: {}", x);
+                        println!("quotes: {}", quotes);
+                        println!("squigle: {}", squigle);
+                    }
+                    if (to_parse[x] == "\"" || to_parse[x] == "\'" || to_parse[x] == r"\`")
+                        && to_parse[x - 1] != "\\"
+                    {
+                        quotes = quotes + 1;
+                    }
+                    if (to_parse[x] == "{" || to_parse[x] == "[") && quotes % 2 == 0 {
+                        squigle = squigle + 1;
+                    }
+                    if (to_parse[x] == "}" || to_parse[x] == "]") && quotes % 2 == 0 {
+                        squigle = squigle - 1;
+                    }
+                    if quotes % 2 == 0 && squigle == 0 {
+                        if to_parse[x] == "imp" {
+                            let mut new_loc = begining.clone();
+                            if begining.clone().len() == 0 {
+                                new_loc.push_str("dep/");
+                            }
+                            else {
+                                new_loc.push_str("/dep/");
+                            }
+                            new_loc.push_str(string.clone().as_str());
+                            let imp = imp(
+                                x,
+                                to_parse.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                dev,
+                                new_loc
+                            );
+                            readfrom = x;
+                            skiperwiper = true;
+                            read = true;
+                            let mut delete = Vec::new();
+                            let mut deleted = 0;
+                            let mut skirt = false;
+                            let mut n3 = 0;
+                            delete.push(x);
+                            for y1 in x + 1..to_parse.len() {
+                                if skirt == false {
+                                    if to_parse[y1] == "(" {
+                                        n3 = n3 + 1;
+                                    }
+                                    if n3 == 0 {
+                                        skirt = true;
+                                    }
+                                    if to_parse[y1] == ")" {
+                                        n3 = n3 - 1;
+                                    }
+                                    delete.push(y1);
+                                }
+                            }
+                            for item in delete {
+                                to_parse.remove(item - deleted);
+                                deleted = deleted + 1;
+                            }
+                            let mut newVec = Vec::new();
+                            for itom in 0..to_parse.len() {
+                                if itom == x {
+                                    for item in imp.clone() {
+                                        newVec.push(item);
+                                    }
+                                }
+                                newVec.push(to_parse[itom].clone());
+                            }
+                            to_parse = newVec;
+                        }
+                    }
+                }
+            }
+        }
     }
     return to_parse;
 }
