@@ -45,6 +45,7 @@ fn main() {
             .expect("file should be proper JSON");
             let json: HashMap<String, String> =
                 serde_json::from_str(json["dep"].to_string().as_str()).unwrap();
+            let mut pb = ProgressBar::new(json.len() as u64);
             for item in json {
                 let mut new_path = "dep/".to_string();
                 new_path.push_str(item.0.as_str());
@@ -53,6 +54,7 @@ fn main() {
                     Ok(repo) => repo,
                     Err(e) => panic!("failed to clone: {}", e),
                 };
+                pb.inc();
             }
             std::process::exit(1);
         } else if arg == "-init" {
