@@ -1,13 +1,5 @@
-pub enum Tokens {
-    Id { value: String },
-    Op { value: String },
-    Num { value: i32 },
-    Newline { value: String },
-    Quote { value: String },
-}
-
-pub fn lexer(mut contents: String, dev: bool) -> Vec<String> {
-    let contents_literal = split(contents.clone(), dev);
+pub fn lexer(contents: String, dev: bool) -> Vec<String> {
+    let contents_literal = split(contents.clone());
     /*
     for n in 0..contents_literal.len() {
         let lex_vec: Vec<String> = Vec::new();
@@ -24,10 +16,6 @@ pub fn lexer(mut contents: String, dev: bool) -> Vec<String> {
     outputs.remove(0);
     outputs = no_extra_whitespace(outputs, dev);
     return outputs;
-}
-
-fn remove_whitespace(s: &str) -> String {
-    s.split_whitespace().collect()
 }
 
 pub fn no_extra_whitespace(mut input: Vec<String>, dev: bool) -> Vec<String> {
@@ -58,7 +46,7 @@ pub fn no_extra_whitespace(mut input: Vec<String>, dev: bool) -> Vec<String> {
     return input;
 }
 
-pub fn split(mut text: String, dev: bool) -> Vec<String> {
+pub fn split(text: String) -> Vec<String> {
     let mut result = Vec::new();
     let mut last = 0;
     for (index, matched) in text.match_indices(|c: char| !(c.is_ascii())) {
@@ -75,12 +63,12 @@ pub fn split(mut text: String, dev: bool) -> Vec<String> {
     let mut need_split = Vec::new();
 
     for n in 0..result.len() {
-        if (result[n].contains(' ')) {
+        if result[n].contains(' ') {
             let mut number_of_string_selectors = 0;
             for x in 0..n {
-                if (result[x].contains('\"')
+                if result[x].contains('\"')
                     || result[x].contains('\'')
-                    || result[x].contains(r"\`"))
+                    || result[x].contains(r"\`")
                 {
                     number_of_string_selectors = number_of_string_selectors + 1;
                 }
