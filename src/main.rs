@@ -1,5 +1,3 @@
-#![allow(warnings, unused)]
-
 mod lexer;
 mod run;
 
@@ -17,9 +15,6 @@ use pbr::ProgressBar;
 use serde_json::{Map, Value};
 use std::path::Path;
 use std::thread;
-
-#[allow(unused_variables)]
-#[allow(unused)]
 
 fn main() {
     let mut maybe_file = env::args().nth(1);
