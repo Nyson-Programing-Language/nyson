@@ -66,9 +66,7 @@ pub fn split(text: String) -> Vec<String> {
         if result[n].contains(' ') {
             let mut number_of_string_selectors = 0;
             for x in 0..n {
-                if result[x].contains('\"')
-                    || result[x].contains('\'')
-                    || result[x].contains(r"\`")
+                if result[x].contains('\"') || result[x].contains('\'') || result[x].contains(r"\`")
                 {
                     number_of_string_selectors = number_of_string_selectors + 1;
                 }

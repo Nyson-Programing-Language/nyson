@@ -31,6 +31,10 @@ Nyelsonon: https://paypal.me/nyelson
 
 AMTitan: https://paypal.me/AMTitan
 
+## Social Medias:
+
+Discord Server: https://discord.gg/TSD7gpjd
+
 ## Other Repos:
 
 Setup Code: https://github.com/Nyson-Programing-Language/nyson-setup
