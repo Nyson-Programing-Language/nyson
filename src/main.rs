@@ -38,27 +38,7 @@ fn main() {
         } else if arg == "run" {
             run = true;
         } else if arg == "-install" {
-            fs::remove_dir_all("dep");
-            fs::create_dir("dep");
-            let json: serde_json::Value = serde_json::from_str(
-                String::from_utf8_lossy((&fs::read_to_string("Nyson.json").unwrap()).as_ref())
-                    .to_string()
-                    .as_str(),
-            )
-            .expect("file should be proper JSON");
-            let json: HashMap<String, String> =
-                serde_json::from_str(json["dep"].to_string().as_str()).unwrap();
-            let mut pb = ProgressBar::new(json.len() as u64);
-            for item in json {
-                let mut new_path = "dep/".to_string();
-                new_path.push_str(item.0.as_str());
-                let url = item.1;
-                let repo = match Repository::clone(url.as_str(), new_path.clone()) {
-                    Ok(repo) => repo,
-                    Err(e) => panic!("failed to clone: {}", e),
-                };
-                pb.inc();
-            }
+            make_path("".to_string());
             std::process::exit(1);
         } else if arg == "-init" {
             set_cont("Nyson.json".to_string(), "{\n\t\"name\": \"My Program\",\n\t\"dep\": {\n\t\t\"Example\": \"https://github.com/Nyson-Programing-Language/example-dep.git\"\n\t}\n}".to_string());
@@ -245,4 +225,70 @@ fn copy(path1: String, path2: String) -> std::io::Result<()> {
 fn delete(Path: String) -> std::io::Result<()> {
     fs::remove_dir_all(Path)?;
     Ok(())
+}
+
+fn loop_throught_dir(dir: &Path) {
+    if dir.is_dir() {
+        let folder = fs::read_dir(dir).unwrap();
+        let mut pb = ProgressBar::new(fs::read_dir(dir).unwrap().count() as u64);
+        for item in folder {
+            let path = item.unwrap().path();
+            if path.is_dir() {
+                make_path(path.as_path().to_string_lossy().to_string());
+                pb.inc();
+            }
+        }
+    }
+}
+
+fn make_path(path: String) {
+    let mut path_made = path.clone();
+    if path.clone().len() != 0 {
+        path_made.push_str("/dep");
+    }
+    else {
+        path_made.push_str("dep")
+    }
+    fs::remove_dir_all(path_made.clone());
+    fs::create_dir(path_made.clone());
+    let mut path_made = path.clone();
+    if path.clone().len() != 0 {
+        path_made.push_str("/Nyson.json");
+    }
+    else {
+        path_made.push_str("Nyson.json")
+    }
+    let json: serde_json::Value = serde_json::from_str(
+        String::from_utf8_lossy((&fs::read_to_string(path_made).unwrap()).as_ref())
+            .to_string()
+            .as_str(),
+    )
+        .expect("file should be proper JSON");
+    let json: HashMap<String, String> =
+        serde_json::from_str(json["dep"].to_string().as_str()).unwrap();
+    let mut pb = ProgressBar::new(json.len() as u64);
+    for item in json {
+        let mut new_path = path.clone();
+        if path.len() != 0 {
+            new_path.push_str("/dep/");
+        }
+        else {
+            new_path.push_str("dep/");
+        }
+        new_path.push_str(item.0.as_str());
+        let url = item.1;
+        let repo = match Repository::clone(url.as_str(), new_path.clone()) {
+            Ok(repo) => repo,
+            Err(e) => panic!("failed to clone: {}", e),
+        };
+        pb.inc();
+    }
+    let mut new_path = path.clone();
+    if path.len() != 0 {
+        new_path.push_str("/dep/");
+    }
+    else {
+        new_path.push_str("dep/");
+    }
+    loop_throught_dir(new_path.as_ref());
 }
