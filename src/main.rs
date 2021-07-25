@@ -22,11 +22,12 @@ use std::thread;
 #[allow(unused)]
 
 fn main() {
-    let maybe_file = env::args().nth(1);
+    let mut maybe_file = env::args().nth(1);
     let args = env::args();
     let mut dev = false;
     let mut compile = false;
     let mut hard = false;
+    let mut run = false;
     for arg in args {
         if arg == "-dev" {
             dev = true;
@@ -34,6 +35,8 @@ fn main() {
             compile = true;
         } else if arg == "-hard" {
             hard = true;
+        } else if arg == "run" {
+            run = true;
         } else if arg == "-install" {
             fs::remove_dir_all("dep");
             fs::create_dir("dep");
@@ -77,6 +80,7 @@ fn main() {
             println!("|              apps offline if you use a imp from the web  |");
             println!("| -init      - makes the init files                        |");
             println!("| -install   - install all the dependencies                |");
+            println!("| run        - runs the main.nys                           |");
             println!("------------------------------------------------------------");
             std::process::exit(1);
         }
@@ -112,7 +116,13 @@ fn main() {
             }
         }
     };
-    let maybe_contents = fs::read_to_string(file);
+    let maybe_contents;
+    if run {
+        maybe_contents = fs::read_to_string("src/main.nys")
+    }
+    else {
+        maybe_contents = fs::read_to_string(file)
+    }
     let mut contents = if maybe_contents.is_ok() {
         maybe_contents.unwrap()
     } else {
