@@ -245,8 +245,7 @@ fn make_path(path: String) {
     let mut path_made = path.clone();
     if path.clone().len() != 0 {
         path_made.push_str("/dep");
-    }
-    else {
+    } else {
         path_made.push_str("dep")
     }
     fs::remove_dir_all(path_made.clone());
@@ -254,8 +253,7 @@ fn make_path(path: String) {
     let mut path_made = path.clone();
     if path.clone().len() != 0 {
         path_made.push_str("/Nyson.json");
-    }
-    else {
+    } else {
         path_made.push_str("Nyson.json")
     }
     let json: serde_json::Value = serde_json::from_str(
@@ -263,7 +261,7 @@ fn make_path(path: String) {
             .to_string()
             .as_str(),
     )
-        .expect("file should be proper JSON");
+    .expect("file should be proper JSON");
     let json: HashMap<String, String> =
         serde_json::from_str(json["dep"].to_string().as_str()).unwrap();
     let mut pb = ProgressBar::new(json.len() as u64);
@@ -271,8 +269,7 @@ fn make_path(path: String) {
         let mut new_path = path.clone();
         if path.len() != 0 {
             new_path.push_str("/dep/");
-        }
-        else {
+        } else {
             new_path.push_str("dep/");
         }
         new_path.push_str(item.0.as_str());
@@ -286,8 +283,7 @@ fn make_path(path: String) {
     let mut new_path = path.clone();
     if path.len() != 0 {
         new_path.push_str("/dep/");
-    }
-    else {
+    } else {
         new_path.push_str("dep/");
     }
     loop_throught_dir(new_path.as_ref());
