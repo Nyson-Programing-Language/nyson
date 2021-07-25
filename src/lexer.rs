@@ -89,7 +89,7 @@ pub fn split(text: String) -> Vec<String> {
         let text = result[n + inc];
         let mut vec = Vec::new();
         let mut last = 0;
-        for (index, matched) in text.match_indices(|c: char| {
+        for (index, matched) in text.match_indices(|c: char|  {
             !(c.is_alphanumeric()
                 || c == '\''
                 || c == ".".chars().nth(0).unwrap()

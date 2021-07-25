@@ -1,4 +1,4 @@
-imp("Example");
-sayGoodbye();
-sayHi();
-log("done");
+dec str hello = "hello";
+if (hello == "hello" || hello == "hello1" || hello == "hello2") {
+    log("hi");
+}

@@ -863,6 +863,7 @@ pub fn run(
                                 || c == ">".chars().nth(0).unwrap()
                                 || c == "<".chars().nth(0).unwrap()
                                 || c == "|".chars().nth(0).unwrap()
+                                || c == "&".chars().nth(0).unwrap()
                         }) {
                             if last != index {
                                 result.push((&string[last..index]).parse().unwrap());
@@ -887,6 +888,10 @@ pub fn run(
                                 if result[item + 1] == "|" {
                                     output.push("||".parse().unwrap());
                                 }
+                            } else if result[item] == "&" && 0 < item {
+                                if result[item + 1] == "&" {
+                                    output.push("&&".parse().unwrap());
+                                }
                             } else if (result[item] == ">" || result[item] == "<") && 0 < item {
                                 if result[item + 1] != "=" {
                                     output.push(result[item].to_owned());
@@ -898,7 +903,6 @@ pub fn run(
                                 output.push(result[item].parse().unwrap());
                             }
                         }
-                        let mut outcome = false;
                         for item in 0..output.len() {
                             let if_number = output[item].chars();
                             let mut if_number_bool = true;
@@ -942,37 +946,94 @@ pub fn run(
                                     && output[item - 1].parse::<i32>().unwrap()
                                         > output[item + 1].parse::<i32>().unwrap())
                             {
-                                outcome = true;
+                                output[item] = "true".to_string();
+                                output[item-1] = "".to_string();
+                                output[item+1] = "".to_string();
+                            }
+                            else if (output[item] == "==" && !(output[item - 1] == output[item + 1]))
+                                || (output[item] == "!=" && !(output[item - 1] != output[item + 1]))
+                                || (output[item] == ">="
+                                && !(output[item - 1].parse::<i32>().unwrap()
+                                >= output[item + 1].parse::<i32>().unwrap()))
+                                || (output[item] == "<="
+                                && !(output[item - 1].parse::<i32>().unwrap()
+                                <= output[item + 1].parse::<i32>().unwrap()))
+                                || (output[item] == "<"
+                                && !(output[item - 1].parse::<i32>().unwrap()
+                                < output[item + 1].parse::<i32>().unwrap()))
+                                || (output[item] == ">"
+                                && !(output[item - 1].parse::<i32>().unwrap()
+                                > output[item + 1].parse::<i32>().unwrap()))
+                            {
+                                output[item] = "false".to_string();
+                                output[item-1] = "".to_string();
+                                output[item+1] = "".to_string();
                             }
                         }
-                        if outcome == true {
+                        output = lexer::no_extra_whitespace(output, dev);
+                        let mut new_out = Vec::new();
+                        for item in 0..output.len() {
+                            if output[item] != "" {
+                                new_out.push(output[item].clone());
+                            }
+                        }
+                        output = new_out;
+                        while output.len() > 1 {
+                            for item in 0..output.len() {
+                                if item > 0 && item < output.len() {
+                                    if (output[item] == "&&" && output[item - 1] == "true" && output[item + 1] == "true") || (output[item] == "||" && (output[item - 1] == "true" || output[item + 1] == "true"))
+                                    {
+                                        output[item] = "true".to_string();
+                                        output[item-1] = "".to_string();
+                                        output[item+1] = "".to_string();
+                                    }
+                                    else if output[item] == "&&" || output[item] == "||" {
+                                        for i in 0..output.len() {
+                                                output.pop();
+                                        }
+                                        output.push("false".to_string());
+                                    }
+                                }
+                                output = lexer::no_extra_whitespace(output, dev);
+                                let mut new_out = Vec::new();
+                                for item in 0..output.len() {
+                                    if output[item] != "" {
+                                        new_out.push(output[item].clone());
+                                    }
+                                }
+                                output = new_out;
+                            }
+                        }
+                        if output[0] == "true" {
                             contents[loc1] = " ".parse().unwrap();
                             contents[loc2] = " ".parse().unwrap();
                             readfrom = loc1;
                             skiperwiper = true;
                             read = true;
                         } else {
-                            if contents[loc2 + 1] == "while" {
-                                contents[loc2 + 1] = " ".parse().unwrap();
-                            }
-                            else if contents[loc2 + 2] == "while" {
-                                contents[loc2 + 2] = " ".parse().unwrap();
-                            }
-                            else if contents[loc2 + 1] == "else" || contents[loc2 + 2] == "else" {
-                                let mut skip = false;
-                                let mut n = 0;
-                                for y in loc2 + 1..contents.len() {
-                                    if skip == false {
-                                        if contents[y] == "{" {
-                                            if n == 0 {
-                                                contents[y] = "".to_string();
-                                            }
-                                            n = n + 1;
-                                        } else if contents[y] == "}" {
-                                            n = n - 1;
-                                            if n == 0 {
-                                                skip = true;
-                                                contents[y] = "".to_string();
+                            if loc2+2 < contents.len() {
+                                if contents[loc2 + 1] == "while" {
+                                    contents[loc2 + 1] = " ".parse().unwrap();
+                                }
+                                else if contents[loc2 + 2] == "while" {
+                                    contents[loc2 + 2] = " ".parse().unwrap();
+                                }
+                                else if contents[loc2 + 1] == "else" || contents[loc2 + 2] == "else" {
+                                    let mut skip = false;
+                                    let mut n = 0;
+                                    for y in loc2 + 1..contents.len() {
+                                        if skip == false {
+                                            if contents[y] == "{" {
+                                                if n == 0 {
+                                                    contents[y] = "".to_string();
+                                                }
+                                                n = n + 1;
+                                            } else if contents[y] == "}" {
+                                                n = n - 1;
+                                                if n == 0 {
+                                                    skip = true;
+                                                    contents[y] = "".to_string();
+                                                }
                                             }
                                         }
                                     }
@@ -981,7 +1042,6 @@ pub fn run(
                         }
                         if dev {
                             println!("output: {:?}", output);
-                            println!("outcome: {:?}", outcome);
                             println!("code: {:?}", code);
                             println!("contents[loc1]: {:?}", contents[loc1]);
                             println!("contents[loc2]: {:?}", contents[loc2]);
