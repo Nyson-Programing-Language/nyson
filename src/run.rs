@@ -1,8 +1,8 @@
 mod functions;
 use crate::lexer;
+use std::env;
 use std::process::Command;
 use std::{thread, time};
-use std::env;
 extern crate chrono;
 
 pub fn run(
@@ -541,9 +541,7 @@ pub fn run(
                                                 n = 1;
                                             } else if contents[position] == "input" {
                                                 value.push_str(
-                                                    functions::input()
-                                                    .to_string()
-                                                    .as_str(),
+                                                    functions::input().to_string().as_str(),
                                                 );
                                                 n = 1;
                                             } else if contents[position] == "exec" {
@@ -576,16 +574,12 @@ pub fn run(
                                                 n = 1;
                                             } else if contents[position] == "timeh" {
                                                 value.push_str(
-                                                    functions::time_readable()
-                                                    .to_string()
-                                                    .as_str(),
+                                                    functions::time_readable().to_string().as_str(),
                                                 );
                                                 n = 1;
                                             } else if contents[position] == "time" {
                                                 value.push_str(
-                                                    functions::time()
-                                                    .to_string()
-                                                    .as_str(),
+                                                    functions::time().to_string().as_str(),
                                                 );
                                                 n = 1;
                                             } else if contents[position] == "getcont" {
@@ -1125,9 +1119,7 @@ pub fn run(
                                                         n = 1;
                                                     } else if contents[position] == "input" {
                                                         value.push_str(
-                                                            functions::input()
-                                                            .to_string()
-                                                            .as_str(),
+                                                            functions::input().to_string().as_str(),
                                                         );
                                                         n = 1;
                                                     } else if contents[position] == "exec" {
@@ -1161,15 +1153,13 @@ pub fn run(
                                                     } else if contents[position] == "timeh" {
                                                         value.push_str(
                                                             functions::time_readable()
-                                                            .to_string()
-                                                            .as_str(),
+                                                                .to_string()
+                                                                .as_str(),
                                                         );
                                                         n = 1;
                                                     } else if contents[position] == "time" {
                                                         value.push_str(
-                                                            functions::time()
-                                                            .to_string()
-                                                            .as_str(),
+                                                            functions::time().to_string().as_str(),
                                                         );
                                                         n = 1;
                                                     } else if contents[position] == "getcont" {
@@ -1346,9 +1336,7 @@ pub fn run(
                                                         n = 1;
                                                     } else if contents[position] == "input" {
                                                         value.push_str(
-                                                            functions::input()
-                                                            .to_string()
-                                                            .as_str(),
+                                                            functions::input().to_string().as_str(),
                                                         );
                                                         n = 1;
                                                     } else if contents[position] == "exec" {
@@ -1382,15 +1370,13 @@ pub fn run(
                                                     } else if contents[position] == "timeh" {
                                                         value.push_str(
                                                             functions::time_readable()
-                                                            .to_string()
-                                                            .as_str(),
+                                                                .to_string()
+                                                                .as_str(),
                                                         );
                                                         n = 1;
                                                     } else if contents[position] == "time" {
                                                         value.push_str(
-                                                            functions::time()
-                                                            .to_string()
-                                                            .as_str(),
+                                                            functions::time().to_string().as_str(),
                                                         );
                                                         n = 1;
                                                     } else if contents[position] == "getcont" {

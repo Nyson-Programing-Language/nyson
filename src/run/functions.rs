@@ -126,14 +126,9 @@ pub fn getstring(
                     imput_s.push_str(vec[y].as_str());
                 } else if vec[y] == "math" {
                     imput_s.push_str(
-                        math(
-                            y,
-                            vec.to_vec(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                        )
-                        .to_string()
-                        .as_str(),
+                        math(y, vec.to_vec(), memory_names.clone(), memory_values.clone())
+                            .to_string()
+                            .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -151,7 +146,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                 for _z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -187,7 +182,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                 for _z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -223,7 +218,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                 for _z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -259,7 +254,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                 for _z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -267,11 +262,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "input" {
-                    imput_s.push_str(
-                        input()
-                        .to_string()
-                        .as_str(),
-                    );
+                    imput_s.push_str(input().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -288,7 +279,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                 for _z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -324,7 +315,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                 for _z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -360,7 +351,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                 for _z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -368,11 +359,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "timeh" {
-                    imput_s.push_str(
-                        time_readable()
-                        .to_string()
-                        .as_str(),
-                    );
+                    imput_s.push_str(time_readable().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -397,11 +384,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "time" {
-                    imput_s.push_str(
-                        time()
-                        .to_string()
-                        .as_str(),
-                    );
+                    imput_s.push_str(time().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
