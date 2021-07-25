@@ -5,7 +5,7 @@ while(number_picked != random_number) {
     if (number_picked > random_number) {
         log("You need to pick a smaller number");
     }
-    if (number_picked < random_number) {
+    else {
         log("You need to pick a bigger number");
     }
     number_picked: input();

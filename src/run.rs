@@ -955,8 +955,28 @@ pub fn run(
                             if contents[loc2 + 1] == "while" {
                                 contents[loc2 + 1] = " ".parse().unwrap();
                             }
-                            if contents[loc2 + 2] == "while" {
+                            else if contents[loc2 + 2] == "while" {
                                 contents[loc2 + 2] = " ".parse().unwrap();
+                            }
+                            else if contents[loc2 + 1] == "else" || contents[loc2 + 2] == "else" {
+                                let mut skip = false;
+                                let mut n = 0;
+                                for y in loc2 + 1..contents.len() {
+                                    if skip == false {
+                                        if contents[y] == "{" {
+                                            if n == 0 {
+                                                contents[y] = "".to_string();
+                                            }
+                                            n = n + 1;
+                                        } else if contents[y] == "}" {
+                                            n = n - 1;
+                                            if n == 0 {
+                                                skip = true;
+                                                contents[y] = "".to_string();
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         if dev {
