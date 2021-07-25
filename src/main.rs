@@ -119,8 +119,7 @@ fn main() {
     let maybe_contents;
     if run {
         maybe_contents = fs::read_to_string("src/main.nys")
-    }
-    else {
+    } else {
         maybe_contents = fs::read_to_string(file)
     }
     let mut contents = if maybe_contents.is_ok() {
