@@ -1,4 +1,3 @@
-#![allow(unused)]
 pub enum Tokens {
     Id { value: String },
     Op { value: String },
