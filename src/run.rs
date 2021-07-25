@@ -1,4 +1,3 @@
-#![allow(warnings, unused)]
 mod functions;
 use crate::lexer;
 use curl::easy::Easy;
@@ -16,8 +15,6 @@ extern crate chrono;
 use crate::run::functions::*;
 use chrono::prelude::DateTime;
 use chrono::Utc;
-
-#[allow(unused)]
 
 pub fn run(
     mut contents: Vec<String>,
