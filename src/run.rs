@@ -1,23 +1,9 @@
-#![allow(warnings, unused)]
 mod functions;
 use crate::lexer;
-use curl::easy::Easy;
-use rand::Rng;
-use std::fs::File;
-use std::io::stdin;
-use std::io::{stdout, BufReader, Read, Write};
-use std::ops::{Add, Div, Mul, Sub};
 use std::process::Command;
-use std::str::{Split, SplitWhitespace};
-use std::thread;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
-use std::{env, fs};
+use std::{thread, time};
+use std::env;
 extern crate chrono;
-use crate::run::functions::*;
-use chrono::prelude::DateTime;
-use chrono::Utc;
-
-#[allow(unused)]
 
 pub fn run(
     mut contents: Vec<String>,
@@ -35,14 +21,13 @@ pub fn run(
     let mut quotes = 0;
     let mut squigle = 0;
     let mut readfrom = 0;
-    let mut skiperwiper = false;
     let mut read = true;
     let mut threads = Vec::new();
     let mut group_memory: Vec<String> = Vec::new();
     while read {
         read = false;
-        skiperwiper = false;
-        for mut x in readfrom..contents.len() {
+        let mut skiperwiper = false;
+        for x in readfrom..contents.len() {
             if skiperwiper == false {
                 if dev {
                     println!("contents[x]: {}", contents[x]);
@@ -75,11 +60,9 @@ pub fn run(
                         std::process::exit(1);
                     } else if contents[x] == "audio" {
                         let contents_save = contents.clone();
-                        let x_save = x.clone();
                         let memory_types_save = memory_types.clone();
                         let memory_values_save = memory_values.clone();
                         let memory_names_save = memory_names.clone();
-                        let dev_save = dev.clone();
                         let handle = thread::spawn(move || {
                             let stringreturn = functions::getstring(
                                 x,
@@ -93,14 +76,10 @@ pub fn run(
                             .first()
                             .unwrap()
                             .to_string();
-                            let mut vecs = stringreturn.replace("\n", " ");
-                            vecs = vecs.replace("\t", " ");
-                            let mut endvec: Vec<&str> = vecs.split(" ").collect();
-                            use std::env;
                             if env::consts::OS == "linux" {
                                 let mut vecs = stringreturn.replace("\n", " ");
                                 vecs = vecs.replace("\t", " ");
-                                let mut endvec: Vec<&str> = vecs.split(" ").collect();
+                                let endvec: Vec<&str> = vecs.split(" ").collect();
                                 Command::new("cvlc")
                                     .args(endvec)
                                     .output()
@@ -148,8 +127,6 @@ pub fn run(
                             contents.clone(),
                             memory_names.clone(),
                             memory_values.clone(),
-                            memory_types.clone(),
-                            dev,
                         );
                         if number_of_times > 0 as f32 {
                             let mut n = 0;
@@ -174,23 +151,23 @@ pub fn run(
                                 }
                             }
                             vec.remove(0);
-                            let mut newvec = Vec::new();
+                            let mut new_vec = Vec::new();
                             for t in 0..contents.clone().len() {
                                 if t == loc2 {
-                                    for q in 1..number_of_times.round() as i32 {
+                                    for _q in 1..number_of_times.round() as i32 {
                                         for y in vec.clone() {
-                                            newvec.push(y);
+                                            new_vec.push(y);
                                         }
                                     }
                                 } else {
-                                    newvec.push(contents[t].clone());
+                                    new_vec.push(contents[t].clone());
                                 }
                             }
-                            newvec.remove(loc1);
+                            new_vec.remove(loc1);
                             if dev {
-                                println!("newvec: {:?}", newvec);
+                                println!("new_vec: {:?}", new_vec);
                             }
-                            contents = newvec;
+                            contents = new_vec;
                         }
                     } else if contents[x] == "while" {
                         readfrom = x;
@@ -200,14 +177,12 @@ pub fn run(
                         let mut skip = false;
                         let mut n = 0;
                         let mut reached = false;
-                        let mut loc1 = 0;
                         let mut loc2 = 0;
                         for y in x + 1..contents.len() {
                             if skip == false {
                                 if contents[y] == "{" {
                                     n = n + 1;
                                     reached = true;
-                                    loc1 = y;
                                 } else if contents[y] == "}" {
                                     n = n - 1;
                                 }
@@ -219,35 +194,33 @@ pub fn run(
                                 }
                             }
                         }
-                        let mut newvec = Vec::new();
+                        let mut new_vec = Vec::new();
                         for t in 0..contents.clone().len() {
                             if t == x {
-                                newvec.push("if".to_string())
+                                new_vec.push("if".to_string())
                             } else if t == loc2 {
-                                newvec.push(contents[loc2].clone());
+                                new_vec.push(contents[loc2].clone());
                                 for q in x..loc2 + 1 {
-                                    newvec.push(contents[q].clone());
+                                    new_vec.push(contents[q].clone());
                                 }
                             } else {
-                                newvec.push(contents[t].clone());
+                                new_vec.push(contents[t].clone());
                             }
                         }
                         if dev {
-                            println!("newvec: {:?}", newvec);
+                            println!("new_vec: {:?}", new_vec);
                         }
-                        contents = newvec;
+                        contents = new_vec;
                     } else if contents[x] == "sleep" {
                         let number_of_times = functions::math(
                             x,
                             contents.clone(),
                             memory_names.clone(),
                             memory_values.clone(),
-                            memory_types.clone(),
-                            dev,
                         );
-                        thread::sleep_ms(number_of_times as u32);
+                        thread::sleep(time::Duration::from_millis(number_of_times as u64));
                     } else if contents[x] == "exec" {
-                        let stringreturn = functions::exec(
+                        functions::exec(
                             x,
                             contents.clone(),
                             memory_names.clone(),
@@ -256,7 +229,7 @@ pub fn run(
                             dev,
                         );
                     } else if contents[x] == "setcont" {
-                        functions::set_contents(
+                        let r = functions::set_contents(
                             x,
                             contents.clone(),
                             memory_names.clone(),
@@ -264,6 +237,9 @@ pub fn run(
                             memory_types.clone(),
                             dev,
                         );
+                        if !r.is_ok() {
+                            panic!("Could not set file contents.");
+                        }
                     } else if contents[x] == "POST" {
                         functions::post_request(
                             x,
@@ -274,7 +250,6 @@ pub fn run(
                             dev,
                         );
                     } else if contents[x] == "func" {
-                        let vec: Vec<String> = Vec::new();
                         let mut skip = false;
                         let mut n = 1;
                         let mut reached = false;
@@ -382,16 +357,16 @@ pub fn run(
                             contents.remove(item - deleted);
                             deleted = deleted + 1;
                         }
-                        let mut newVec = Vec::new();
+                        let mut new_vec = Vec::new();
                         for itom in 0..contents.len() {
                             if itom == x {
                                 for item in imp.clone() {
-                                    newVec.push(item);
+                                    new_vec.push(item);
                                 }
                             }
-                            newVec.push(contents[itom].clone());
+                            new_vec.push(contents[itom].clone());
                         }
-                        contents = newVec;
+                        contents = new_vec;
                     } else if contents[x] == "imp" {
                         let imp = functions::imp(
                             x,
@@ -428,24 +403,22 @@ pub fn run(
                             contents.remove(item - deleted);
                             deleted = deleted + 1;
                         }
-                        let mut newVec = Vec::new();
+                        let mut new_vec = Vec::new();
                         for itom in 0..contents.len() {
                             if itom == x {
                                 for item in imp.clone() {
-                                    newVec.push(item);
+                                    new_vec.push(item);
                                 }
                             }
-                            newVec.push(contents[itom].clone());
+                            new_vec.push(contents[itom].clone());
                         }
-                        contents = newVec;
+                        contents = new_vec;
                     } else if contents[x] == "dec" {
                         let memory_names_save = memory_names.clone();
-                        let memory_types_save = memory_types.clone();
                         let memory_values_save = memory_values.clone();
                         let mut types = false;
                         let mut position = x + 1;
-                        let mut group = false;
-                        let mut square_brackets = 0;
+                        let square_brackets = 0;
                         if contents[position] == "int" {
                             memory_types.push(String::from("int"));
                             memory_names.push(String::from(contents[position + 1].clone()));
@@ -533,8 +506,6 @@ pub fn run(
                                                         contents.clone(),
                                                         memory_names.clone(),
                                                         memory_values.clone(),
-                                                        memory_types.clone(),
-                                                        dev,
                                                     )
                                                     .to_string()
                                                     .as_str(),
@@ -570,14 +541,7 @@ pub fn run(
                                                 n = 1;
                                             } else if contents[position] == "input" {
                                                 value.push_str(
-                                                    functions::input(
-                                                        position,
-                                                        contents.clone(),
-                                                        memory_names.clone(),
-                                                        memory_values.clone(),
-                                                        memory_types.clone(),
-                                                        dev,
-                                                    )
+                                                    functions::input()
                                                     .to_string()
                                                     .as_str(),
                                                 );
@@ -612,28 +576,14 @@ pub fn run(
                                                 n = 1;
                                             } else if contents[position] == "timeh" {
                                                 value.push_str(
-                                                    functions::time_readable(
-                                                        position,
-                                                        contents.clone(),
-                                                        memory_names.clone(),
-                                                        memory_values.clone(),
-                                                        memory_types.clone(),
-                                                        dev,
-                                                    )
+                                                    functions::time_readable()
                                                     .to_string()
                                                     .as_str(),
                                                 );
                                                 n = 1;
                                             } else if contents[position] == "time" {
                                                 value.push_str(
-                                                    functions::time(
-                                                        position,
-                                                        contents.clone(),
-                                                        memory_names.clone(),
-                                                        memory_values.clone(),
-                                                        memory_types.clone(),
-                                                        dev,
-                                                    )
+                                                    functions::time()
                                                     .to_string()
                                                     .as_str(),
                                                 );
@@ -751,7 +701,6 @@ pub fn run(
                         }
                     } else if contents[x] == "group" {
                         let build_name = String::from(contents[x + 1].clone());
-                        let mut end_pos: usize = 0;
                         let mut objects: Vec<String> = Vec::new();
                         for j in x + 2..contents.len() {
                             if contents[j] == "}" {
@@ -772,7 +721,7 @@ pub fn run(
                                 objects_object.push(objects[y].clone().to_string())
                             }
                         }
-                        let mut classifier = String::new();
+                        String::new();
                         group_memory.push(build_name.clone());
                         group_memory.push(objects_object.len().to_string());
                         for d in 0..objects_object.len() {
@@ -818,17 +767,15 @@ pub fn run(
                                 parameters.push(contents[item].clone());
                             }
                         }
-                        let mut find = String::new();
-                        let mut id_save: Vec<&str> = Vec::new();
                         let mut change = String::new();
                         let mut count = 0;
                         for object in 0..memory_names.len() {
                             if memory_names[object] == parameters[0] {
                                 //    identify.replace("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v", "");
-                                let mut identify_split = memory_values[object]
+                                let identify_split = memory_values[object]
                                     .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
                                 let id_vec: Vec<&str> = identify_split.collect();
-                                id_save = id_vec;
+                                let id_save = id_vec;
                                 let mut id_save_string: Vec<String> = Vec::new();
                                 for thing in 0..id_save.len() {
                                     id_save_string.push(id_save[thing].to_string());
@@ -850,12 +797,10 @@ pub fn run(
                         let mut vec: Vec<String> = Vec::new();
                         let mut skip = false;
                         let mut n = 0;
-                        let mut reached = false;
                         for y in x + 1..contents.len() {
                             if skip == false {
                                 if contents[y] == "{" {
                                     if n == 0 {
-                                        reached = true;
                                         loc1 = y;
                                     }
                                     n = n + 1;
@@ -904,7 +849,7 @@ pub fn run(
                                 z = z + 1;
                             }
                         }
-                        let mut string: String = functions::getstring(
+                        let string: String = functions::getstring(
                             x,
                             contents.clone(),
                             memory_names.clone(),
@@ -936,10 +881,6 @@ pub fn run(
                         }
                         let mut output = Vec::new();
                         for item in 0..result.len() {
-                            let mut next = &result[item];
-                            if 0 < item {
-                                next = &result[item - 1];
-                            }
                             if result[item] == "=" && 0 < item {
                                 if result[item - 1] == "="
                                     || result[item - 1] == "!"
@@ -1048,7 +989,7 @@ pub fn run(
                                 if postion != func_names.len() {
                                     let mut space: String = " ".parse().unwrap();
                                     space.push_str(func_code[postion].as_str());
-                                    let mut to_to_parse = space;
+                                    let to_to_parse = space;
                                     if dev {
                                         println!("contents: {:?}", to_to_parse);
                                     }
@@ -1079,16 +1020,16 @@ pub fn run(
                                         contents.remove(item - deleted);
                                         deleted = deleted + 1;
                                     }
-                                    let mut newVec = Vec::new();
+                                    let mut new_vec = Vec::new();
                                     for itom in 0..contents.len() {
                                         if itom == x {
                                             for item in to_parse.clone() {
-                                                newVec.push(item);
+                                                new_vec.push(item);
                                             }
                                         }
-                                        newVec.push(contents[itom].clone());
+                                        new_vec.push(contents[itom].clone());
                                     }
-                                    contents = newVec;
+                                    contents = new_vec;
                                 } else {
                                     let mut postion = memory_names.len();
                                     let mut skip = false;
@@ -1112,8 +1053,8 @@ pub fn run(
                                         let mut n = 0;
                                         let mut quote = 0;
                                         let memory_names_save = memory_names.clone();
-                                        let mut memory_values_save = memory_values.clone();
-                                        let memmory_types_save = memory_types.clone();
+                                        let memory_values_save = memory_values.clone();
+                                        //let memmory_types_save = memory_types.clone();
                                         loop {
                                             if dev {
                                                 println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
@@ -1135,8 +1076,6 @@ pub fn run(
                                                                 contents.clone(),
                                                                 memory_names.clone(),
                                                                 memory_values.clone(),
-                                                                memory_types.clone(),
-                                                                dev,
                                                             )
                                                             .to_string()
                                                             .as_str(),
@@ -1186,14 +1125,7 @@ pub fn run(
                                                         n = 1;
                                                     } else if contents[position] == "input" {
                                                         value.push_str(
-                                                            functions::input(
-                                                                position,
-                                                                contents.clone(),
-                                                                memory_names.clone(),
-                                                                memory_values.clone(),
-                                                                memory_types.clone(),
-                                                                dev,
-                                                            )
+                                                            functions::input()
                                                             .to_string()
                                                             .as_str(),
                                                         );
@@ -1228,28 +1160,14 @@ pub fn run(
                                                         n = 1;
                                                     } else if contents[position] == "timeh" {
                                                         value.push_str(
-                                                            functions::time_readable(
-                                                                position,
-                                                                contents.clone(),
-                                                                memory_names.clone(),
-                                                                memory_values.clone(),
-                                                                memory_types.clone(),
-                                                                dev,
-                                                            )
+                                                            functions::time_readable()
                                                             .to_string()
                                                             .as_str(),
                                                         );
                                                         n = 1;
                                                     } else if contents[position] == "time" {
                                                         value.push_str(
-                                                            functions::time(
-                                                                position,
-                                                                contents.clone(),
-                                                                memory_names.clone(),
-                                                                memory_values.clone(),
-                                                                memory_types.clone(),
-                                                                dev,
-                                                            )
+                                                            functions::time()
                                                             .to_string()
                                                             .as_str(),
                                                         );
@@ -1334,8 +1252,6 @@ pub fn run(
                                             contents.clone(),
                                             memory_names.clone(),
                                             memory_values.clone(),
-                                            memory_types.clone(),
-                                            dev,
                                         );
                                         let mut skipz = false;
                                         let mut nigro = 0;
@@ -1358,8 +1274,8 @@ pub fn run(
                                         let mut n = 0;
                                         let mut quote = 0;
                                         let memory_names_save = memory_names.clone();
-                                        let mut memory_values_save = memory_values.clone();
-                                        let memmory_types_save = memory_types.clone();
+                                        let memory_values_save = memory_values.clone();
+                                        //let memmory_types_save = memory_types.clone();
                                         loop {
                                             if contents[position] == ";" {
                                                 if dev {
@@ -1381,8 +1297,6 @@ pub fn run(
                                                                 contents.clone(),
                                                                 memory_names.clone(),
                                                                 memory_values.clone(),
-                                                                memory_types.clone(),
-                                                                dev,
                                                             )
                                                             .to_string()
                                                             .as_str(),
@@ -1432,14 +1346,7 @@ pub fn run(
                                                         n = 1;
                                                     } else if contents[position] == "input" {
                                                         value.push_str(
-                                                            functions::input(
-                                                                position,
-                                                                contents.clone(),
-                                                                memory_names.clone(),
-                                                                memory_values.clone(),
-                                                                memory_types.clone(),
-                                                                dev,
-                                                            )
+                                                            functions::input()
                                                             .to_string()
                                                             .as_str(),
                                                         );
@@ -1474,28 +1381,14 @@ pub fn run(
                                                         n = 1;
                                                     } else if contents[position] == "timeh" {
                                                         value.push_str(
-                                                            functions::time_readable(
-                                                                position,
-                                                                contents.clone(),
-                                                                memory_names.clone(),
-                                                                memory_values.clone(),
-                                                                memory_types.clone(),
-                                                                dev,
-                                                            )
+                                                            functions::time_readable()
                                                             .to_string()
                                                             .as_str(),
                                                         );
                                                         n = 1;
                                                     } else if contents[position] == "time" {
                                                         value.push_str(
-                                                            functions::time(
-                                                                position,
-                                                                contents.clone(),
-                                                                memory_names.clone(),
-                                                                memory_values.clone(),
-                                                                memory_types.clone(),
-                                                                dev,
-                                                            )
+                                                            functions::time()
                                                             .to_string()
                                                             .as_str(),
                                                         );
@@ -1593,12 +1486,9 @@ pub fn run(
 pub(crate) fn hard(
     mut contents: Vec<String>,
     dev: bool,
-    mut memory_names: Vec<String>,
-    mut memory_values: Vec<String>,
-    mut memory_types: Vec<String>,
-    mut func_names: Vec<String>,
-    mut func_par: Vec<String>,
-    mut func_code: Vec<String>,
+    memory_names: Vec<String>,
+    memory_values: Vec<String>,
+    memory_types: Vec<String>,
 ) -> Vec<String> {
     if dev {
         println!("contents: {:?}", contents);
@@ -1606,13 +1496,11 @@ pub(crate) fn hard(
     let mut quotes = 0;
     let mut squigle = 0;
     let mut readfrom = 0;
-    let mut skiperwiper = false;
     let mut read = true;
-    let mut group_memory: Vec<String> = Vec::new();
     while read {
         read = false;
-        skiperwiper = false;
-        for mut x in readfrom..contents.len() {
+        let mut skiperwiper = false;
+        for x in readfrom..contents.len() {
             if skiperwiper == false {
                 if dev {
                     println!("contents[x]: {}", contents[x]);
@@ -1668,16 +1556,16 @@ pub(crate) fn hard(
                             contents.remove(item - deleted);
                             deleted = deleted + 1;
                         }
-                        let mut newVec = Vec::new();
+                        let mut new_vec = Vec::new();
                         for itom in 0..contents.len() {
                             if itom == x {
                                 for item in imp.clone() {
-                                    newVec.push(item);
+                                    new_vec.push(item);
                                 }
                             }
-                            newVec.push(contents[itom].clone());
+                            new_vec.push(contents[itom].clone());
                         }
-                        contents = newVec;
+                        contents = new_vec;
                     }
                 }
             }

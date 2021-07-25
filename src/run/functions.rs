@@ -2,12 +2,9 @@ use crate::lexer;
 use curl::easy::Easy;
 use rand::Rng;
 use std::fs::File;
-use std::io::stdin;
-use std::io::{stdout, BufReader, Read, Write};
+use std::io::{Read, Write};
 use std::ops::{Add, Div, Mul, Sub};
 use std::process::Command;
-use std::str::{Split, SplitWhitespace};
-use std::thread;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use std::{env, fs};
 extern crate chrono;
@@ -87,7 +84,7 @@ pub fn getstring(
     if int == 0 || int == 2 {
         vec.remove(0);
     }
-    let mut skip = false;
+    let skip = false;
     let mut imput_s: String = "".to_string();
     let mut n = 0;
     let mut n1 = 1;
@@ -134,8 +131,6 @@ pub fn getstring(
                             vec.to_vec(),
                             memory_names.clone(),
                             memory_values.clone(),
-                            memory_types.clone(),
-                            dev,
                         )
                         .to_string()
                         .as_str(),
@@ -156,7 +151,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                 for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -192,7 +187,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                 for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -228,7 +223,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                 for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -264,7 +259,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                 for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -273,14 +268,7 @@ pub fn getstring(
                     skips = leng;
                 } else if vec[y] == "input" {
                     imput_s.push_str(
-                        input(
-                            y,
-                            vec.to_vec(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            memory_types.clone(),
-                            dev,
-                        )
+                        input()
                         .to_string()
                         .as_str(),
                     );
@@ -300,7 +288,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                 for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -336,7 +324,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                 for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -372,7 +360,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                 for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -381,14 +369,7 @@ pub fn getstring(
                     skips = leng;
                 } else if vec[y] == "timeh" {
                     imput_s.push_str(
-                        time_readable(
-                            y,
-                            vec.to_vec(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            memory_types.clone(),
-                            dev,
-                        )
+                        time_readable()
                         .to_string()
                         .as_str(),
                     );
@@ -408,7 +389,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -417,14 +398,7 @@ pub fn getstring(
                     skips = leng;
                 } else if vec[y] == "time" {
                     imput_s.push_str(
-                        time(
-                            y,
-                            vec.to_vec(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            memory_types.clone(),
-                            dev,
-                        )
+                        time()
                         .to_string()
                         .as_str(),
                     );
@@ -444,7 +418,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -480,7 +454,7 @@ pub fn getstring(
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for z in y + 1..f + 1 {
+                                for _z in y + 1..f + 1 {
                                     leng = leng + 1;
                                 }
                             }
@@ -506,8 +480,6 @@ pub fn getstring(
                                     vec.to_vec(),
                                     memory_names.clone(),
                                     memory_values.clone(),
-                                    memory_types.clone(),
-                                    dev,
                                 )
                                 .to_string();
                                 imput_s.push_str(
@@ -661,14 +633,7 @@ pub fn set_contents(
     Ok(())
 }
 
-pub fn input(
-    x: usize,
-    contents: Vec<String>,
-    memory_names: Vec<String>,
-    memory_values: Vec<String>,
-    memory_types: Vec<String>,
-    dev: bool,
-) -> String {
+pub fn input() -> String {
     let mut line = String::new();
     std::io::stdin().read_line(&mut line).unwrap();
     return line.trim().to_string();
@@ -695,7 +660,7 @@ pub fn get_contents(
     .unwrap()
     .to_string();
     let maybe_contents = fs::read_to_string(string);
-    let mut contents = if maybe_contents.is_ok() {
+    let contents = if maybe_contents.is_ok() {
         maybe_contents.unwrap()
     } else {
         panic!("Could not open file for reading.");
@@ -711,7 +676,7 @@ pub fn replace(
     memory_types: Vec<String>,
     dev: bool,
 ) -> String {
-    let mut vec = getstring(
+    let vec = getstring(
         x,
         contents,
         memory_names,
@@ -763,7 +728,7 @@ pub fn imp(
     if dev {
         println!("string: {}", string);
     }
-    let mut contents: String = "".to_string();
+    let mut contents;
     let mut came_from_imp = false;
     if string.clone().starts_with("https://") || string.starts_with("http://") {
         let mut dst = Vec::new();
@@ -819,13 +784,11 @@ pub fn imp(
         let mut quotes = 0;
         let mut squigle = 0;
         let mut readfrom = 0;
-        let mut skiperwiper = false;
         let mut read = true;
-        let mut group_memory: Vec<String> = Vec::new();
         while read {
             read = false;
-            skiperwiper = false;
-            for mut x in readfrom..to_parse.len() {
+            let mut skiperwiper = false;
+            for x in readfrom..to_parse.len() {
                 if skiperwiper == false {
                     if dev {
                         println!("contents[x]: {}", to_parse[x]);
@@ -888,16 +851,16 @@ pub fn imp(
                                 to_parse.remove(item - deleted);
                                 deleted = deleted + 1;
                             }
-                            let mut newVec = Vec::new();
+                            let mut new_vec = Vec::new();
                             for itom in 0..to_parse.len() {
                                 if itom == x {
                                     for item in imp.clone() {
-                                        newVec.push(item);
+                                        new_vec.push(item);
                                     }
                                 }
-                                newVec.push(to_parse[itom].clone());
+                                new_vec.push(to_parse[itom].clone());
                             }
-                            to_parse = newVec;
+                            to_parse = new_vec;
                         }
                     }
                 }
@@ -912,8 +875,6 @@ pub fn math(
     contents: Vec<String>,
     memory_names: Vec<String>,
     memory_values: Vec<String>,
-    memory_types: Vec<String>,
-    dev: bool,
 ) -> f32 {
     let mut vec: Vec<String> = Vec::new();
     let mut skip = false;
@@ -1217,15 +1178,8 @@ pub fn trim(
     .to_string();
 }
 
-pub fn time_readable(
-    x: usize,
-    contents: Vec<String>,
-    memory_names: Vec<String>,
-    memory_values: Vec<String>,
-    memory_types: Vec<String>,
-    dev: bool,
-) -> String {
-    let time = time(x, contents, memory_names, memory_values, memory_types, dev);
+pub fn time_readable() -> String {
+    let time = time();
     let d = UNIX_EPOCH + Duration::from_millis(time as u64);
     // Create DateTime from SystemTime
     let datetime = DateTime::<Utc>::from(d);
@@ -1338,14 +1292,7 @@ pub fn post_request(
     transfer.perform().unwrap();
 }
 
-pub fn time(
-    x: usize,
-    contents: Vec<String>,
-    memory_names: Vec<String>,
-    memory_values: Vec<String>,
-    memory_types: Vec<String>,
-    dev: bool,
-) -> f64 {
+pub fn time() -> f64 {
     let start = SystemTime::now();
     let since_the_epoch = start
         .duration_since(UNIX_EPOCH)

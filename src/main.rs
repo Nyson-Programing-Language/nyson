@@ -1,12 +1,10 @@
-#![allow(warnings, unused)]
-
 mod lexer;
 mod run;
 
 use std::env;
 use std::fs;
 use std::fs::File;
-use std::io::{Bytes, Write};
+use std::io::Write;
 use std::process::Command;
 extern crate pbr;
 extern crate serde_json;
@@ -14,15 +12,10 @@ use std::collections::HashMap;
 
 use git2::Repository;
 use pbr::ProgressBar;
-use serde_json::{Map, Value};
 use std::path::Path;
-use std::thread;
-
-#[allow(unused_variables)]
-#[allow(unused)]
 
 fn main() {
-    let mut maybe_file = env::args().nth(1);
+    let maybe_file = env::args().nth(1);
     let args = env::args();
     let mut dev = false;
     let mut compile = false;
@@ -41,13 +34,21 @@ fn main() {
             make_path("".to_string());
             std::process::exit(1);
         } else if arg == "-init" {
-            set_cont("Nyson.json".to_string(), "{\n\t\"name\": \"My Program\",\n\t\"dep\": {\n\t\t\"Example\": \"https://github.com/Nyson-Programing-Language/example-dep.git\"\n\t}\n}".to_string());
-            fs::create_dir("src");
-            set_cont(
+            let r = set_cont("Nyson.json".to_string(), "{\n\t\"name\": \"My Program\",\n\t\"dep\": {\n\t\t\"Example\": \"https://github.com/Nyson-Programing-Language/example-dep.git\"\n\t}\n}".to_string());
+            if !r.is_ok() {
+                panic!("Could not set file contents.");
+            }
+            let r = fs::create_dir("src");
+            if !r.is_ok() {
+                panic!("Could not create dir.");
+            }
+            let r = set_cont(
                 "src/main.nys".to_string(),
                 "log(\"Hello World\");".to_string(),
             );
-            compile = true;
+            if !r.is_ok() {
+                panic!("Could not set file contents.");
+            }
             std::process::exit(1);
         } else if arg == "-help" {
             println!("                            HELP                            ");
@@ -150,9 +151,6 @@ fn main() {
                 Vec::new(),
                 Vec::new(),
                 Vec::new(),
-                Vec::new(),
-                Vec::new(),
-                Vec::new(),
             );
             pb.inc();
         }
@@ -160,12 +158,15 @@ fn main() {
             contents[item] = contents[item].replace("\"", "\\\"");
         }
         pb.inc();
-        set_cont(
+        let r = set_cont(
             "nyson/src/main.rs".to_string(),
             get_new_code(contents.clone()),
         );
+        if !r.is_ok() {
+            panic!("Could not set file contents.");
+        }
         pb.inc();
-        let cargo = Command::new("cargo")
+        Command::new("cargo")
             .args([
                 "build",
                 "--release",
@@ -175,16 +176,19 @@ fn main() {
             .output()
             .expect("failed to execute process");
         pb.inc();
-        copy(
+        let _r = copy(
             "nyson/target/release/nyson.exe".to_string(),
             "nysonProgram.exe".to_string(),
         );
-        copy(
+        let _r = copy(
             "nyson/target/release/nyson".to_string(),
             "nysonProgram".to_string(),
         );
         pb.inc();
-        delete("nyson".to_string());
+        let r = delete("nyson".to_string());
+        if !r.is_ok() {
+            panic!("Could not delete file.");
+        }
         pb.inc();
         pb.finish_print("done");
     }
@@ -202,7 +206,7 @@ use std::process::Command;
 #[allow(unused)]
 
 fn main() {
-    let mut dev = false;
+    let dev = false;
     run::run([\""
         .to_string();
     ruturns.push_str(content.join("\", \"").as_str());
@@ -222,8 +226,8 @@ fn copy(path1: String, path2: String) -> std::io::Result<()> {
     Ok(())
 }
 
-fn delete(Path: String) -> std::io::Result<()> {
-    fs::remove_dir_all(Path)?;
+fn delete(path: String) -> std::io::Result<()> {
+    fs::remove_dir_all(path)?;
     Ok(())
 }
 
@@ -248,8 +252,14 @@ fn make_path(path: String) {
     } else {
         path_made.push_str("dep")
     }
-    fs::remove_dir_all(path_made.clone());
-    fs::create_dir(path_made.clone());
+    let r = fs::remove_dir_all(path_made.clone());
+    if !r.is_ok() {
+        panic!("Could not delete dir.");
+    }
+    let r = fs::create_dir(path_made.clone());
+    if !r.is_ok() {
+        panic!("Could not create dir.");
+    }
     let mut path_made = path.clone();
     if path.clone().len() != 0 {
         path_made.push_str("/Nyson.json");
@@ -274,7 +284,7 @@ fn make_path(path: String) {
         }
         new_path.push_str(item.0.as_str());
         let url = item.1;
-        let repo = match Repository::clone(url.as_str(), new_path.clone()) {
+        let _repo = match Repository::clone(url.as_str(), new_path.clone()) {
             Ok(repo) => repo,
             Err(e) => panic!("failed to clone: {}", e),
         };
