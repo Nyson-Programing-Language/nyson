@@ -10,7 +10,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
             toolchain: stable
-            components: rustfmt
+            components: rustfmt, clippy
             override: true
       - uses: mbrobbel/rustfmt-check@master
         with:
