@@ -947,27 +947,27 @@ pub fn run(
                                         > output[item + 1].parse::<i32>().unwrap())
                             {
                                 output[item] = "true".to_string();
-                                output[item-1] = "".to_string();
-                                output[item+1] = "".to_string();
-                            }
-                            else if (output[item] == "==" && !(output[item - 1] == output[item + 1]))
+                                output[item - 1] = "".to_string();
+                                output[item + 1] = "".to_string();
+                            } else if (output[item] == "=="
+                                && !(output[item - 1] == output[item + 1]))
                                 || (output[item] == "!=" && !(output[item - 1] != output[item + 1]))
                                 || (output[item] == ">="
-                                && !(output[item - 1].parse::<i32>().unwrap()
-                                >= output[item + 1].parse::<i32>().unwrap()))
+                                    && !(output[item - 1].parse::<i32>().unwrap()
+                                        >= output[item + 1].parse::<i32>().unwrap()))
                                 || (output[item] == "<="
-                                && !(output[item - 1].parse::<i32>().unwrap()
-                                <= output[item + 1].parse::<i32>().unwrap()))
+                                    && !(output[item - 1].parse::<i32>().unwrap()
+                                        <= output[item + 1].parse::<i32>().unwrap()))
                                 || (output[item] == "<"
-                                && !(output[item - 1].parse::<i32>().unwrap()
-                                < output[item + 1].parse::<i32>().unwrap()))
+                                    && !(output[item - 1].parse::<i32>().unwrap()
+                                        < output[item + 1].parse::<i32>().unwrap()))
                                 || (output[item] == ">"
-                                && !(output[item - 1].parse::<i32>().unwrap()
-                                > output[item + 1].parse::<i32>().unwrap()))
+                                    && !(output[item - 1].parse::<i32>().unwrap()
+                                        > output[item + 1].parse::<i32>().unwrap()))
                             {
                                 output[item] = "false".to_string();
-                                output[item-1] = "".to_string();
-                                output[item+1] = "".to_string();
+                                output[item - 1] = "".to_string();
+                                output[item + 1] = "".to_string();
                             }
                         }
                         output = lexer::no_extra_whitespace(output, dev);
@@ -981,15 +981,19 @@ pub fn run(
                         while output.len() > 1 {
                             for item in 0..output.len() {
                                 if item > 0 && item < output.len() {
-                                    if (output[item] == "&&" && output[item - 1] == "true" && output[item + 1] == "true") || (output[item] == "||" && (output[item - 1] == "true" || output[item + 1] == "true"))
+                                    if (output[item] == "&&"
+                                        && output[item - 1] == "true"
+                                        && output[item + 1] == "true")
+                                        || (output[item] == "||"
+                                            && (output[item - 1] == "true"
+                                                || output[item + 1] == "true"))
                                     {
                                         output[item] = "true".to_string();
-                                        output[item-1] = "".to_string();
-                                        output[item+1] = "".to_string();
-                                    }
-                                    else if output[item] == "&&" || output[item] == "||" {
+                                        output[item - 1] = "".to_string();
+                                        output[item + 1] = "".to_string();
+                                    } else if output[item] == "&&" || output[item] == "||" {
                                         for i in 0..output.len() {
-                                                output.pop();
+                                            output.pop();
                                         }
                                         output.push("false".to_string());
                                     }
@@ -1011,14 +1015,14 @@ pub fn run(
                             skiperwiper = true;
                             read = true;
                         } else {
-                            if loc2+2 < contents.len() {
+                            if loc2 + 2 < contents.len() {
                                 if contents[loc2 + 1] == "while" {
                                     contents[loc2 + 1] = " ".parse().unwrap();
-                                }
-                                else if contents[loc2 + 2] == "while" {
+                                } else if contents[loc2 + 2] == "while" {
                                     contents[loc2 + 2] = " ".parse().unwrap();
-                                }
-                                else if contents[loc2 + 1] == "else" || contents[loc2 + 2] == "else" {
+                                } else if contents[loc2 + 1] == "else"
+                                    || contents[loc2 + 2] == "else"
+                                {
                                     let mut skip = false;
                                     let mut n = 0;
                                     for y in loc2 + 1..contents.len() {
