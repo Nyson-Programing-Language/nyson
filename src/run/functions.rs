@@ -87,7 +87,6 @@ pub fn getstring(
     let skip = false;
     let mut imput_s: String = "".to_string();
     let mut n = 0;
-    let mut n1 = 1;
     let mut skips = 0;
     let mut output_array = Vec::new();
     for y in 0..vec.len() {
@@ -119,9 +118,7 @@ pub fn getstring(
                 }
                 if !continues {
                 } else if vec[y] == "(" && n % 2 == 0 {
-                    n1 += 1;
                 } else if vec[y] == ")" && n % 2 == 0 {
-                    n1 -= 1;
                 } else if n % 2 == 1 {
                     imput_s.push_str(vec[y].as_str());
                 } else if vec[y] == "math" {
