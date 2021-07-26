@@ -10,12 +10,11 @@ jobs:
         with:
           toolchain: stable
       - run: cargo fix
-      - run: git commit -m "Cargo Fix"
       - name: Commit files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -m "Add changes" -a
+          git commit -m "Cargo Fix" -a
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
