@@ -676,10 +676,13 @@ pub fn run(
                         if types {
                             memory_names.push(value.clone());
                         }
-                        if memory_types[memory_types.len()-1] == "int"{
-                           let mut expr = eval(memory_values[memory_values.len()-1].clone().as_str()).unwrap().to_string();
-                           memory_values.pop();
-                           memory_values.push(expr);
+                        if memory_types[memory_types.len() - 1] == "int" {
+                            let mut expr =
+                                eval(memory_values[memory_values.len() - 1].clone().as_str())
+                                    .unwrap()
+                                    .to_string();
+                            memory_values.pop();
+                            memory_values.push(expr);
                         }
                         if dev {
                             println!("memory_names: {:?}", memory_names);
