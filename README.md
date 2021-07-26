@@ -25,12 +25,6 @@ https://nyson-programing-language.github.io/
 
 https://github.com/Nyelsonon/nyson-programming-language
 
-## Support Us ❤️:
-
-Nyelsonon: https://paypal.me/nyelson
-
-AMTitan: https://paypal.me/AMTitan
-
 ## Social Medias:
 
 Discord Server: https://discord.gg/TSD7gpjd
