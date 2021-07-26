@@ -111,7 +111,9 @@ pub fn getstring(
                         n += 1;
                         continues = false;
                     }
-                } else if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y - 1] != "\\" {
+                } else if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`")
+                    && vec[y - 1] != "\\"
+                {
                     n += 1;
                     continues = false;
                 }
@@ -639,7 +641,7 @@ pub fn get_contents(
     .unwrap()
     .to_string();
     let maybe_contents = fs::read_to_string(string);
-    
+
     if maybe_contents.is_ok() {
         maybe_contents.unwrap()
     } else {

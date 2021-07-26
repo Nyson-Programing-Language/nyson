@@ -539,9 +539,7 @@ pub fn run(
                                             );
                                             n = 1;
                                         } else if contents[position] == "input" {
-                                            value.push_str(
-                                                functions::input().to_string().as_str(),
-                                            );
+                                            value.push_str(functions::input().to_string().as_str());
                                             n = 1;
                                         } else if contents[position] == "exec" {
                                             value.push_str(
@@ -577,9 +575,7 @@ pub fn run(
                                             );
                                             n = 1;
                                         } else if contents[position] == "time" {
-                                            value.push_str(
-                                                functions::time().to_string().as_str(),
-                                            );
+                                            value.push_str(functions::time().to_string().as_str());
                                             n = 1;
                                         } else if contents[position] == "getcont" {
                                             value.push_str(
@@ -602,8 +598,10 @@ pub fn run(
                                                 let mut positions = memory_names_save.len();
                                                 let mut skip = false;
                                                 for pos in 0..memory_names_save.len() {
-                                                    if !skip && memory_names_save[pos]
-                                                            == contents[position] {
+                                                    if !skip
+                                                        && memory_names_save[pos]
+                                                            == contents[position]
+                                                    {
                                                         positions = pos;
                                                         skip = true;
                                                     }
@@ -618,9 +616,7 @@ pub fn run(
                                                             .as_str(),
                                                     );
                                                 } else {
-                                                    value.push_str(
-                                                        contents[position].as_str(),
-                                                    );
+                                                    value.push_str(contents[position].as_str());
                                                 }
                                             }
                                         }
@@ -659,8 +655,10 @@ pub fn run(
                                 name.push('.');
                                 let mut location = 0;
                                 for items in 0..group_memory.len() {
-                                    if items < group_memory.len() - 1 && group_memory[items + 1].parse::<i32>().is_ok()
-                                            && group_memory[items] == clone_class.clone() {
+                                    if items < group_memory.len() - 1
+                                        && group_memory[items + 1].parse::<i32>().is_ok()
+                                        && group_memory[items] == clone_class.clone()
+                                    {
                                         location = items + (d * 2) + 3;
                                     }
                                 }
@@ -1004,9 +1002,7 @@ pub fn run(
                                 contents[loc2 + 1] = " ".parse().unwrap();
                             } else if contents[loc2 + 2] == "while" {
                                 contents[loc2 + 2] = " ".parse().unwrap();
-                            } else if contents[loc2 + 1] == "else"
-                                || contents[loc2 + 2] == "else"
-                            {
+                            } else if contents[loc2 + 1] == "else" || contents[loc2 + 2] == "else" {
                                 let mut skip = false;
                                 let mut n = 0;
                                 for y in loc2 + 1..contents.len() {
@@ -1091,15 +1087,13 @@ pub fn run(
                             let mut postion = memory_names.len();
                             let mut skip = false;
                             for pos in 0..memory_names.len() {
-                                if !skip && memory_names[pos]
-                                        == contents[x] {
+                                if !skip && memory_names[pos] == contents[x] {
                                     postion = pos;
                                     skip = true;
                                 }
                             }
                             if postion != memory_names.len()
-                                && (contents[x + 1].trim() == ":"
-                                    || contents[x + 1].trim() == "=")
+                                && (contents[x + 1].trim() == ":" || contents[x + 1].trim() == "=")
                                 && contents[x - 2].trim() != "dec"
                             {
                                 let mut position = x + 2;
@@ -1177,9 +1171,7 @@ pub fn run(
                                             );
                                             n = 1;
                                         } else if contents[position] == "input" {
-                                            value.push_str(
-                                                functions::input().to_string().as_str(),
-                                            );
+                                            value.push_str(functions::input().to_string().as_str());
                                             n = 1;
                                         } else if contents[position] == "exec" {
                                             value.push_str(
@@ -1211,15 +1203,11 @@ pub fn run(
                                             n = 1;
                                         } else if contents[position] == "timeh" {
                                             value.push_str(
-                                                functions::time_readable()
-                                                    .to_string()
-                                                    .as_str(),
+                                                functions::time_readable().to_string().as_str(),
                                             );
                                             n = 1;
                                         } else if contents[position] == "time" {
-                                            value.push_str(
-                                                functions::time().to_string().as_str(),
-                                            );
+                                            value.push_str(functions::time().to_string().as_str());
                                             n = 1;
                                         } else if contents[position] == "getcont" {
                                             value.push_str(
@@ -1237,35 +1225,27 @@ pub fn run(
                                             n = 1;
                                         } else if n == 0 {
                                             if quote % 2 == 1 {
-                                                value.push_str(
-                                                    contents[position].as_str(),
-                                                );
+                                                value.push_str(contents[position].as_str());
                                             } else {
-                                                let mut positions =
-                                                    memory_names_save.len();
+                                                let mut positions = memory_names_save.len();
                                                 let mut skip = false;
-                                                for pos in
-                                                    0..memory_names_save.len()
-                                                {
-                                                    if !skip && memory_names_save[pos]
-                                                            == contents[position] {
+                                                for pos in 0..memory_names_save.len() {
+                                                    if !skip
+                                                        && memory_names_save[pos]
+                                                            == contents[position]
+                                                    {
                                                         positions = pos;
                                                         skip = true;
                                                     }
                                                 }
-                                                if positions
-                                                    != memory_names_save.len()
-                                                {
+                                                if positions != memory_names_save.len() {
                                                     value.push_str(
-                                                        memory_values_save
-                                                            [positions]
+                                                        memory_values_save[positions]
                                                             .to_string()
                                                             .as_str(),
                                                     );
                                                 } else {
-                                                    value.push_str(
-                                                        contents[position].as_str(),
-                                                    );
+                                                    value.push_str(contents[position].as_str());
                                                 }
                                             }
                                         }
@@ -1385,9 +1365,7 @@ pub fn run(
                                             );
                                             n = 1;
                                         } else if contents[position] == "input" {
-                                            value.push_str(
-                                                functions::input().to_string().as_str(),
-                                            );
+                                            value.push_str(functions::input().to_string().as_str());
                                             n = 1;
                                         } else if contents[position] == "exec" {
                                             value.push_str(
@@ -1419,15 +1397,11 @@ pub fn run(
                                             n = 1;
                                         } else if contents[position] == "timeh" {
                                             value.push_str(
-                                                functions::time_readable()
-                                                    .to_string()
-                                                    .as_str(),
+                                                functions::time_readable().to_string().as_str(),
                                             );
                                             n = 1;
                                         } else if contents[position] == "time" {
-                                            value.push_str(
-                                                functions::time().to_string().as_str(),
-                                            );
+                                            value.push_str(functions::time().to_string().as_str());
                                             n = 1;
                                         } else if contents[position] == "getcont" {
                                             value.push_str(
@@ -1445,35 +1419,27 @@ pub fn run(
                                             n = 1;
                                         } else if n == 0 {
                                             if quote % 2 == 1 {
-                                                value.push_str(
-                                                    contents[position].as_str(),
-                                                );
+                                                value.push_str(contents[position].as_str());
                                             } else {
-                                                let mut positions =
-                                                    memory_names_save.len();
+                                                let mut positions = memory_names_save.len();
                                                 let mut skip = false;
-                                                for pos in
-                                                    0..memory_names_save.len()
-                                                {
-                                                    if !skip && memory_names_save[pos]
-                                                            == contents[position] {
+                                                for pos in 0..memory_names_save.len() {
+                                                    if !skip
+                                                        && memory_names_save[pos]
+                                                            == contents[position]
+                                                    {
                                                         positions = pos;
                                                         skip = true;
                                                     }
                                                 }
-                                                if positions
-                                                    != memory_names_save.len()
-                                                {
+                                                if positions != memory_names_save.len() {
                                                     value.push_str(
-                                                        memory_values_save
-                                                            [positions]
+                                                        memory_values_save[positions]
                                                             .to_string()
                                                             .as_str(),
                                                     );
                                                 } else {
-                                                    value.push_str(
-                                                        contents[position].as_str(),
-                                                    );
+                                                    value.push_str(contents[position].as_str());
                                                 }
                                             }
                                         }
