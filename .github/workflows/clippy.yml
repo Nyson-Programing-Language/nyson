@@ -11,7 +11,7 @@ jobs:
           toolchain: nightly
           override: true
           components: rustfmt, clippy
-      - run: cargo clippy --fix -Z unstable-options
+      - run: cargo clippy --fix -Z unstable-options --all --all-targets --all-features
       - name: Commit files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
