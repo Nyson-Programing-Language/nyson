@@ -677,7 +677,7 @@ pub fn run(
                             memory_names.push(value.clone());
                         }
                         if memory_types[memory_types.len() - 1] == "int" {
-                            let mut expr =
+                            let expr =
                                 eval(memory_values[memory_values.len() - 1].clone().as_str())
                                     .unwrap()
                                     .to_string();
