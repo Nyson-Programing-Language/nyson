@@ -15,6 +15,12 @@ use pbr::ProgressBar;
 use std::path::Path;
 
 fn main() {
+    if !Path::new("dep").exists() {
+        let r = fs::create_dir("dep");
+        if r.is_err() {
+            panic!("Could not create dir.");
+        }
+    }
     let maybe_file = env::args().nth(1);
     let args = env::args();
     let mut dev = false;
