@@ -1,4 +1,2 @@
-dec str hello = "hello";
-if (hello == "hello" || hello == "hello1" || hello == "hello2") {
-    log("hi");
-}
+dec int bar :  9+(9*9);
+log(bar);
