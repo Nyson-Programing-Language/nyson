@@ -992,7 +992,7 @@ pub fn run(
                                         output[item - 1] = "".to_string();
                                         output[item + 1] = "".to_string();
                                     } else if output[item] == "&&" || output[item] == "||" {
-                                        for i in 0..output.len() {
+                                        for _i in 0..output.len() {
                                             output.pop();
                                         }
                                         output.push("false".to_string());
