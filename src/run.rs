@@ -5,7 +5,7 @@ use std::process::Command;
 use std::{thread, time};
 extern crate chrono;
 extern crate eval;
-use eval::{eval, to_value};
+use eval::{eval};
 
 pub fn run(
     mut contents: Vec<String>,
@@ -677,7 +677,7 @@ pub fn run(
                             memory_names.push(value.clone());
                         }
                         if memory_types[memory_types.len()-1] == "int"{
-                           let mut expr = eval(memory_values[memory_values.len()-1].clone().as_str()).unwrap().to_string();
+                           let expr = eval(memory_values[memory_values.len()-1].clone().as_str()).unwrap().to_string();
                            memory_values.pop();
                            memory_values.push(expr);
                         }
