@@ -830,12 +830,6 @@ pub fn run(
                         if dev {
                             println!("vec: {:?}", vec);
                         }
-                        let mut z = 0;
-                        for y in vec.to_vec() {
-                            if y == "(" || y == ")" {
-                                z += 1;
-                            }
-                        }
                         let string: String = functions::getstring(
                             x,
                             contents.clone(),
