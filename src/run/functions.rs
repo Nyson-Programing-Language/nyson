@@ -18,7 +18,7 @@ pub fn find_greatest(list_of_numbers: &[i32]) -> &i32 {
             largest = number
         }
     }
-    return largest;
+    largest
 }
 
 pub fn log(
@@ -57,18 +57,18 @@ pub fn getstring(
     let mut skip = false;
     let mut n = 0;
     for y in x + 1..contents.len() {
-        if skip == false {
+        if !skip {
             if int == 0 || int == 2 {
                 if contents[y] == "(" {
-                    n = n + 1;
+                    n += 1;
                 } else if contents[y] == ")" {
-                    n = n - 1;
+                    n -= 1;
                 }
             } else if int == 1 {
                 if contents[y] == "[" {
-                    n = n + 1;
+                    n += 1;
                 } else if contents[y] == "]" {
-                    n = n - 1;
+                    n -= 1;
                 }
             }
             if n == 0 {
@@ -92,7 +92,7 @@ pub fn getstring(
     let mut output_array = Vec::new();
     for y in 0..vec.len() {
         if skips == 0 {
-            if skip == false {
+            if !skip {
                 let mut continues = true;
                 if n % 2 == 0 && vec[y] == "," {
                     output_array.push(imput_s);
@@ -108,20 +108,18 @@ pub fn getstring(
                     imput_s.push_str(vec[y].as_str());
                 } else if y < 1 {
                     if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
-                        n = n + 1;
+                        n += 1;
                         continues = false;
                     }
-                } else {
-                    if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y - 1] != "\\" {
-                        n = n + 1;
-                        continues = false;
-                    }
+                } else if (vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`") && vec[y - 1] != "\\" {
+                    n += 1;
+                    continues = false;
                 }
-                if continues == false {
+                if !continues {
                 } else if vec[y] == "(" && n % 2 == 0 {
-                    n1 = n1 + 1;
+                    n1 += 1;
                 } else if vec[y] == ")" && n % 2 == 0 {
-                    n1 = n1 - 1;
+                    n1 -= 1;
                 } else if n % 2 == 1 {
                     imput_s.push_str(vec[y].as_str());
                 } else if vec[y] == "math" {
@@ -134,20 +132,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if vec[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if vec[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -170,20 +168,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if contents[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if contents[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -206,20 +204,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if contents[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if contents[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -242,20 +240,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if vec[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if vec[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -267,20 +265,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if vec[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if vec[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -303,20 +301,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if vec[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if vec[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -339,20 +337,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if vec[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if vec[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -364,20 +362,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if vec[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if vec[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -389,20 +387,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if vec[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if vec[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -425,20 +423,20 @@ pub fn getstring(
                     let mut n2 = 0;
                     let mut skip1 = false;
                     for f in y + 1..vec.len() {
-                        if skip1 == false {
+                        if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
                             if vec[f] == "(" {
-                                n2 = n2 + 1;
+                                n2 += 1;
                             } else if vec[f] == ")" {
-                                n2 = n2 - 1;
+                                n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
                                 for _z in y + 1..f + 1 {
-                                    leng = leng + 1;
+                                    leng += 1;
                                 }
                             }
                         }
@@ -448,11 +446,9 @@ pub fn getstring(
                     let mut postion = memory_names.len();
                     let mut skip1 = false;
                     for pos in 0..memory_names.len() {
-                        if skip1 == false {
-                            if memory_names[pos].to_string() == vec[y].to_string() {
-                                postion = pos;
-                                skip1 = true;
-                            }
+                        if !skip1 && memory_names[pos] == vec[y] {
+                            postion = pos;
+                            skip1 = true;
                         }
                     }
                     if postion != memory_names.len() {
@@ -482,11 +478,11 @@ pub fn getstring(
                 }
             }
         } else {
-            skips = skips - 1;
+            skips -= 1;
         }
     }
     output_array.push(imput_s);
-    return output_array;
+    output_array
 }
 
 pub fn eval(
@@ -550,7 +546,7 @@ pub fn exec(
             .expect("failed to execute process");
         return String::from_utf8_lossy(&output.stdout).to_string();
     } else {
-        let mut endvec: Vec<&str> = vecs.split(" ").collect();
+        let mut endvec: Vec<&str> = vecs.split(' ').collect();
         let commandname = endvec[0];
         endvec.remove(0);
         if dev {
@@ -573,7 +569,7 @@ pub fn round(
     memory_types: Vec<String>,
     dev: bool,
 ) -> i32 {
-    return getstring(
+    getstring(
         x,
         contents,
         memory_names,
@@ -584,7 +580,7 @@ pub fn round(
     )[0]
     .parse::<f32>()
     .unwrap()
-    .round() as i32;
+    .round() as i32
 }
 
 pub fn set_contents(
@@ -643,12 +639,12 @@ pub fn get_contents(
     .unwrap()
     .to_string();
     let maybe_contents = fs::read_to_string(string);
-    let contents = if maybe_contents.is_ok() {
+    
+    if maybe_contents.is_ok() {
         maybe_contents.unwrap()
     } else {
         panic!("Could not open file for reading.");
-    };
-    return contents;
+    }
 }
 
 pub fn replace(
@@ -677,7 +673,7 @@ pub fn replace(
         println!("find_s: {}", find_s);
         println!("replacer_s: {}", replacer_s);
     }
-    return imput_s.replace(&*find_s, &*replacer_s);
+    imput_s.replace(&*find_s, &*replacer_s)
 }
 
 pub fn imp(
@@ -690,17 +686,17 @@ pub fn imp(
     begining: String,
 ) -> Vec<String> {
     let mut string = begining.clone();
-    if begining.clone().len() != 0 {
-        string.push_str("/");
+    if !begining.is_empty() {
+        string.push('/');
     }
     string.push_str(
         getstring(
-            x.clone(),
-            contents.clone(),
+            x,
+            contents,
             memory_names.clone(),
             memory_values.clone(),
             memory_types.clone(),
-            dev.clone(),
+            dev,
             0,
         )
         .first()
@@ -739,7 +735,7 @@ pub fn imp(
     } else {
         came_from_imp = true;
         let mut newstring = begining.clone();
-        if begining.clone().len() == 0 {
+        if begining.is_empty() {
             newstring.push_str("dep/");
         } else {
             newstring.push_str("/dep/");
@@ -772,7 +768,7 @@ pub fn imp(
             read = false;
             let mut skiperwiper = false;
             for x in readfrom..to_parse.len() {
-                if skiperwiper == false {
+                if !skiperwiper {
                     if dev {
                         println!("contents[x]: {}", to_parse[x]);
                         println!("x: {}", x);
@@ -782,75 +778,73 @@ pub fn imp(
                     if (to_parse[x] == "\"" || to_parse[x] == "\'" || to_parse[x] == r"\`")
                         && to_parse[x - 1] != "\\"
                     {
-                        quotes = quotes + 1;
+                        quotes += 1;
                     }
                     if (to_parse[x] == "{" || to_parse[x] == "[") && quotes % 2 == 0 {
-                        squigle = squigle + 1;
+                        squigle += 1;
                     }
                     if (to_parse[x] == "}" || to_parse[x] == "]") && quotes % 2 == 0 {
-                        squigle = squigle - 1;
+                        squigle -= 1;
                     }
-                    if quotes % 2 == 0 && squigle == 0 {
-                        if to_parse[x] == "imp" {
-                            let mut new_loc = begining.clone();
-                            if begining.clone().len() == 0 {
-                                new_loc.push_str("dep/");
-                            } else {
-                                new_loc.push_str("/dep/");
-                            }
-                            new_loc.push_str(string.clone().as_str());
-                            let imp = imp(
-                                x,
-                                to_parse.clone(),
-                                memory_names.clone(),
-                                memory_values.clone(),
-                                memory_types.clone(),
-                                dev,
-                                new_loc,
-                            );
-                            readfrom = x;
-                            skiperwiper = true;
-                            read = true;
-                            let mut delete = Vec::new();
-                            let mut deleted = 0;
-                            let mut skirt = false;
-                            let mut n3 = 0;
-                            delete.push(x);
-                            for y1 in x + 1..to_parse.len() {
-                                if skirt == false {
-                                    if to_parse[y1] == "(" {
-                                        n3 = n3 + 1;
-                                    }
-                                    if n3 == 0 {
-                                        skirt = true;
-                                    }
-                                    if to_parse[y1] == ")" {
-                                        n3 = n3 - 1;
-                                    }
-                                    delete.push(y1);
-                                }
-                            }
-                            for item in delete {
-                                to_parse.remove(item - deleted);
-                                deleted = deleted + 1;
-                            }
-                            let mut new_vec = Vec::new();
-                            for itom in 0..to_parse.len() {
-                                if itom == x {
-                                    for item in imp.clone() {
-                                        new_vec.push(item);
-                                    }
-                                }
-                                new_vec.push(to_parse[itom].clone());
-                            }
-                            to_parse = new_vec;
+                    if quotes % 2 == 0 && squigle == 0 && to_parse[x] == "imp" {
+                        let mut new_loc = begining.clone();
+                        if begining.clone().is_empty() {
+                            new_loc.push_str("dep/");
+                        } else {
+                            new_loc.push_str("/dep/");
                         }
+                        new_loc.push_str(string.clone().as_str());
+                        let imp = imp(
+                            x,
+                            to_parse.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                            new_loc,
+                        );
+                        readfrom = x;
+                        skiperwiper = true;
+                        read = true;
+                        let mut delete = Vec::new();
+                        let mut deleted = 0;
+                        let mut skirt = false;
+                        let mut n3 = 0;
+                        delete.push(x);
+                        for y1 in x + 1..to_parse.len() {
+                            if !skirt {
+                                if to_parse[y1] == "(" {
+                                    n3 += 1;
+                                }
+                                if n3 == 0 {
+                                    skirt = true;
+                                }
+                                if to_parse[y1] == ")" {
+                                    n3 -= 1;
+                                }
+                                delete.push(y1);
+                            }
+                        }
+                        for item in delete {
+                            to_parse.remove(item - deleted);
+                            deleted += 1;
+                        }
+                        let mut new_vec = Vec::new();
+                        for itom in 0..to_parse.len() {
+                            if itom == x {
+                                for item in imp.clone() {
+                                    new_vec.push(item);
+                                }
+                            }
+                            new_vec.push(to_parse[itom].clone());
+                        }
+                        to_parse = new_vec;
                     }
                 }
             }
         }
     }
-    return to_parse;
+    to_parse
 }
 
 pub fn math(
@@ -863,18 +857,18 @@ pub fn math(
     let mut skip = false;
     let mut n = 0;
     for y in x + 1..contents.len() {
-        if skip == false {
+        if !skip {
             if contents[x + 1] != "(" {
                 println!(
                     "You have to put a parentheses after the function on line {}",
-                    get_line(x, contents.clone())
+                    get_line(x, contents)
                 );
                 std::process::exit(1);
             }
             if contents[y] == "(" {
-                n = n + 1;
+                n += 1;
             } else if contents[y] == ")" {
-                n = n - 1;
+                n -= 1;
             }
             if n % 2 == 0 {
                 skip = true;
@@ -890,9 +884,9 @@ pub fn math(
     vec.remove(vec.len() - 1);
     for y in 0..vec.len() {
         if vec[y] == "(" {
-            n = n + 1;
+            n += 1;
         } else if vec[y] == ")" {
-            n = n - 1;
+            n -= 1;
         }
         what_to_do_first.push(n);
     }
@@ -903,12 +897,12 @@ pub fn math(
         while keep_going {
             let mut skip = false;
             for y in 0..vec.len() {
-                if skip == false {
+                if !skip {
                     let mut rng = rand::thread_rng();
                     let if_number = vec[y].chars();
                     let mut if_number_bool = true;
                     for c in if_number {
-                        if (char::is_numeric(c) || c == '.') && if_number_bool == true {
+                        if (char::is_numeric(c) || c == '.') && if_number_bool {
                             if_number_bool = true;
                         } else {
                             if_number_bool = false;
@@ -918,11 +912,9 @@ pub fn math(
                         let mut postion1 = memory_names.len();
                         let mut skip = false;
                         for pos in 0..memory_names.len() {
-                            if skip == false {
-                                if memory_names[pos].to_string() == vec[y].to_string() {
-                                    postion1 = pos;
-                                    skip = true;
-                                }
+                            if !skip && memory_names[pos] == vec[y] {
+                                postion1 = pos;
+                                skip = true;
                             }
                         }
                         if postion1 != memory_names.len() {
@@ -939,7 +931,7 @@ pub fn math(
                         let if_number = vec[y + 1].chars();
                         let mut if_number_bool = true;
                         for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool == true {
+                            if (char::is_numeric(c) || c == '.') && if_number_bool {
                                 if_number_bool = true;
                             } else {
                                 if_number_bool = false;
@@ -949,11 +941,9 @@ pub fn math(
                             let mut postion1 = memory_names.len();
                             let mut skip = false;
                             for pos in 0..memory_names.len() {
-                                if skip == false {
-                                    if memory_names[pos].to_string() == vec[y + 1].to_string() {
-                                        postion1 = pos;
-                                        skip = true;
-                                    }
+                                if !skip && memory_names[pos] == vec[y + 1] {
+                                    postion1 = pos;
+                                    skip = true;
                                 }
                             }
                             if postion1 != memory_names.len() {
@@ -975,7 +965,7 @@ pub fn math(
                         let if_number = vec[y + 1].chars();
                         let mut if_number_bool = true;
                         for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool == true {
+                            if (char::is_numeric(c) || c == '.') && if_number_bool {
                                 if_number_bool = true;
                             } else {
                                 if_number_bool = false;
@@ -985,11 +975,9 @@ pub fn math(
                             let mut postion1 = memory_names.len();
                             let mut skip = false;
                             for pos in 0..memory_names.len() {
-                                if skip == false {
-                                    if memory_names[pos].to_string() == vec[y + 1].to_string() {
-                                        postion1 = pos;
-                                        skip = true;
-                                    }
+                                if !skip && memory_names[pos] == vec[y + 1] {
+                                    postion1 = pos;
+                                    skip = true;
                                 }
                             }
                             if postion1 != memory_names.len() {
@@ -1011,7 +999,7 @@ pub fn math(
                         let if_number = vec[y + 1].chars();
                         let mut if_number_bool = true;
                         for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool == true {
+                            if (char::is_numeric(c) || c == '.') && if_number_bool {
                                 if_number_bool = true;
                             } else {
                                 if_number_bool = false;
@@ -1021,11 +1009,9 @@ pub fn math(
                             let mut postion1 = memory_names.len();
                             let mut skip = false;
                             for pos in 0..memory_names.len() {
-                                if skip == false {
-                                    if memory_names[pos].to_string() == vec[y + 1].to_string() {
-                                        postion1 = pos;
-                                        skip = true;
-                                    }
+                                if !skip && memory_names[pos] == vec[y + 1] {
+                                    postion1 = pos;
+                                    skip = true;
                                 }
                             }
                             if postion1 != memory_names.len() {
@@ -1047,7 +1033,7 @@ pub fn math(
                         let if_number = vec[y + 1].chars();
                         let mut if_number_bool = true;
                         for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool == true {
+                            if (char::is_numeric(c) || c == '.') && if_number_bool {
                                 if_number_bool = true;
                             } else {
                                 if_number_bool = false;
@@ -1057,11 +1043,9 @@ pub fn math(
                             let mut postion1 = memory_names.len();
                             let mut skip = false;
                             for pos in 0..memory_names.len() {
-                                if skip == false {
-                                    if memory_names[pos].to_string() == vec[y + 1].to_string() {
-                                        postion1 = pos;
-                                        skip = true;
-                                    }
+                                if !skip && memory_names[pos] == vec[y + 1] {
+                                    postion1 = pos;
+                                    skip = true;
                                 }
                             }
                             if postion1 != memory_names.len() {
@@ -1083,7 +1067,7 @@ pub fn math(
                         let if_number = vec[y + 1].chars();
                         let mut if_number_bool = true;
                         for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool == true {
+                            if (char::is_numeric(c) || c == '.') && if_number_bool {
                                 if_number_bool = true;
                             } else {
                                 if_number_bool = false;
@@ -1093,11 +1077,9 @@ pub fn math(
                             let mut postion1 = memory_names.len();
                             let mut skip = false;
                             for pos in 0..memory_names.len() {
-                                if skip == false {
-                                    if memory_names[pos].to_string() == vec[y + 1].to_string() {
-                                        postion1 = pos;
-                                        skip = true;
-                                    }
+                                if !skip && memory_names[pos] == vec[y + 1] {
+                                    postion1 = pos;
+                                    skip = true;
                                 }
                             }
                             if postion1 != memory_names.len() {
@@ -1116,11 +1098,9 @@ pub fn math(
                         let mut postion = memory_names.len();
                         let mut skip = false;
                         for pos in 0..memory_names.len() {
-                            if skip == false {
-                                if memory_names[pos].to_string() == vec[y].to_string() {
-                                    postion = pos;
-                                    skip = true;
-                                }
+                            if !skip && memory_names[pos] == vec[y] {
+                                postion = pos;
+                                skip = true;
                             }
                         }
                         if postion != memory_names.len() {
@@ -1134,7 +1114,7 @@ pub fn math(
             }
         }
     }
-    return vec[0].parse().unwrap();
+    vec[0].parse().unwrap()
 }
 
 pub fn trim(
@@ -1168,7 +1148,7 @@ pub fn time_readable() -> String {
     let datetime = DateTime::<Utc>::from(d);
     // Formats the combined date and time with the specified format string.
     let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
-    return timestamp_str;
+    timestamp_str
 }
 
 pub fn array_fn(
@@ -1179,7 +1159,7 @@ pub fn array_fn(
     memory_types: Vec<String>,
     dev: bool,
 ) -> Vec<String> {
-    return getstring(
+    getstring(
         x,
         contents,
         memory_names,
@@ -1187,17 +1167,17 @@ pub fn array_fn(
         memory_types,
         dev,
         1,
-    );
+    )
 }
 
 pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
     let mut line = 1;
     for n in 0..x {
         if contents[n] == "\n" {
-            line = line + 1;
+            line += 1;
         }
     }
-    return line;
+    line
 }
 
 pub fn get_request(
@@ -1280,7 +1260,7 @@ pub fn time() -> f64 {
     let since_the_epoch = start
         .duration_since(UNIX_EPOCH)
         .expect("Time went backwards");
-    return since_the_epoch.as_millis() as f64;
+    since_the_epoch.as_millis() as f64
 }
 
 pub fn group_fn(
@@ -1291,7 +1271,7 @@ pub fn group_fn(
     memory_types: Vec<String>,
     dev: bool,
 ) -> Vec<String> {
-    return getstring(
+    getstring(
         x,
         contents,
         memory_names,
@@ -1299,5 +1279,5 @@ pub fn group_fn(
         memory_types,
         dev,
         1,
-    );
+    )
 }

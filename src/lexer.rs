@@ -1,5 +1,5 @@
 pub fn lexer(contents: String, dev: bool) -> Vec<String> {
-    let contents_literal = split(contents.clone());
+    let contents_literal = split(contents);
     /*
     for n in 0..contents_literal.len() {
         let lex_vec: Vec<String> = Vec::new();
@@ -11,11 +11,11 @@ pub fn lexer(contents: String, dev: bool) -> Vec<String> {
     */
     let mut outputs: Vec<String> = Vec::new();
     for x in contents_literal.clone() {
-        outputs.push(String::from(x));
+        outputs.push(x);
     }
     outputs.remove(0);
     outputs = no_extra_whitespace(outputs, dev);
-    return outputs;
+    outputs
 }
 
 pub fn no_extra_whitespace(mut input: Vec<String>, dev: bool) -> Vec<String> {
@@ -27,7 +27,7 @@ pub fn no_extra_whitespace(mut input: Vec<String>, dev: bool) -> Vec<String> {
     let mut deleted = 0;
     for i in 0..input.len() {
         if input[i] == "\"" || input[i] == "\'" || input[i] == r"\`" {
-            quotes = quotes + 1;
+            quotes += 1;
         }
         if quotes % 2 == 0 && input[i] == " " {
             delete.push(i);
@@ -36,14 +36,14 @@ pub fn no_extra_whitespace(mut input: Vec<String>, dev: bool) -> Vec<String> {
 
     for i in delete {
         input.remove(i - deleted);
-        deleted = deleted + 1;
+        deleted += 1;
     }
 
     if dev {
         println!("input: {:?}", input);
     }
 
-    return input;
+    input
 }
 
 pub fn split(text: String) -> Vec<String> {
@@ -68,7 +68,7 @@ pub fn split(text: String) -> Vec<String> {
             for x in 0..n {
                 if result[x].contains('\"') || result[x].contains('\'') || result[x].contains(r"\`")
                 {
-                    number_of_string_selectors = number_of_string_selectors + 1;
+                    number_of_string_selectors += 1;
                 }
             }
             if number_of_string_selectors % 2 == 0 {
@@ -92,8 +92,8 @@ pub fn split(text: String) -> Vec<String> {
         for (index, matched) in text.match_indices(|c: char| {
             !(c.is_alphanumeric()
                 || c == '\''
-                || c == ".".chars().nth(0).unwrap()
-                || c == "_".chars().nth(0).unwrap())
+                || c == ".".chars().next().unwrap()
+                || c == "_".chars().next().unwrap())
         }) {
             if last != index {
                 vec.push(&text[last..index]);
@@ -117,5 +117,5 @@ pub fn split(text: String) -> Vec<String> {
         outputs.push(String::from(x));
     }
 
-    return outputs;
+    outputs
 }

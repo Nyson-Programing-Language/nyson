@@ -35,18 +35,18 @@ fn main() {
             std::process::exit(1);
         } else if arg == "-init" {
             let r = set_cont("Nyson.json".to_string(), "{\n\t\"name\": \"My Program\",\n\t\"dep\": {\n\t\t\"Example\": \"https://github.com/Nyson-Programing-Language/example-dep.git\"\n\t}\n}".to_string());
-            if !r.is_ok() {
+            if r.is_err() {
                 panic!("Could not set file contents.");
             }
             let r = fs::create_dir("src");
-            if !r.is_ok() {
+            if r.is_err() {
                 panic!("Could not create dir.");
             }
             let r = set_cont(
                 "src/main.nys".to_string(),
                 "log(\"Hello World\");".to_string(),
             );
-            if !r.is_ok() {
+            if r.is_err() {
                 panic!("Could not set file contents.");
             }
             std::process::exit(1);
@@ -114,7 +114,7 @@ fn main() {
     if dev {
         println!("contents: {:?}", contents);
     }
-    if compile == false {
+    if !compile {
         let to_parse = lexer::lexer(contents, dev);
         run::run(
             to_parse,
@@ -128,7 +128,7 @@ fn main() {
         );
     } else {
         let mut pb;
-        if hard == true {
+        if hard {
             pb = ProgressBar::new(9);
         } else {
             pb = ProgressBar::new(8);
@@ -144,7 +144,7 @@ fn main() {
         pb.inc();
         let mut contents = lexer::lexer(contents.clone(), dev);
         pb.inc();
-        if hard == true {
+        if hard {
             contents = run::hard(contents, dev, Vec::new(), Vec::new(), Vec::new());
             pb.inc();
         }
@@ -156,7 +156,7 @@ fn main() {
             "nyson/src/main.rs".to_string(),
             get_new_code(contents.clone()),
         );
-        if !r.is_ok() {
+        if r.is_err() {
             panic!("Could not set file contents.");
         }
         pb.inc();
@@ -180,7 +180,7 @@ fn main() {
         );
         pb.inc();
         let r = delete("nyson".to_string());
-        if !r.is_ok() {
+        if r.is_err() {
             panic!("Could not delete file.");
         }
         pb.inc();
@@ -206,7 +206,7 @@ fn main() {
     ruturns.push_str(content.join("\", \"").as_str());
     ruturns.push_str("\"].to_vec().iter().map(|s| s.to_string()).collect(), dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
     }");
-    return ruturns;
+    ruturns
 }
 
 fn set_cont(loc: String, cont: String) -> std::io::Result<()> {
@@ -241,21 +241,21 @@ fn loop_throught_dir(dir: &Path) {
 
 fn make_path(path: String) {
     let mut path_made = path.clone();
-    if path.clone().len() != 0 {
+    if !path.is_empty() {
         path_made.push_str("/dep");
     } else {
         path_made.push_str("dep")
     }
     let r = fs::remove_dir_all(path_made.clone());
-    if !r.is_ok() {
+    if r.is_err() {
         panic!("Could not delete dir.");
     }
     let r = fs::create_dir(path_made.clone());
-    if !r.is_ok() {
+    if r.is_err() {
         panic!("Could not create dir.");
     }
     let mut path_made = path.clone();
-    if path.clone().len() != 0 {
+    if !path.is_empty() {
         path_made.push_str("/Nyson.json");
     } else {
         path_made.push_str("Nyson.json")
@@ -271,7 +271,7 @@ fn make_path(path: String) {
     let mut pb = ProgressBar::new(json.len() as u64);
     for item in json {
         let mut new_path = path.clone();
-        if path.len() != 0 {
+        if !path.is_empty() {
             new_path.push_str("/dep/");
         } else {
             new_path.push_str("dep/");
@@ -285,7 +285,7 @@ fn make_path(path: String) {
         pb.inc();
     }
     let mut new_path = path.clone();
-    if path.len() != 0 {
+    if !path.is_empty() {
         new_path.push_str("/dep/");
     } else {
         new_path.push_str("dep/");
