@@ -5,7 +5,7 @@ use std::process::Command;
 use std::{thread, time};
 extern crate chrono;
 extern crate eval;
-use eval::{eval};
+use eval::eval;
 
 pub fn run(
     mut contents: Vec<String>,
