@@ -100,7 +100,7 @@ fn main() {
                     println!("contents: {:?}", contents);
                 }
                 let to_parse = lexer::lexer(contents, dev);
-                let output = run::run(
+                let _output = run::run(
                     to_parse,
                     dev,
                     Vec::new(),
@@ -132,7 +132,7 @@ fn main() {
     }
     if !compile {
         let to_parse = lexer::lexer(contents, dev);
-        let output = run::run(
+        let _output = run::run(
             to_parse,
             dev,
             Vec::new(),

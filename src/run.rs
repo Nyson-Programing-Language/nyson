@@ -655,7 +655,7 @@ pub fn run(
                                                         value.push_str(
                                                             run(
                                                                 to_parse.clone(),
-                                                                dev.clone(),
+                                                                dev,
                                                                 memory_names.clone(),
                                                                 memory_values.clone(),
                                                                 memory_types.clone(),
@@ -1100,9 +1100,9 @@ pub fn run(
                                 println!("contents: {:?}", to_to_parse);
                             }
                             let to_parse = lexer::lexer(to_to_parse, dev);
-                            let outputs = run(
+                            let _outputs = run(
                                 to_parse.clone(),
-                                dev.clone(),
+                                dev,
                                 memory_names.clone(),
                                 memory_values.clone(),
                                 memory_types.clone(),
@@ -1500,7 +1500,7 @@ pub fn run(
     for i in threads {
         i.join().unwrap();
     }
-    return "".to_string();
+    "".to_string()
 }
 
 pub(crate) fn hard(
