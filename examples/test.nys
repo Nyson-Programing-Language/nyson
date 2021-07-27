@@ -1,1 +1,5 @@
-dec int a : 2(9*9);
+func(add()) {
+    dec str x : "hello";
+    ret(x)
+}
+log(add());

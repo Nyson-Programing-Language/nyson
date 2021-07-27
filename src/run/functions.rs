@@ -1,4 +1,4 @@
-use crate::lexer;
+use crate::{lexer, run};
 use curl::easy::Easy;
 use rand::Rng;
 use std::fs::File;
@@ -27,6 +27,9 @@ pub fn log(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) {
     let string = getstring(
@@ -35,6 +38,9 @@ pub fn log(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         0,
     )
@@ -50,6 +56,9 @@ pub fn getstring(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
     int: i32,
 ) -> Vec<String> {
@@ -123,7 +132,10 @@ pub fn getstring(
                     imput_s.push_str(vec[y].as_str());
                 } else if vec[y] == "math" {
                     imput_s.push_str(
-                        math(y, vec.to_vec(), memory_names.clone(), memory_values.clone())
+                        math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(),
+                             func_names.clone(),
+                             func_par.clone(),
+                             func_code.clone(),)
                             .to_string()
                             .as_str(),
                     );
@@ -158,6 +170,9 @@ pub fn getstring(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         )
                         .to_string()
@@ -194,6 +209,9 @@ pub fn getstring(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         )
                         .to_string()
@@ -230,6 +248,9 @@ pub fn getstring(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         )
                         .to_string()
@@ -291,6 +312,9 @@ pub fn getstring(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         )
                         .to_string()
@@ -327,6 +351,9 @@ pub fn getstring(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         )
                         .to_string()
@@ -413,6 +440,9 @@ pub fn getstring(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         )
                         .to_string()
@@ -458,6 +488,9 @@ pub fn getstring(
                                     vec.to_vec(),
                                     memory_names.clone(),
                                     memory_values.clone(),
+                                    func_names.clone(),
+                                    func_par.clone(),
+                                    func_code.clone(),
                                 )
                                 .to_string();
                                 imput_s.push_str(
@@ -472,6 +505,37 @@ pub fn getstring(
                             }
                         } else {
                             imput_s.push_str(&*memory_values[postion].to_string());
+                        }
+                    }
+                    else {
+                        let mut postion = func_names.len();
+                        let mut skip = false;
+                        for pos in 0..func_names.len() {
+                            if !skip && func_names[pos] == vec[y] {
+                                postion = pos;
+                                skip = true;
+                            }
+                        }
+                        let mut contetntstr: Vec<String> = Vec::new();
+                        for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v") {
+                            contetntstr.push(x.to_string());
+                        }
+                        if postion != func_names.len() {
+                            imput_s.push_str(
+                                run::run(
+                                    contetntstr,
+                                    dev.clone(),
+                                    memory_names.clone(),
+                                    memory_values.clone(),
+                                    memory_types.clone(),
+                                    func_names.clone(),
+                                    func_par.clone(),
+                                    func_code.clone(),
+                                )
+                                    .as_str(),
+                            );
+                        } else {
+                            imput_s.push_str(contents[y].as_str());
                         }
                     }
                 }
@@ -490,6 +554,9 @@ pub fn eval(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> Vec<String> {
     return lexer::lexer(
@@ -499,6 +566,9 @@ pub fn eval(
             memory_names,
             memory_values,
             memory_types,
+            func_names.clone(),
+            func_par.clone(),
+            func_code.clone(),
             dev,
             0,
         )
@@ -515,6 +585,9 @@ pub fn exec(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> String {
     let string = getstring(
@@ -523,6 +596,9 @@ pub fn exec(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         0,
     )
@@ -566,6 +642,9 @@ pub fn round(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> i32 {
     getstring(
@@ -574,6 +653,9 @@ pub fn round(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         0,
     )[0]
@@ -588,6 +670,9 @@ pub fn set_contents(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> std::io::Result<()> {
     let vec = getstring(
@@ -596,6 +681,9 @@ pub fn set_contents(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         0,
     );
@@ -623,6 +711,9 @@ pub fn get_contents(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> String {
     let string = getstring(
@@ -631,6 +722,9 @@ pub fn get_contents(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         0,
     )
@@ -652,6 +746,9 @@ pub fn replace(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> String {
     let vec = getstring(
@@ -660,6 +757,9 @@ pub fn replace(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         0,
     );
@@ -681,6 +781,9 @@ pub fn imp(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
     begining: String,
 ) -> Vec<String> {
@@ -695,6 +798,9 @@ pub fn imp(
             memory_names.clone(),
             memory_values.clone(),
             memory_types.clone(),
+            func_names.clone(),
+            func_par.clone(),
+            func_code.clone(),
             dev,
             0,
         )
@@ -800,6 +906,9 @@ pub fn imp(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                             new_loc,
                         );
@@ -852,6 +961,9 @@ pub fn math(
     contents: Vec<String>,
     memory_names: Vec<String>,
     memory_values: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
 ) -> f32 {
     let mut vec: Vec<String> = Vec::new();
     let mut skip = false;
@@ -1122,6 +1234,9 @@ pub fn trim(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> String {
     return getstring(
@@ -1130,6 +1245,9 @@ pub fn trim(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         0,
     )
@@ -1156,6 +1274,9 @@ pub fn array_fn(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> Vec<String> {
     getstring(
@@ -1164,6 +1285,9 @@ pub fn array_fn(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         1,
     )
@@ -1185,6 +1309,9 @@ pub fn get_request(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> String {
     let string = getstring(
@@ -1193,6 +1320,9 @@ pub fn get_request(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         0,
     )
@@ -1222,6 +1352,9 @@ pub fn post_request(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) {
     let reply = getstring(
@@ -1230,6 +1363,9 @@ pub fn post_request(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         0,
     );
@@ -1268,6 +1404,9 @@ pub fn group_fn(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
     dev: bool,
 ) -> Vec<String> {
     getstring(
@@ -1276,6 +1415,9 @@ pub fn group_fn(
         memory_names,
         memory_values,
         memory_types,
+        func_names.clone(),
+        func_par.clone(),
+        func_code.clone(),
         dev,
         1,
     )
