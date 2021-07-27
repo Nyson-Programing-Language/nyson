@@ -1,2 +1,3 @@
 dec int barc : 10+10;
+barc : 10;
 log(barc)

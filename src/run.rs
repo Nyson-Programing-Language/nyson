@@ -29,7 +29,7 @@ pub fn run(
     while read {
         read = false;
         let mut skiperwiper = false;
-        for x in readfrom..contents.len() {
+        for mut x in readfrom..contents.len() {
             if !skiperwiper {
                 if dev {
                     println!("contents[x]: {}", contents[x]);
@@ -49,6 +49,17 @@ pub fn run(
                     squigle -= 1;
                 }
                 if quotes % 2 == 0 && squigle == 0 {
+                    for name in 0..memory_names.len() {
+                        if memory_names[name] == contents[x] && contents[x+1] == ":" {
+                            contents[x-2] = "dec".to_string();
+                            contents[x-1] = memory_types[name].to_string();
+                            memory_names.remove(name);
+                            memory_values.remove(name);
+                            memory_types.remove(name);
+                            x = x-2;
+                            break;
+                        }
+                    }
                     if contents[x] == "log" {
                         functions::log(
                             x,
