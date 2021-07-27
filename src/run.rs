@@ -751,7 +751,7 @@ pub fn run(
                                                     value.push_str(
                                                         run(
                                                             contetntstr,
-                                                            dev.clone(),
+                                                            dev,
                                                             memory_names1.clone(),
                                                             memory_values1.clone(),
                                                             memory_types1.clone(),
@@ -1190,7 +1190,7 @@ pub fn run(
                             }
                             let _outputs = run(
                                 contetntstr,
-                                dev.clone(),
+                                dev,
                                 memory_names.clone(),
                                 memory_values.clone(),
                                 memory_types.clone(),
@@ -1633,7 +1633,7 @@ pub fn run(
     for i in threads {
         i.join().unwrap();
     }
-    return "".to_string();
+    "".to_string()
 }
 
 pub(crate) fn hard(
