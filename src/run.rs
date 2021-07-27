@@ -517,7 +517,7 @@ pub fn run(
                         let mut value_array = Vec::new();
                         let mut value_group = Vec::new();
 
-                        //more vars                        
+                        //more vars
                         let mut n = 0;
                         let mut quote = 0;
                         let mut squig = 0; // brace/squiggly bracket checker
@@ -528,9 +528,9 @@ pub fn run(
                         let int_chk = position;
                         let mut group = false;
 
-
                         loop {
-                            if contents[position] == "[" { // if bracket run fn array
+                            if contents[position] == "[" {
+                                // if bracket run fn array
                                 value_array = functions::array_fn(
                                     position - 1,
                                     contents.clone(),
@@ -543,7 +543,8 @@ pub fn run(
                                     dev,
                                 );
                                 break;
-                            } else if contents[position] == "{" { // if group run 
+                            } else if contents[position] == "{" {
+                                // if group run
                                 value_group = functions::group_fn(
                                     position - 1,
                                     contents.clone(),
@@ -700,11 +701,10 @@ pub fn run(
                                                     math_expr.push_str(contents[elem].as_str());
                                                 }
                                             }
-                                            let math_expr_eval =
-                                                eval(math_expr.clone().as_str())
-                                                    .unwrap()
-                                                    .to_string();
-                                            value=math_expr_eval;
+                                            let math_expr_eval = eval(math_expr.clone().as_str())
+                                                .unwrap()
+                                                .to_string();
+                                            value = math_expr_eval;
                                         } else if n == 0 {
                                             if quote % 2 == 1 {
                                                 value.push_str(contents[position].as_str());
