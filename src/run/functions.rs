@@ -922,6 +922,7 @@ pub fn math(
                     }
                     if vec[y].to_lowercase() == "random" {
                         vec[y] = rng.gen::<f32>().to_string();
+                        
                         skip = true;
                     } else if vec[y] == "+" {
                         if vec[y + 1].to_lowercase() == "random" {

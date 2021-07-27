@@ -353,16 +353,16 @@ pub fn run(
                         read = true;
                         let mut delete = Vec::new();
                         let mut deleted = 0;
-                        let mut skirt = false;
+                        let mut pass = false;
                         let mut n3 = 0;
                         delete.push(x);
                         for y1 in x + 1..contents.len() {
-                            if !skirt {
+                            if !pass {
                                 if contents[y1] == "(" {
                                     n3 += 1;
                                 }
                                 if n3 == 0 {
-                                    skirt = true;
+                                    pass = true;
                                 }
                                 if contents[y1] == ")" {
                                     n3 -= 1;
@@ -399,16 +399,16 @@ pub fn run(
                         read = true;
                         let mut delete = Vec::new();
                         let mut deleted = 0;
-                        let mut skirt = false;
+                        let mut pass = false;
                         let mut n3 = 0;
                         delete.push(x);
                         for y1 in x + 1..contents.len() {
-                            if !skirt {
+                            if !pass {
                                 if contents[y1] == "(" {
                                     n3 += 1;
                                 }
                                 if n3 == 0 {
-                                    skirt = true;
+                                    pass = true;
                                 }
                                 if contents[y1] == ")" {
                                     n3 -= 1;
@@ -431,11 +431,17 @@ pub fn run(
                         }
                         contents = new_vec;
                     } else if contents[x] == "dec" {
+
+                        // memory clones
                         let memory_names_save = memory_names.clone();
                         let memory_values_save = memory_values.clone();
+
+                        // vars
                         let mut types = false;
                         let mut position = x + 1;
                         let square_brackets = 0;
+
+                        // get type
                         if contents[position] == "int" {
                             memory_types.push(String::from("int"));
                             memory_names.push(contents[position + 1].clone());
@@ -460,18 +466,27 @@ pub fn run(
                             memory_types.push(String::from("anon"));
                             types = true;
                         }
+
+                        //more vars
                         let mut clone_class = String::from("");
                         let mut value = String::new();
                         let mut value_array = Vec::new();
                         let mut value_group = Vec::new();
+
+                        //more vars                        
                         let mut n = 0;
                         let mut quote = 0;
-                        let mut squig = 0;
-                        let mut brakets = 0;
+                        let mut squig = 0; // brace/squiggly bracket checker
+                        let mut brackets = 0;
+
+                        //more vars
                         position += 2;
+                        let mut int_chk = position;
                         let mut group = false;
+
+
                         loop {
-                            if contents[position] == "[" {
+                            if contents[position] == "[" { // if bracket run fn array
                                 value_array = functions::array_fn(
                                     position - 1,
                                     contents.clone(),
@@ -481,7 +496,7 @@ pub fn run(
                                     dev,
                                 );
                                 break;
-                            } else if contents[position] == "{" {
+                            } else if contents[position] == "{" { // if group run 
                                 value_group = functions::group_fn(
                                     position - 1,
                                     contents.clone(),
@@ -498,9 +513,9 @@ pub fn run(
                                     clone_class = contents[position + 2].clone().to_string();
                                 }
                             } else if contents[position] == "(" {
-                                brakets += 1;
+                                brackets += 1;
                             } else if contents[position] == ")" {
-                                brakets -= 1;
+                                brackets -= 1;
                             } else if square_brackets == 0 {
                                 if contents[position] == ";" {
                                     if dev {
@@ -514,7 +529,7 @@ pub fn run(
                                         && contents[position - 1] != "\\"
                                     {
                                         quote += 1;
-                                    } else if brakets == 0 {
+                                    } else if brackets == 0 {
                                         if contents[position] == "math" {
                                             value.push_str(
                                                 functions::math(
@@ -608,6 +623,20 @@ pub fn run(
                                                 .as_str(),
                                             );
                                             n = 1;
+                                        } else if memory_types[memory_types.len() - 1] == "int" {
+                                            let mut math_expr = String::new();
+                                            for elem in int_chk..contents.len() {
+                                                if contents[elem] == ";" || contents[elem] == "\n" {
+                                                    break;
+                                                } else {
+                                                    math_expr.push_str(contents[elem].as_str());
+                                                }
+                                            }
+                                            let math_expr_eval =
+                                                eval(math_expr.clone().as_str())
+                                                    .unwrap()
+                                                    .to_string();
+                                            value.push_str(math_expr_eval.as_str());
                                         } else if n == 0 {
                                             if quote % 2 == 1 {
                                                 value.push_str(contents[position].as_str());
@@ -724,14 +753,6 @@ pub fn run(
 
                         if types {
                             memory_names.push(value.clone());
-                        }
-                        if memory_types[memory_types.len() - 1] == "int" {
-                            let expr =
-                                eval(memory_values[memory_values.len() - 1].clone().as_str())
-                                    .unwrap()
-                                    .to_string();
-                            memory_values.pop();
-                            memory_values.push(expr);
                         }
                         if dev {
                             println!("memory_names: {:?}", memory_names);
