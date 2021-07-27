@@ -693,20 +693,6 @@ pub fn run(
                                                 .as_str(),
                                             );
                                             n = 1;
-                                        } else if memory_types[memory_types.len() - 1] == "int" {
-                                            let mut math_expr = value.clone();
-                                            println!("{:?}", math_expr);
-                                            // for elem in int_chk..contents.len() {
-                                            //     if contents[elem] == ";" || contents[elem] == "\n" {
-                                            //         break;
-                                            //     } else {
-                                            //         math_expr.push_str(contents[elem].as_str());
-                                            //     }
-                                            // }
-                                            let math_expr_eval = eval(math_expr.clone().as_str())
-                                                .unwrap()
-                                                .to_string();
-                                            println!("{:?}", math_expr)
                                         } else if n == 0 {
                                             if quote % 2 == 1 {
                                                 value.push_str(contents[position].as_str());
@@ -817,7 +803,11 @@ pub fn run(
                                 memory_types.push("str".parse().unwrap());
                             }
                         } else {
-                            memory_values.push(value.clone());
+                            if memory_types[memory_types.len()-1] == "int" {
+                                memory_values.push(eval(value.clone().as_str()).unwrap().to_string())
+                            } else {
+                                memory_values.push(value.clone());
+                            }
                         }
 
                         if types {

@@ -1,1 +1,2 @@
-dec int barc : 10+10+2-(2*2);
+dec int barc : 10+math(random);
+log(barc)
