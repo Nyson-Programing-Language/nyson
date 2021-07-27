@@ -703,17 +703,21 @@ pub fn run(
                                                             .as_str(),
                                                     );
                                                 } else {
-                                                    
-                                                }let mut postion = func_names.len();
+                                                }
+                                                let mut postion = func_names.len();
                                                 let mut skip = false;
                                                 for pos in 0..func_names.len() {
-                                                    if !skip && func_names[pos] == contents[position] {
+                                                    if !skip
+                                                        && func_names[pos] == contents[position]
+                                                    {
                                                         postion = pos;
                                                         skip = true;
                                                     }
                                                 }
                                                 let mut contetntstr: Vec<String> = Vec::new();
-                                                for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v") {
+                                                for x in func_code[postion]
+                                                    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                {
                                                     contetntstr.push(x.to_string());
                                                 }
                                                 if postion != func_names.len() {
@@ -728,7 +732,7 @@ pub fn run(
                                                             func_par1.clone(),
                                                             func_code1.clone(),
                                                         )
-                                                            .as_str(),
+                                                        .as_str(),
                                                     );
                                                 } else {
                                                     value.push_str(contents[position].as_str());
@@ -1161,7 +1165,8 @@ pub fn run(
                         }
                         if postion != func_names.len() {
                             let mut contetntstr: Vec<String> = Vec::new();
-                            for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v") {
+                            for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                            {
                                 contetntstr.push(x.to_string());
                             }
                             let outputs = run(

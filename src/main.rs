@@ -161,7 +161,16 @@ fn main() {
         let mut contents = lexer::lexer(contents.clone(), dev);
         pb.inc();
         if hard {
-            contents = run::hard(contents, dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
+            contents = run::hard(
+                contents,
+                dev,
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+            );
             pb.inc();
         }
         for item in 0..contents.len() {
@@ -313,5 +322,6 @@ fn code_to_add() -> String {
     //Put code here to add it everywhere
     return " 
 
-    ".to_string()
+    "
+    .to_string();
 }

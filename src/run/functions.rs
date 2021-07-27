@@ -132,12 +132,17 @@ pub fn getstring(
                     imput_s.push_str(vec[y].as_str());
                 } else if vec[y] == "math" {
                     imput_s.push_str(
-                        math(y, vec.to_vec(), memory_names.clone(), memory_values.clone(),
-                             func_names.clone(),
-                             func_par.clone(),
-                             func_code.clone(),)
-                            .to_string()
-                            .as_str(),
+                        math(
+                            y,
+                            vec.to_vec(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
+                        )
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -506,8 +511,7 @@ pub fn getstring(
                         } else {
                             imput_s.push_str(&*memory_values[postion].to_string());
                         }
-                    }
-                    else {
+                    } else {
                         let mut postion = func_names.len();
                         let mut skip = false;
                         for pos in 0..func_names.len() {
@@ -532,7 +536,7 @@ pub fn getstring(
                                     func_par.clone(),
                                     func_code.clone(),
                                 )
-                                    .as_str(),
+                                .as_str(),
                             );
                         } else {
                             imput_s.push_str(contents[y].as_str());
