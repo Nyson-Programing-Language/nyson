@@ -1,2 +1,8 @@
-dec int bar :  9+(9*9);
-log(bar);
+func(add()) {
+    dec int x = 0;
+    ret(x)
+}
+
+dec int a : add();
+
+log(a);

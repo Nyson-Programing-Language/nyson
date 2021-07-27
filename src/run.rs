@@ -16,7 +16,7 @@ pub fn run(
     mut func_names: Vec<String>,
     mut func_par: Vec<String>,
     mut func_code: Vec<String>,
-) {
+) -> String {
     if dev {
         println!("contents: {:?}", contents);
     }
@@ -58,6 +58,16 @@ pub fn run(
                             memory_types.clone(),
                             dev,
                         );
+                    } else if contents[x] == "ret" {
+                        return functions::getstring(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            dev,
+                            0
+                        ).first().unwrap().to_string().trim().to_string();
                     } else if contents[x] == "exit" {
                         std::process::exit(1);
                     } else if contents[x] == "audio" {
@@ -593,7 +603,8 @@ pub fn run(
                                                 .as_str(),
                                             );
                                             n = 1;
-                                        } else if n == 0 {
+                                        }
+                                        else if n == 0 {
                                             if quote % 2 == 1 {
                                                 value.push_str(contents[position].as_str());
                                             } else {
@@ -618,7 +629,36 @@ pub fn run(
                                                             .as_str(),
                                                     );
                                                 } else {
-                                                    value.push_str(contents[position].as_str());
+                                                    let mut postion = func_names.len();
+                                                    let mut skip = false;
+                                                    for pos in 0..func_names.len() {
+                                                        if !skip && func_names[pos] == contents[x] {
+                                                            postion = pos;
+                                                            skip = true;
+                                                        }
+                                                    }
+                                                    if postion != func_names.len() {
+                                                        let mut space: String = " ".parse().unwrap();
+                                                        space.push_str(func_code[postion].as_str());
+                                                        let to_to_parse = space;
+                                                        if dev {
+                                                            println!("contents: {:?}", to_to_parse);
+                                                        }
+                                                        let to_parse = lexer::lexer(to_to_parse, dev);
+                                                        
+                                                        value.push_str(run(
+                                                            to_parse.clone(),
+                                                            dev.clone(),
+                                                            memory_names.clone(),
+                                                            memory_values.clone(),
+                                                            memory_types.clone(),
+                                                            func_names.clone(),
+                                                            func_par.clone(),
+                                                            func_code.clone()
+                                                        ).as_str());
+                                                    } else {
+                                                        value.push_str(contents[position].as_str());
+                                                    }
                                                 }
                                             }
                                         }
@@ -1051,42 +1091,16 @@ pub fn run(
                                 println!("contents: {:?}", to_to_parse);
                             }
                             let to_parse = lexer::lexer(to_to_parse, dev);
-                            readfrom = x;
-                            skiperwiper = true;
-                            read = true;
-                            let mut delete = Vec::new();
-                            let mut deleted = 0;
-                            let mut skirt = false;
-                            let mut n3 = 0;
-                            delete.push(x);
-                            for y1 in x + 1..contents.len() {
-                                if !skirt {
-                                    if contents[y1] == "(" {
-                                        n3 += 1;
-                                    }
-                                    if n3 == 0 {
-                                        skirt = true;
-                                    }
-                                    if contents[y1] == ")" {
-                                        n3 -= 1;
-                                    }
-                                    delete.push(y1);
-                                }
-                            }
-                            for item in delete {
-                                contents.remove(item - deleted);
-                                deleted += 1;
-                            }
-                            let mut new_vec = Vec::new();
-                            for itom in 0..contents.len() {
-                                if itom == x {
-                                    for item in to_parse.clone() {
-                                        new_vec.push(item);
-                                    }
-                                }
-                                new_vec.push(contents[itom].clone());
-                            }
-                            contents = new_vec;
+                            let outputs = run(
+                                to_parse.clone(),
+                                dev.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone()
+                            );
                         } else {
                             let mut postion = memory_names.len();
                             let mut skip = false;
@@ -1301,6 +1315,7 @@ pub fn run(
                                 let memory_names_save = memory_names.clone();
                                 let memory_values_save = memory_values.clone();
                                 //let memmory_types_save = memory_types.clone();
+                                let mut ret_check = false;
                                 loop {
                                     if contents[position] == ";" {
                                         if dev {
@@ -1473,10 +1488,12 @@ pub fn run(
                 }
             }
         }
+
     }
     for i in threads {
         i.join().unwrap();
     }
+    return "".to_string();
 }
 
 pub(crate) fn hard(

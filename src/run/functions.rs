@@ -741,6 +741,7 @@ pub fn imp(
         }
         newstring.push_str(string.clone().as_str());
         newstring.push_str("/src/main.nys");
+        println!("{}", newstring);
         let maybe_contents = fs::read_to_string(newstring);
         contents = if maybe_contents.is_ok() {
             maybe_contents.unwrap()
@@ -890,7 +891,6 @@ pub fn math(
         what_to_do_first.push(n);
     }
     if find_greatest(&*what_to_do_first) > &0 {
-        // has parenties
     } else {
         let mut keep_going = true;
         while keep_going {
