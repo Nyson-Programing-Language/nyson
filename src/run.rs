@@ -749,8 +749,6 @@ pub fn run(
                                                             )
                                                             .as_str(),
                                                         );
-                                                    } else {
-                                                        value.push_str(contents[position].as_str());
                                                     }
                                                 }
                                             }
