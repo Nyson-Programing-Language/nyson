@@ -1,6 +1,7 @@
 dec int random_number: round(math(random*100));
-dec int number_picked: math(50);
+dec int number_picked: 50;
 while(number_picked != random_number) {
+    log("problem?");
     if (number_picked > random_number) {
         log("You need to pick a smaller number");
         number_picked: math(number_picked-1);

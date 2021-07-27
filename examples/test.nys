@@ -1,2 +1,2 @@
-dec int barc : 10+math(random);
+dec int barc : 10+10;
 log(barc)
