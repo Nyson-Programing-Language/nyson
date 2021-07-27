@@ -37,6 +37,16 @@ fn main() {
         } else if arg == "run" {
             run = true;
         } else if arg == "-install" {
+            if Path::new(".gitignore").exists() {
+                let mut cont = fs::read_to_string(".gitignore").unwrap();
+                cont.push_str("\n\n# Nyson\ndep");
+                set_cont(".gitignore".to_string(), cont);
+            } else {
+                let r = set_cont(".gitignore".to_string(), "# Nyson\ndep".to_string());
+                if r.is_err() {
+                    panic!("Could not set file contents.");
+                }
+            }
             make_path("".to_string());
             std::process::exit(1);
         } else if arg == "-init" {
