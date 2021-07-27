@@ -803,8 +803,9 @@ pub fn run(
                                 memory_types.push("str".parse().unwrap());
                             }
                         } else {
-                            if memory_types[memory_types.len()-1] == "int" {
-                                memory_values.push(eval(value.clone().as_str()).unwrap().to_string())
+                            if memory_types[memory_types.len() - 1] == "int" {
+                                memory_values
+                                    .push(eval(value.clone().as_str()).unwrap().to_string())
                             } else {
                                 memory_values.push(value.clone());
                             }
