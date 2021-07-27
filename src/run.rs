@@ -730,39 +730,39 @@ pub fn run(
                                                             .as_str(),
                                                     );
                                                 } else {
-                                                }
-                                                let mut postion = func_names.len();
-                                                let mut skip = false;
-                                                for pos in 0..func_names.len() {
-                                                    if !skip
-                                                        && func_names[pos] == contents[position]
-                                                    {
-                                                        postion = pos;
-                                                        skip = true;
+                                                    let mut postion = func_names.len();
+                                                    let mut skip = false;
+                                                    for pos in 0..func_names.len() {
+                                                        if !skip
+                                                            && func_names[pos] == contents[position]
+                                                        {
+                                                            postion = pos;
+                                                            skip = true;
+                                                        }
                                                     }
-                                                }
-                                                let mut contetntstr: Vec<String> = Vec::new();
-                                                for x in func_code[postion]
-                                                    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-                                                {
-                                                    contetntstr.push(x.to_string());
-                                                }
-                                                if postion != func_names.len() {
-                                                    value.push_str(
-                                                        run(
-                                                            contetntstr,
-                                                            dev,
-                                                            memory_names1.clone(),
-                                                            memory_values1.clone(),
-                                                            memory_types1.clone(),
-                                                            func_names1.clone(),
-                                                            func_par1.clone(),
-                                                            func_code1.clone(),
-                                                        )
-                                                        .as_str(),
-                                                    );
-                                                } else {
-                                                    value.push_str(contents[position].as_str());
+                                                    if postion != func_names.len() {
+                                                        let mut contetntstr: Vec<String> = Vec::new();
+                                                        for x in func_code[postion]
+                                                            .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr.push(x.to_string());
+                                                        }
+                                                        value.push_str(
+                                                            run(
+                                                                contetntstr,
+                                                                dev,
+                                                                memory_names1.clone(),
+                                                                memory_values1.clone(),
+                                                                memory_types1.clone(),
+                                                                func_names1.clone(),
+                                                                func_par1.clone(),
+                                                                func_code1.clone(),
+                                                            )
+                                                                .as_str(),
+                                                        );
+                                                    } else {
+                                                        value.push_str(contents[position].as_str());
+                                                    }
                                                 }
                                             }
                                         }
@@ -1217,7 +1217,10 @@ pub fn run(
                                 let mut quote = 0;
                                 let memory_names_save = memory_names.clone();
                                 let memory_values_save = memory_values.clone();
-                                //let memmory_types_save = memory_types.clone();
+                                let memmory_types_save = memory_types.clone();
+                                let func_names_save = func_names.clone();
+                                let func_code_save = func_code.clone();
+                                let func_par_save = func_par.clone();
                                 loop {
                                     if dev {
                                         println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
@@ -1381,7 +1384,37 @@ pub fn run(
                                                             .as_str(),
                                                     );
                                                 } else {
-                                                    value.push_str(contents[position].as_str());
+                                                    let mut postion = func_names_save.len();
+                                                    let mut skip = false;
+                                                    for pos in 0..func_names_save.len() {
+                                                        if !skip
+                                                            && func_names_save[pos] == contents[position]
+                                                        {
+                                                            postion = pos;
+                                                            skip = true;
+                                                        }
+                                                    }
+                                                    if postion != func_names.len() {
+                                                        let mut contetntstr: Vec<String> = Vec::new();
+                                                        for x in func_code_save[postion]
+                                                            .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr.push(x.to_string());
+                                                        }
+                                                        value.push_str(
+                                                            run(
+                                                                contetntstr,
+                                                                dev,
+                                                                memory_names_save.clone(),
+                                                                memory_values_save.clone(),
+                                                                memmory_types_save.clone(),
+                                                                func_names_save.clone(),
+                                                                func_par_save.clone(),
+                                                                func_code_save.clone(),
+                                                            )
+                                                                .as_str(),
+                                                        );
+                                                    }
                                                 }
                                             }
                                         }
@@ -1435,7 +1468,10 @@ pub fn run(
                                 let mut quote = 0;
                                 let memory_names_save = memory_names.clone();
                                 let memory_values_save = memory_values.clone();
-                                //let memmory_types_save = memory_types.clone();
+                                let memmory_types_save = memory_types.clone();
+                                let func_names_save = func_names.clone();
+                                let func_code_save = func_code.clone();
+                                let func_par_save = func_par.clone();
                                 loop {
                                     if contents[position] == ";" {
                                         if dev {
@@ -1599,7 +1635,37 @@ pub fn run(
                                                             .as_str(),
                                                     );
                                                 } else {
-                                                    value.push_str(contents[position].as_str());
+                                                    let mut postion = func_names.len();
+                                                    let mut skip = false;
+                                                    for pos in 0..func_names.len() {
+                                                        if !skip
+                                                            && func_names[pos] == contents[position]
+                                                        {
+                                                            postion = pos;
+                                                            skip = true;
+                                                        }
+                                                    }
+                                                    if postion != func_names.len() {
+                                                        let mut contetntstr: Vec<String> = Vec::new();
+                                                        for x in func_code[postion]
+                                                            .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr.push(x.to_string());
+                                                        }
+                                                        value.push_str(
+                                                            run(
+                                                                contetntstr,
+                                                                dev,
+                                                                memory_names_save.clone(),
+                                                                memory_values_save.clone(),
+                                                                memmory_types_save.clone(),
+                                                                func_names_save.clone(),
+                                                                func_par_save.clone(),
+                                                                func_code_save.clone(),
+                                                            )
+                                                                .as_str(),
+                                                        );
+                                                    }
                                                 }
                                             }
                                         }
