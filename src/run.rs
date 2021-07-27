@@ -479,9 +479,6 @@ pub fn run(
                         let func_code1 = func_code.clone();
                         let memory_names_save = memory_names.clone();
                         let memory_values_save = memory_values.clone();
-                        let mut jump = String::new();
-
-                        // vars
                         let mut types = false;
                         let mut position = x + 1;
                         let square_brackets = 0;
@@ -526,7 +523,6 @@ pub fn run(
 
                         //more vars
                         position += 2;
-                        let int_chk = position;
                         let mut group = false;
 
                         loop {
@@ -801,7 +797,7 @@ pub fn run(
                                 memory_types.push("str".parse().unwrap());
                             }
                         } else if memory_types[memory_types.len() - 1] == "int" {
-                            let mut number = eval(value.clone().as_str());
+                            let number = eval(value.clone().as_str());
                             if number.is_ok() {
                                 memory_values.push(number.unwrap().to_string());
                             } else {
