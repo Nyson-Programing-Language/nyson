@@ -1,8 +1,1 @@
-func(add()) {
-    dec str x : "henlo";
-    ret(x)
-}
-
-dec int a : add();
-
-log(a);
+dec int a : 2(9*9);
