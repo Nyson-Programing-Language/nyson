@@ -800,13 +800,16 @@ pub fn run(
                                 memory_values.push(value_group[d].clone());
                                 memory_types.push("str".parse().unwrap());
                             }
-                        } else {
-                            if memory_types[memory_types.len() - 1] == "int" {
-                                memory_values
-                                    .push(eval(value.clone().as_str()).unwrap().to_string())
-                            } else {
+                        } else if memory_types[memory_types.len() - 1] == "int" {
+                            let mut number = eval(value.clone().as_str());
+                            if number.is_ok() {
+                                memory_values.push(number.unwrap().to_string());
+                            }
+                            else {
                                 memory_values.push(value.clone());
                             }
+                        } else {
+                            memory_values.push(value.clone());
                         }
 
                         if types {

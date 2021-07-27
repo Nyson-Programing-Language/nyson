@@ -105,15 +105,6 @@ pub fn getstring(
                 if n % 2 == 0 && vec[y] == "," {
                     output_array.push(imput_s);
                     imput_s = "".to_string();
-                } else if int == 2
-                    && (vec[y] == "="
-                        || vec[y] == ">"
-                        || vec[y] == "<"
-                        || vec[y] == "!"
-                        || vec[y] == "|"
-                        || vec[y] == "&")
-                {
-                    imput_s.push_str(vec[y].as_str());
                 } else if y < 1 {
                     if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
                         n += 1;
@@ -476,6 +467,15 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
+                } else if int == 2
+                    && (vec[y] == "="
+                    || vec[y] == ">"
+                    || vec[y] == "<"
+                    || vec[y] == "!"
+                    || vec[y] == "|"
+                    || vec[y] == "&")
+                {
+                    imput_s.push_str(vec[y].as_str());
                 } else {
                     let mut postion = memory_names.len();
                     let mut skip1 = false;
@@ -521,10 +521,10 @@ pub fn getstring(
                             }
                         }
                         let mut contetntstr: Vec<String> = Vec::new();
-                        for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v") {
-                            contetntstr.push(x.to_string());
-                        }
                         if postion != func_names.len() {
+                            for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v") {
+                                contetntstr.push(x.to_string());
+                            }
                             imput_s.push_str(
                                 run::run(
                                     contetntstr,
@@ -538,8 +538,6 @@ pub fn getstring(
                                 )
                                 .as_str(),
                             );
-                        } else {
-                            imput_s.push_str(contents[y].as_str());
                         }
                     }
                 }
