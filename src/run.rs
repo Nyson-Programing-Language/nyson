@@ -804,8 +804,7 @@ pub fn run(
                             let mut number = eval(value.clone().as_str());
                             if number.is_ok() {
                                 memory_values.push(number.unwrap().to_string());
-                            }
-                            else {
+                            } else {
                                 memory_values.push(value.clone());
                             }
                         } else {

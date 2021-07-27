@@ -469,11 +469,11 @@ pub fn getstring(
                     skips = leng;
                 } else if int == 2
                     && (vec[y] == "="
-                    || vec[y] == ">"
-                    || vec[y] == "<"
-                    || vec[y] == "!"
-                    || vec[y] == "|"
-                    || vec[y] == "&")
+                        || vec[y] == ">"
+                        || vec[y] == "<"
+                        || vec[y] == "!"
+                        || vec[y] == "|"
+                        || vec[y] == "&")
                 {
                     imput_s.push_str(vec[y].as_str());
                 } else {
@@ -522,7 +522,8 @@ pub fn getstring(
                         }
                         let mut contetntstr: Vec<String> = Vec::new();
                         if postion != func_names.len() {
-                            for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v") {
+                            for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                            {
                                 contetntstr.push(x.to_string());
                             }
                             imput_s.push_str(
