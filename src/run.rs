@@ -479,6 +479,7 @@ pub fn run(
                         let func_code1 = func_code.clone();
                         let memory_names_save = memory_names.clone();
                         let memory_values_save = memory_values.clone();
+                        let mut jump = String::new();
 
                         // vars
                         let mut types = false;
@@ -693,18 +694,19 @@ pub fn run(
                                             );
                                             n = 1;
                                         } else if memory_types[memory_types.len() - 1] == "int" {
-                                            let mut math_expr = String::new();
-                                            for elem in int_chk..contents.len() {
-                                                if contents[elem] == ";" || contents[elem] == "\n" {
-                                                    break;
-                                                } else {
-                                                    math_expr.push_str(contents[elem].as_str());
-                                                }
-                                            }
+                                            let mut math_expr = value.clone();
+                                            println!("{:?}", math_expr);
+                                            // for elem in int_chk..contents.len() {
+                                            //     if contents[elem] == ";" || contents[elem] == "\n" {
+                                            //         break;
+                                            //     } else {
+                                            //         math_expr.push_str(contents[elem].as_str());
+                                            //     }
+                                            // }
                                             let math_expr_eval = eval(math_expr.clone().as_str())
                                                 .unwrap()
                                                 .to_string();
-                                            value = math_expr_eval;
+                                            println!("{:?}", math_expr)
                                         } else if n == 0 {
                                             if quote % 2 == 1 {
                                                 value.push_str(contents[position].as_str());

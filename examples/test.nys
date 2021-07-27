@@ -1,7 +1,1 @@
-dec str art : "poggers";
-func(add()) {
-    dec int x : 5+5+5;
-    ret(x)
-}
-dec str a : add();
-log(a);
+dec int barc : 10+10+2-(2*2);
