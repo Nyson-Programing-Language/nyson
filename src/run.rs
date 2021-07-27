@@ -741,10 +741,11 @@ pub fn run(
                                                         }
                                                     }
                                                     if postion != func_names.len() {
-                                                        let mut contetntstr: Vec<String> = Vec::new();
-                                                        for x in func_code[postion]
-                                                            .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-                                                        {
+                                                        let mut contetntstr: Vec<String> =
+                                                            Vec::new();
+                                                        for x in func_code[postion].split(
+                                                            "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
+                                                        ) {
                                                             contetntstr.push(x.to_string());
                                                         }
                                                         value.push_str(
@@ -758,7 +759,7 @@ pub fn run(
                                                                 func_par1.clone(),
                                                                 func_code1.clone(),
                                                             )
-                                                                .as_str(),
+                                                            .as_str(),
                                                         );
                                                     } else {
                                                         value.push_str(contents[position].as_str());
@@ -1388,17 +1389,19 @@ pub fn run(
                                                     let mut skip = false;
                                                     for pos in 0..func_names_save.len() {
                                                         if !skip
-                                                            && func_names_save[pos] == contents[position]
+                                                            && func_names_save[pos]
+                                                                == contents[position]
                                                         {
                                                             postion = pos;
                                                             skip = true;
                                                         }
                                                     }
                                                     if postion != func_names.len() {
-                                                        let mut contetntstr: Vec<String> = Vec::new();
-                                                        for x in func_code_save[postion]
-                                                            .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-                                                        {
+                                                        let mut contetntstr: Vec<String> =
+                                                            Vec::new();
+                                                        for x in func_code_save[postion].split(
+                                                            "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
+                                                        ) {
                                                             contetntstr.push(x.to_string());
                                                         }
                                                         value.push_str(
@@ -1412,7 +1415,7 @@ pub fn run(
                                                                 func_par_save.clone(),
                                                                 func_code_save.clone(),
                                                             )
-                                                                .as_str(),
+                                                            .as_str(),
                                                         );
                                                     }
                                                 }
@@ -1646,10 +1649,11 @@ pub fn run(
                                                         }
                                                     }
                                                     if postion != func_names.len() {
-                                                        let mut contetntstr: Vec<String> = Vec::new();
-                                                        for x in func_code[postion]
-                                                            .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-                                                        {
+                                                        let mut contetntstr: Vec<String> =
+                                                            Vec::new();
+                                                        for x in func_code[postion].split(
+                                                            "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
+                                                        ) {
                                                             contetntstr.push(x.to_string());
                                                         }
                                                         value.push_str(
@@ -1663,7 +1667,7 @@ pub fn run(
                                                                 func_par_save.clone(),
                                                                 func_code_save.clone(),
                                                             )
-                                                                .as_str(),
+                                                            .as_str(),
                                                         );
                                                     }
                                                 }
