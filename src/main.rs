@@ -320,8 +320,8 @@ fn make_path(path: String) {
 
 fn code_to_add() -> String {
     //Put code here to add it everywhere
-    return " 
+    " 
 
     "
-    .to_string();
+    .to_string()
 }
