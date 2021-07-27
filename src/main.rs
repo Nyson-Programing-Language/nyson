@@ -124,7 +124,7 @@ fn main() {
     } else {
         panic!("Could not open file for reading.");
     };
-    let mut space: String = " imp(\"https://raw.githubusercontent.com/Nyson-Programing-Language/nyson/main/src/main.nys\");".parse().unwrap();
+    let mut space: String = code_to_add();
     space.push_str(contents.as_str());
     contents = space;
     if dev {
@@ -161,7 +161,16 @@ fn main() {
         let mut contents = lexer::lexer(contents.clone(), dev);
         pb.inc();
         if hard {
-            contents = run::hard(contents, dev, Vec::new(), Vec::new(), Vec::new());
+            contents = run::hard(
+                contents,
+                dev,
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+            );
             pb.inc();
         }
         for item in 0..contents.len() {
@@ -307,4 +316,12 @@ fn make_path(path: String) {
         new_path.push_str("dep/");
     }
     loop_throught_dir(new_path.as_ref());
+}
+
+fn code_to_add() -> String {
+    //Put code here to add it everywhere
+    return " 
+
+    "
+    .to_string();
 }

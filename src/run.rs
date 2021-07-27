@@ -56,6 +56,9 @@ pub fn run(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         );
                     } else if contents[x] == "ret" {
@@ -65,6 +68,9 @@ pub fn run(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                             0,
                         )
@@ -80,6 +86,9 @@ pub fn run(
                         let memory_types_save = memory_types.clone();
                         let memory_values_save = memory_values.clone();
                         let memory_names_save = memory_names.clone();
+                        let func_names_save = func_names.clone();
+                        let func_par_save = func_par.clone();
+                        let func_code_save = func_code.clone();
                         let handle = thread::spawn(move || {
                             let stringreturn = functions::getstring(
                                 x,
@@ -87,6 +96,9 @@ pub fn run(
                                 memory_names_save.clone(),
                                 memory_values_save.clone(),
                                 memory_types_save.clone(),
+                                func_names_save.clone(),
+                                func_par_save.clone(),
+                                func_code_save.clone(),
                                 dev,
                                 0,
                             )
@@ -144,6 +156,9 @@ pub fn run(
                             contents.clone(),
                             memory_names.clone(),
                             memory_values.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                         );
                         if number_of_times > 0 as f32 {
                             let mut n = 0;
@@ -234,6 +249,9 @@ pub fn run(
                             contents.clone(),
                             memory_names.clone(),
                             memory_values.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                         );
                         thread::sleep(time::Duration::from_millis(number_of_times as u64));
                     } else if contents[x] == "exec" {
@@ -243,6 +261,9 @@ pub fn run(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         );
                     } else if contents[x] == "setcont" {
@@ -252,6 +273,9 @@ pub fn run(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         );
                         if r.is_err() {
@@ -264,6 +288,9 @@ pub fn run(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         );
                     } else if contents[x] == "func" {
@@ -286,7 +313,7 @@ pub fn run(
                                 }
                             }
                         }
-                        let mut code: String = "".parse().unwrap();
+                        let mut code = Vec::new();
                         skip = false;
                         n = 0;
                         reached = false;
@@ -296,7 +323,7 @@ pub fn run(
                                     n -= 1;
                                 }
                                 if n > 0 {
-                                    code.push_str(&contents[y]);
+                                    code.push(&contents[y]);
                                 } else if reached {
                                     skip = true;
                                 }
@@ -328,11 +355,18 @@ pub fn run(
                         }
                         if dev {
                             println!("par: {}", par);
-                            println!("code: {}", code);
+                            println!("code: {:?}", code);
                             println!("name: {}", name);
                         }
+                        let mut strinogeuroheu = "".to_string();
+                        for x in 0..code.len() {
+                            strinogeuroheu.push_str(code[x]);
+                            if x != code.len() {
+                                strinogeuroheu.push_str("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                            }
+                        }
                         func_par.push(par);
-                        func_code.push(code);
+                        func_code.push(strinogeuroheu);
                         func_names.push(name);
                         if dev {
                             println!("func_par: {:?}", func_par);
@@ -346,6 +380,9 @@ pub fn run(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                         );
                         readfrom = x;
@@ -391,6 +428,9 @@ pub fn run(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                             "".to_string(),
                         );
@@ -431,8 +471,12 @@ pub fn run(
                         }
                         contents = new_vec;
                     } else if contents[x] == "dec" {
-
-                        // memory clones
+                        let memory_names1 = memory_names.clone();
+                        let memory_values1 = memory_values.clone();
+                        let memory_types1 = memory_types.clone();
+                        let func_names1 = func_names.clone();
+                        let func_par1 = func_par.clone();
+                        let func_code1 = func_code.clone();
                         let memory_names_save = memory_names.clone();
                         let memory_values_save = memory_values.clone();
 
@@ -493,6 +537,9 @@ pub fn run(
                                     memory_names.clone(),
                                     memory_values.clone(),
                                     memory_types.clone(),
+                                    func_names.clone(),
+                                    func_par.clone(),
+                                    func_code.clone(),
                                     dev,
                                 );
                                 break;
@@ -503,6 +550,9 @@ pub fn run(
                                     memory_names.clone(),
                                     memory_values.clone(),
                                     memory_types.clone(),
+                                    func_names.clone(),
+                                    func_par.clone(),
+                                    func_code.clone(),
                                     dev,
                                 );
                                 group = true;
@@ -537,6 +587,9 @@ pub fn run(
                                                     contents.clone(),
                                                     memory_names.clone(),
                                                     memory_values.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                 )
                                                 .to_string()
                                                 .as_str(),
@@ -550,6 +603,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -564,6 +620,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -581,6 +640,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -595,6 +657,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -617,6 +682,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -662,41 +730,39 @@ pub fn run(
                                                             .as_str(),
                                                     );
                                                 } else {
-                                                    let mut postion = func_names.len();
-                                                    let mut skip = false;
-                                                    for pos in 0..func_names.len() {
-                                                        if !skip && func_names[pos] == contents[x] {
-                                                            postion = pos;
-                                                            skip = true;
-                                                        }
+                                                }
+                                                let mut postion = func_names.len();
+                                                let mut skip = false;
+                                                for pos in 0..func_names.len() {
+                                                    if !skip
+                                                        && func_names[pos] == contents[position]
+                                                    {
+                                                        postion = pos;
+                                                        skip = true;
                                                     }
-                                                    if postion != func_names.len() {
-                                                        let mut space: String =
-                                                            " ".parse().unwrap();
-                                                        space.push_str(func_code[postion].as_str());
-                                                        let to_to_parse = space;
-                                                        if dev {
-                                                            println!("contents: {:?}", to_to_parse);
-                                                        }
-                                                        let to_parse =
-                                                            lexer::lexer(to_to_parse, dev);
-
-                                                        value.push_str(
-                                                            run(
-                                                                to_parse.clone(),
-                                                                dev,
-                                                                memory_names.clone(),
-                                                                memory_values.clone(),
-                                                                memory_types.clone(),
-                                                                func_names.clone(),
-                                                                func_par.clone(),
-                                                                func_code.clone(),
-                                                            )
-                                                            .as_str(),
-                                                        );
-                                                    } else {
-                                                        value.push_str(contents[position].as_str());
-                                                    }
+                                                }
+                                                let mut contetntstr: Vec<String> = Vec::new();
+                                                for x in func_code[postion]
+                                                    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                {
+                                                    contetntstr.push(x.to_string());
+                                                }
+                                                if postion != func_names.len() {
+                                                    value.push_str(
+                                                        run(
+                                                            contetntstr,
+                                                            dev.clone(),
+                                                            memory_names1.clone(),
+                                                            memory_values1.clone(),
+                                                            memory_types1.clone(),
+                                                            func_names1.clone(),
+                                                            func_par1.clone(),
+                                                            func_code1.clone(),
+                                                        )
+                                                        .as_str(),
+                                                    );
+                                                } else {
+                                                    value.push_str(contents[position].as_str());
                                                 }
                                             }
                                         }
@@ -909,6 +975,9 @@ pub fn run(
                             memory_names.clone(),
                             memory_values.clone(),
                             memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                             2,
                         )
@@ -1114,16 +1183,14 @@ pub fn run(
                             }
                         }
                         if postion != func_names.len() {
-                            let mut space: String = " ".parse().unwrap();
-                            space.push_str(func_code[postion].as_str());
-                            let to_to_parse = space;
-                            if dev {
-                                println!("contents: {:?}", to_to_parse);
+                            let mut contetntstr: Vec<String> = Vec::new();
+                            for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                            {
+                                contetntstr.push(x.to_string());
                             }
-                            let to_parse = lexer::lexer(to_to_parse, dev);
-                            let _outputs = run(
-                                to_parse.clone(),
-                                dev,
+                            let outputs = run(
+                                contetntstr,
+                                dev.clone(),
                                 memory_names.clone(),
                                 memory_values.clone(),
                                 memory_types.clone(),
@@ -1171,6 +1238,9 @@ pub fn run(
                                                     contents.clone(),
                                                     memory_names.clone(),
                                                     memory_values.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                 )
                                                 .to_string()
                                                 .as_str(),
@@ -1184,6 +1254,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1198,6 +1271,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1212,6 +1288,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1229,6 +1308,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1243,6 +1325,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1265,6 +1350,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1321,6 +1409,9 @@ pub fn run(
                                     contents.clone(),
                                     memory_names.clone(),
                                     memory_values.clone(),
+                                    func_names.clone(),
+                                    func_par.clone(),
+                                    func_code.clone(),
                                 );
                                 let mut skipz = false;
                                 let mut nigro = 0;
@@ -1365,6 +1456,9 @@ pub fn run(
                                                     contents.clone(),
                                                     memory_names.clone(),
                                                     memory_values.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                 )
                                                 .to_string()
                                                 .as_str(),
@@ -1378,6 +1472,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1392,6 +1489,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1406,6 +1506,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1423,6 +1526,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1437,6 +1543,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1459,6 +1568,9 @@ pub fn run(
                                                     memory_names.clone(),
                                                     memory_values.clone(),
                                                     memory_types.clone(),
+                                                    func_names.clone(),
+                                                    func_par.clone(),
+                                                    func_code.clone(),
                                                     dev,
                                                 )
                                                 .to_string()
@@ -1521,7 +1633,7 @@ pub fn run(
     for i in threads {
         i.join().unwrap();
     }
-    "".to_string()
+    return "".to_string();
 }
 
 pub(crate) fn hard(
@@ -1530,6 +1642,9 @@ pub(crate) fn hard(
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
 ) -> Vec<String> {
     if dev {
         println!("contents: {:?}", contents);
@@ -1567,6 +1682,9 @@ pub(crate) fn hard(
                         memory_names.clone(),
                         memory_values.clone(),
                         memory_types.clone(),
+                        func_names.clone(),
+                        func_par.clone(),
+                        func_code.clone(),
                         dev,
                         "".to_string(),
                     );
