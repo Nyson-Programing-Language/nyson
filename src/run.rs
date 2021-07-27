@@ -639,13 +639,14 @@ pub fn run(
                                                     }
                                                     if postion != func_names.len() {
                                                         let mut space: String = " ".parse().unwrap();
+                                                        println!("{:?}", func_code);
                                                         space.push_str(func_code[postion].as_str());
                                                         let to_to_parse = space;
                                                         if dev {
                                                             println!("contents: {:?}", to_to_parse);
                                                         }
-                                                        let to_parse = lexer::lexer(to_to_parse, dev);
-                                                        
+                                                        let to_parse = lexer::lexer(to_to_parse.clone(), dev);
+                                                        println!("{:?}", to_to_parse.clone());
                                                         value.push_str(run(
                                                             to_parse.clone(),
                                                             dev.clone(),
@@ -1315,7 +1316,6 @@ pub fn run(
                                 let memory_names_save = memory_names.clone();
                                 let memory_values_save = memory_values.clone();
                                 //let memmory_types_save = memory_types.clone();
-                                let mut ret_check = false;
                                 loop {
                                     if contents[position] == ";" {
                                         if dev {

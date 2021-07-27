@@ -100,7 +100,7 @@ fn main() {
                     println!("contents: {:?}", contents);
                 }
                 let to_parse = lexer::lexer(contents, dev);
-                run::run(
+                let output  = run::run(
                     to_parse,
                     dev,
                     Vec::new(),
@@ -132,7 +132,7 @@ fn main() {
     }
     if !compile {
         let to_parse = lexer::lexer(contents, dev);
-        run::run(
+        let output = run::run(
             to_parse,
             dev,
             Vec::new(),
@@ -217,7 +217,7 @@ use std::process::Command;
 
 fn main() {
     let dev = false;
-    run::run([\""
+    let output = run::run([\""
         .to_string();
     ruturns.push_str(content.join("\", \"").as_str());
     ruturns.push_str("\"].to_vec().iter().map(|s| s.to_string()).collect(), dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());

@@ -1,5 +1,5 @@
 func(add()) {
-    dec int x = 0;
+    dec str x : "henlo";
     ret(x)
 }
 
