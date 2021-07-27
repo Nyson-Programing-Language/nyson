@@ -691,20 +691,20 @@ pub fn run(
                                                 .as_str(),
                                             );
                                             n = 1;
-                                        // } else if memory_types[memory_types.len() - 1] == "int" {
-                                        //     let mut math_expr = String::new();
-                                        //     for elem in int_chk..contents.len() {
-                                        //         if contents[elem] == ";" || contents[elem] == "\n" {
-                                        //             break;
-                                        //         } else {
-                                        //             math_expr.push_str(contents[elem].as_str());
-                                        //         }
-                                        //     }
-                                        //     let math_expr_eval =
-                                        //         eval(math_expr.clone().as_str())
-                                        //             .unwrap()
-                                        //             .to_string();
-                                        //     value.push_str(math_expr_eval.as_str());
+                                        } else if memory_types[memory_types.len() - 1] == "int" {
+                                            let mut math_expr = String::new();
+                                            for elem in int_chk..contents.len() {
+                                                if contents[elem] == ";" || contents[elem] == "\n" {
+                                                    break;
+                                                } else {
+                                                    math_expr.push_str(contents[elem].as_str());
+                                                }
+                                            }
+                                            let math_expr_eval =
+                                                eval(math_expr.clone().as_str())
+                                                    .unwrap()
+                                                    .to_string();
+                                            value=math_expr_eval;
                                         } else if n == 0 {
                                             if quote % 2 == 1 {
                                                 value.push_str(contents[position].as_str());

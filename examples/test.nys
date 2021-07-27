@@ -1,5 +1,7 @@
+dec str art : "poggers";
 func(add()) {
-    dec str x : "hello";
+    dec int x : 5+5+5;
     ret(x)
 }
-log(add());
+dec str a : add();
+log(a);
