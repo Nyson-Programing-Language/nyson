@@ -40,7 +40,7 @@ fn main() {
             if Path::new(".gitignore").exists() {
                 let mut cont = fs::read_to_string(".gitignore").unwrap();
                 cont.push_str("\n\n# Nyson\ndep");
-                set_cont(".gitignore".to_string(), cont);
+                let _r = set_cont(".gitignore".to_string(), cont);
             } else {
                 let r = set_cont(".gitignore".to_string(), "# Nyson\ndep".to_string());
                 if r.is_err() {

@@ -965,9 +965,9 @@ pub fn math(
     contents: Vec<String>,
     memory_names: Vec<String>,
     memory_values: Vec<String>,
-    func_names: Vec<String>,
-    func_par: Vec<String>,
-    func_code: Vec<String>,
+    _func_names: Vec<String>,
+    _func_par: Vec<String>,
+    _func_code: Vec<String>,
 ) -> f32 {
     let mut vec: Vec<String> = Vec::new();
     let mut skip = false;

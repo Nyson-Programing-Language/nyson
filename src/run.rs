@@ -525,7 +525,7 @@ pub fn run(
 
                         //more vars
                         position += 2;
-                        let mut int_chk = position;
+                        let int_chk = position;
                         let mut group = false;
 
 
@@ -1188,7 +1188,7 @@ pub fn run(
                             {
                                 contetntstr.push(x.to_string());
                             }
-                            let outputs = run(
+                            let _outputs = run(
                                 contetntstr,
                                 dev.clone(),
                                 memory_names.clone(),
