@@ -49,14 +49,20 @@ pub fn run(
                     squigle -= 1;
                 }
                 if quotes % 2 == 0 && squigle == 0 {
-                    if memory_names.len() == 0 {
-
-                    } else {
+                    if contents[x] != "\"" || contents[x] != "\'" || contents[x] != " " || contents[x-1] != "(" || contents[x-1] != "\r"|| contents[x-1] != "\n" || contents[x-1] != "]" || contents[x-1] != "[" || contents[x-1] != ")" {
                         for name in 0..memory_names.len() {
-                            if memory_names[name] == contents[x] && contents[x+1] == ":" {
+                            if memory_names[name] == contents[x] && contents[x+1] == ":"  && contents[x-2] != "dec"{
                                 contents[x-2] = "dec".to_string();
                                 contents[x-1] = memory_types[name].clone().to_string();
-                                memory_names[name] = "".to_string();
+                                for object in 0..memory_names.len(){
+                                    // println!("{:?}", object);
+                                    if memory_names[object] == "123456789".to_string() + memory_names[name].as_str(){
+                                        memory_names[object] = "".to_string();
+                                        break;
+                                    } else {
+                                    }
+                                }
+                                memory_names[name] = "123456789".to_string() + memory_names[name].as_str();
                                 x = x-2;
                                 break;
                             }
@@ -786,7 +792,8 @@ pub fn run(
                                     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                     .clone(),
                             );
-                        } else if value_group.join("") != "" {
+                        }
+                        else if value_group.join("") != "" {
                             value_group.push(clone_class.clone());
                             memory_values.push(
                                 value_group
@@ -811,7 +818,50 @@ pub fn run(
                                 memory_values.push(value_group[d].clone());
                                 memory_types.push("str".parse().unwrap());
                             }
-                        } else if memory_types[memory_types.len() - 1] == "int" {
+                        }    
+                        // } else if value.contains("+") && memory_types[memory_types.len() - 1] != "str"{
+                        //     for names in 0..memory_names.len() {
+                        //         value = str::replace(value.as_str(), memory_names[names].as_str(), memory_values[names].as_str());
+                        //     }
+                        let mut var_rep: Vec<String> = Vec::new();
+                        for mut item in x+4..contents.len() {
+                            if contents[item] == ";" {
+                                break;
+                            } else if contents[item] == "\"" || contents[item] == "\'" || contents[item] == "\r" || contents[item] == "\n"{
+                                // || contents[item] == "\r" || contents[item] == "\n"
+                                while true{
+                                    // println!("{:?}", contents[item]);
+                                    if contents[item] == "\"" || contents[item] == "\'" || contents[item] == "+" ||  contents[item] == "-" ||  contents[item] == "/" || contents[item] == "*"{
+                                        // println!{"broken!"}
+                                        break;
+                                    } else {
+                                        item = item + 1;
+                                    }
+                                }
+                            } else {
+                                if contents[item] == "\r" || contents[item] == "\n"{
+
+                                } else {
+                                    var_rep.push(contents[item].clone());
+                                }
+                            }
+                        }
+                        // println!("{:?}", var_rep);
+                        // println!("{:?} success!", var_rep);
+                        if var_rep.len() == 0 {
+
+                        } else {
+                            for name in 0..memory_names.len() {
+                                for item in 0..var_rep.len(){
+                                    let tempname = "123456789".to_string() + var_rep[item].clone().as_str();
+                                    // println!("{:?}, {:?}", tempname, memory_names[name]);
+                                    if memory_names[name] == tempname {
+                                        value = value.to_string().replace(&memory_names[name].replace("123456789", ""), memory_values[name].as_str());
+                                    }
+                                }
+                            }
+                        }
+                        if memory_types[memory_types.len() - 1] == "int" {
                             let number = eval(value.clone().as_str());
                             if number.is_ok() {
                                 memory_values.push(number.unwrap().to_string());
