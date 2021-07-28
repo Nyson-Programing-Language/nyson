@@ -56,7 +56,7 @@ pub fn run(
                             if memory_names[name] == contents[x] && contents[x+1] == ":" {
                                 contents[x-2] = "dec".to_string();
                                 contents[x-1] = memory_types[name].clone().to_string();
-                                memory_names[name] = "qwqertyhshdvjfhvbajobaahjsfbhjkbsachkjbsdahkb8137872jdhf02".to_string();
+                                memory_names[name] = "".to_string();
                                 x = x-2;
                                 break;
                             }
