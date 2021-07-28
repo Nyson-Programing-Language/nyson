@@ -1032,7 +1032,7 @@ pub fn math(
                             }
                         }
                         if postion1 != memory_names.len() {
-                            vec[y] = memory_values[postion1].to_string();
+                            vec[y] = memory_values[postion1-1].to_string();
                         }
                     }
                     if vec[y].to_lowercase() == "random" {

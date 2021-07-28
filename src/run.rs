@@ -49,15 +49,17 @@ pub fn run(
                     squigle -= 1;
                 }
                 if quotes % 2 == 0 && squigle == 0 {
-                    for name in 0..memory_names.len() {
-                        if memory_names[name] == contents[x] && contents[x+1] == ":" {
-                            contents[x-2] = "dec".to_string();
-                            contents[x-1] = memory_types[name].to_string();
-                            memory_names.remove(name);
-                            memory_values.remove(name);
-                            memory_types.remove(name);
-                            x = x-2;
-                            break;
+                    if memory_names.len() == 0 {
+
+                    } else {
+                        for name in 0..memory_names.len() {
+                            if memory_names[name] == contents[x] && contents[x+1] == ":" {
+                                contents[x-2] = "dec".to_string();
+                                contents[x-1] = memory_types[name].clone().to_string();
+                                memory_names[name] = "qwqertyhshdvjfhvbajobaahjsfbhjkbsachkjbsdahkb8137872jdhf02".to_string();
+                                x = x-2;
+                                break;
+                            }
                         }
                     }
                     if contents[x] == "log" {
