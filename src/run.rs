@@ -50,14 +50,13 @@ pub fn run(
                 }
                 if quotes % 2 == 0 && squigle == 0 {
                     if memory_names.len() == 0 {
-
                     } else {
                         for name in 0..memory_names.len() {
-                            if memory_names[name] == contents[x] && contents[x+1] == ":" {
-                                contents[x-2] = "dec".to_string();
-                                contents[x-1] = memory_types[name].clone().to_string();
+                            if memory_names[name] == contents[x] && contents[x + 1] == ":" {
+                                contents[x - 2] = "dec".to_string();
+                                contents[x - 1] = memory_types[name].clone().to_string();
                                 memory_names[name] = "".to_string();
-                                x = x-2;
+                                x = x - 2;
                                 break;
                             }
                         }
