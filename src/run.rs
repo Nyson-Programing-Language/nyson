@@ -67,9 +67,9 @@ pub fn run(
                                     {
                                         memory_names[item] = "".to_string();
                                     }
-                                    if memory_names[item] == memory_names[name]{
-                                        memory_names[item] = "123456789".to_string()
-                                            + memory_names[name].as_str();
+                                    if memory_names[item] == memory_names[name] {
+                                        memory_names[item] =
+                                            "123456789".to_string() + memory_names[name].as_str();
                                         break;
                                     }
                                 }
