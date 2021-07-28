@@ -52,7 +52,10 @@ pub fn run(
                     if memory_names.len() == 0 {
                     } else {
                         for name in 0..memory_names.len() {
-                            if memory_names[name] == contents[x] && contents[x + 1] == ":" && contents[x-2] != "dec"{
+                            if memory_names[name] == contents[x]
+                                && contents[x + 1] == ":"
+                                && contents[x - 2] != "dec"
+                            {
                                 contents[x - 2] = "dec".to_string();
                                 contents[x - 1] = memory_types[name].clone().to_string();
                                 memory_names[name] = "".to_string();
@@ -785,8 +788,7 @@ pub fn run(
                                     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                     .clone(),
                             );
-                        }
-                        else if value_group.join("") != "" {
+                        } else if value_group.join("") != "" {
                             value_group.push(clone_class.clone());
                             memory_values.push(
                                 value_group
@@ -811,20 +813,30 @@ pub fn run(
                                 memory_values.push(value_group[d].clone());
                                 memory_types.push("str".parse().unwrap());
                             }
-                        }    
+                        }
                         // } else if value.contains("+") && memory_types[memory_types.len() - 1] != "str"{
                         //     for names in 0..memory_names.len() {
                         //         value = str::replace(value.as_str(), memory_names[names].as_str(), memory_values[names].as_str());
                         //     }
                         let mut var_rep: Vec<String> = Vec::new();
-                        for mut item in x+4..contents.len() {
+                        for mut item in x + 4..contents.len() {
                             if contents[item] == ";" {
                                 break;
-                            } else if contents[item] == "\"" || contents[item] == "\'" || contents[item] == "\r" || contents[item] == "\n"{
+                            } else if contents[item] == "\""
+                                || contents[item] == "\'"
+                                || contents[item] == "\r"
+                                || contents[item] == "\n"
+                            {
                                 // || contents[item] == "\r" || contents[item] == "\n"
-                                while true{
+                                while true {
                                     // println!("{:?}", contents[item]);
-                                    if contents[item] == "\"" || contents[item] == "\'" || contents[item] == "+" ||  contents[item] == "-" ||  contents[item] == "/" || contents[item] == "*"{
+                                    if contents[item] == "\""
+                                        || contents[item] == "\'"
+                                        || contents[item] == "+"
+                                        || contents[item] == "-"
+                                        || contents[item] == "/"
+                                        || contents[item] == "*"
+                                    {
                                         // println!{"broken!"}
                                         break;
                                     } else {
@@ -832,8 +844,7 @@ pub fn run(
                                     }
                                 }
                             } else {
-                                if contents[item] == "\r" || contents[item] == "\n"{
-
+                                if contents[item] == "\r" || contents[item] == "\n" {
                                 } else {
                                     var_rep.push(contents[item].clone());
                                 }
@@ -842,14 +853,17 @@ pub fn run(
                         // println!("{:?}", var_rep);
                         // println!("{:?} success!", var_rep);
                         if var_rep.len() == 0 {
-
                         } else {
                             for name in 0..memory_names.len() {
-                                for item in 0..var_rep.len(){
-                                    let tempname = "123456789".to_string() + var_rep[item].clone().as_str();
+                                for item in 0..var_rep.len() {
+                                    let tempname =
+                                        "123456789".to_string() + var_rep[item].clone().as_str();
                                     // println!("{:?}, {:?}", tempname, memory_names[name]);
                                     if memory_names[name] == tempname {
-                                        value = value.to_string().replace(&memory_names[name].replace("123456789", ""), memory_values[name].as_str());
+                                        value = value.to_string().replace(
+                                            &memory_names[name].replace("123456789", ""),
+                                            memory_values[name].as_str(),
+                                        );
                                     }
                                 }
                             }
