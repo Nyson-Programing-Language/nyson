@@ -1,3 +1,0 @@
-dec str name : "neal";
-dec str barc : "hello " name;
-log(barc);

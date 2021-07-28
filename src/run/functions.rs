@@ -1229,6 +1229,7 @@ pub fn math(
             }
         }
     }
+    // println!("vec: {:?}", vec);
     vec[0].parse().unwrap()
 }
 

@@ -56,10 +56,28 @@ pub fn run(
                                 && contents[x + 1] == ":"
                                 && contents[x - 2] != "dec"
                             {
+                                // println!("found possible var change: {:?}", contents[x]);
+                                // println!("{:?}, {:?}", contents[x-2], contents);
                                 contents[x - 2] = "dec".to_string();
                                 contents[x - 1] = memory_types[name].clone().to_string();
-                                memory_names[name] = "".to_string();
+                                let mut exists = false;
+                                for item in 0..memory_names.len(){
+                                    if memory_names[name] == "123456789".to_string() + memory_names[name].as_str(){
+                                        memory_names[name] = "".to_string();
+                                        break;
+                                    } else {
+                                        exists = true;
+                                    }
+                                }
+                                if exists == true{
+                                    for namess in name..memory_names.len(){
+                                        if memory_names[name] == contents[x]{
+                                            memory_names[namess] = "123456789".to_string() +  memory_names[namess].as_str();
+                                        }
+                                    }
+                                }
                                 x = x - 2;
+                                // println!("{:?}", contents);
                                 break;
                             }
                         }
@@ -851,7 +869,8 @@ pub fn run(
                             }
                         }
                         // println!("{:?}", var_rep);
-                        // println!("{:?} success!", var_rep);
+                        // // println!("{:?} success!", var_rep);
+                        // println!("{:?}", var_rep.len());
                         if var_rep.len() == 0 {
                         } else {
                             for name in 0..memory_names.len() {
