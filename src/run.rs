@@ -49,21 +49,14 @@ pub fn run(
                     squigle -= 1;
                 }
                 if quotes % 2 == 0 && squigle == 0 {
-                    if contents[x] != "\"" || contents[x] != "\'" || contents[x] != " " || contents[x-1] != "(" || contents[x-1] != "\r"|| contents[x-1] != "\n" || contents[x-1] != "]" || contents[x-1] != "[" || contents[x-1] != ")" {
+                    if memory_names.len() == 0 {
+                    } else {
                         for name in 0..memory_names.len() {
-                            if memory_names[name] == contents[x] && contents[x+1] == ":"  && contents[x-2] != "dec"{
-                                contents[x-2] = "dec".to_string();
-                                contents[x-1] = memory_types[name].clone().to_string();
-                                for object in 0..memory_names.len(){
-                                    // println!("{:?}", object);
-                                    if memory_names[object] == "123456789".to_string() + memory_names[name].as_str(){
-                                        memory_names[object] = "".to_string();
-                                        break;
-                                    } else {
-                                    }
-                                }
-                                memory_names[name] = "123456789".to_string() + memory_names[name].as_str();
-                                x = x-2;
+                            if memory_names[name] == contents[x] && contents[x + 1] == ":" {
+                                contents[x - 2] = "dec".to_string();
+                                contents[x - 1] = memory_types[name].clone().to_string();
+                                memory_names[name] = "".to_string();
+                                x = x - 2;
                                 break;
                             }
                         }
