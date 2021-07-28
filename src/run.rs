@@ -61,18 +61,21 @@ pub fn run(
                                 contents[x - 2] = "dec".to_string();
                                 contents[x - 1] = memory_types[name].clone().to_string();
                                 let mut exists = false;
-                                for item in 0..memory_names.len(){
-                                    if memory_names[name] == "123456789".to_string() + memory_names[name].as_str(){
+                                for item in 0..memory_names.len() {
+                                    if memory_names[name]
+                                        == "123456789".to_string() + memory_names[name].as_str()
+                                    {
                                         memory_names[name] = "".to_string();
                                         break;
                                     } else {
                                         exists = true;
                                     }
                                 }
-                                if exists == true{
-                                    for namess in name..memory_names.len(){
-                                        if memory_names[name] == contents[x]{
-                                            memory_names[namess] = "123456789".to_string() +  memory_names[namess].as_str();
+                                if exists == true {
+                                    for namess in name..memory_names.len() {
+                                        if memory_names[name] == contents[x] {
+                                            memory_names[namess] = "123456789".to_string()
+                                                + memory_names[namess].as_str();
                                         }
                                     }
                                 }
