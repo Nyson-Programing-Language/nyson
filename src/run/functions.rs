@@ -1537,7 +1537,10 @@ pub fn declare(
         } else if square_brackets == 0 {
             if contents[position] == ";" {
                 if dev {
-                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
+                    println!(
+                        "contents[x+move_up+move_up+move_up_up+move_final]: {:?}",
+                        contents[position]
+                    );
                 }
                 break;
             } else if !group {
@@ -1635,9 +1638,7 @@ pub fn declare(
                         );
                         n = 1;
                     } else if contents[position] == "timeh" {
-                        value.push_str(
-                            time_readable().to_string().as_str(),
-                        );
+                        value.push_str(time_readable().to_string().as_str());
                         n = 1;
                     } else if contents[position] == "time" {
                         value.push_str(time().to_string().as_str());
@@ -1666,40 +1667,29 @@ pub fn declare(
                             let mut positions = memory_names_save.len();
                             let mut skip = false;
                             for pos in 0..memory_names_save.len() {
-                                if !skip
-                                    && memory_names_save[pos]
-                                        == contents[position]
-                                {
+                                if !skip && memory_names_save[pos] == contents[position] {
                                     positions = pos;
                                     skip = true;
                                 }
                             }
                             if positions != memory_names_save.len()
-                                && (contents[x + 1].trim() == ":"
-                                    || contents[x + 1].trim() == "=")
+                                && (contents[x + 1].trim() == ":" || contents[x + 1].trim() == "=")
                             {
-                                value.push_str(
-                                    memory_values_save[positions]
-                                        .to_string()
-                                        .as_str(),
-                                );
+                                value.push_str(memory_values_save[positions].to_string().as_str());
                             } else {
                                 let mut postion = func_names.len();
                                 let mut skip = false;
                                 for pos in 0..func_names.len() {
-                                    if !skip
-                                        && func_names[pos] == contents[position]
-                                    {
+                                    if !skip && func_names[pos] == contents[position] {
                                         postion = pos;
                                         skip = true;
                                     }
                                 }
                                 if postion != func_names.len() {
-                                    let mut contetntstr: Vec<String> =
-                                        Vec::new();
-                                    for x in func_code[postion].split(
-                                        "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                    ) {
+                                    let mut contetntstr: Vec<String> = Vec::new();
+                                    for x in func_code[postion]
+                                        .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                    {
                                         contetntstr.push(x.to_string());
                                     }
                                     value.push_str(
@@ -1812,8 +1802,7 @@ pub fn declare(
     } else {
         for name in 0..memory_names.len() {
             for item in 0..var_rep.len() {
-                let tempname =
-                    "123456789".to_string() + var_rep[item].clone().as_str();
+                let tempname = "123456789".to_string() + var_rep[item].clone().as_str();
                 // println!("{:?}, {:?}", tempname, memory_names[name]);
                 if memory_names[name] == tempname {
                     value = value.to_string().replace(
