@@ -403,7 +403,7 @@ pub fn run(
                             println!("func_names: {:?}", func_names);
                         }
                     } else if contents[x] == "eval" {
-                        let imp = functions::eval(
+                        let imp = functions::eval_eval(
                             x,
                             contents.clone(),
                             memory_names.clone(),

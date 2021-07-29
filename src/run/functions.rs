@@ -10,6 +10,7 @@ use std::{env, fs};
 extern crate chrono;
 use chrono::prelude::DateTime;
 use chrono::Utc;
+use eval::eval;
 
 pub fn find_greatest(list_of_numbers: &[i32]) -> &i32 {
     let mut largest = &list_of_numbers[0];
@@ -551,7 +552,7 @@ pub fn getstring(
     output_array
 }
 
-pub fn eval(
+pub fn eval_eval(
     x: usize,
     contents: Vec<String>,
     memory_names: Vec<String>,
@@ -1426,4 +1427,420 @@ pub fn group_fn(
         dev,
         1,
     )
+}
+
+pub fn declare(
+    mut memory_names: Vec<String>,
+    mut memory_values: Vec<String>,
+    mut memory_types: Vec<String>,
+    mut func_names: Vec<String>,
+    mut func_par: Vec<String>,
+    mut func_code: Vec<String>,
+    mut contents: Vec<String>,
+    mut group_memory: Vec<String>,
+    mut x: usize,
+    mut dev: bool,
+) {
+    let memory_names1 = memory_names.clone();
+    let memory_values1 = memory_values.clone();
+    let memory_types1 = memory_types.clone();
+    let func_names1 = func_names.clone();
+    let func_par1 = func_par.clone();
+    let func_code1 = func_code.clone();
+    let memory_names_save = memory_names.clone();
+    let memory_values_save = memory_values.clone();
+    let mut types = false;
+    let mut position = x + 1;
+    let square_brackets = 0;
+
+    // get type
+    if contents[position] == "int" {
+        memory_types.push(String::from("int"));
+        memory_names.push(contents[position + 1].clone());
+        position += 1;
+    } else if contents[position] == "str" {
+        memory_types.push(String::from("str"));
+        memory_names.push(contents[position + 1].clone());
+        position += 1;
+    } else if contents[position] == "arr" {
+        memory_types.push(String::from("arr"));
+        memory_names.push(contents[position + 1].clone());
+        position += 1;
+    } else if contents[position] == "grp" {
+        memory_types.push(String::from("grp"));
+        memory_names.push(contents[position + 1].clone());
+        position += 1;
+    } else if contents[position] == "inf" {
+        memory_types.push(String::from("inf"));
+        memory_names.push(contents[position + 1].clone());
+        position += 1;
+    } else if contents[position] == "anon" {
+        memory_types.push(String::from("anon"));
+        types = true;
+    }
+
+    //more vars
+    let mut clone_class = String::from("");
+    let mut value = String::new();
+    let mut value_array = Vec::new();
+    let mut value_group = Vec::new();
+
+    //more vars
+    let mut n = 0;
+    let mut quote = 0;
+    let mut squig = 0; // brace/squiggly bracket checker
+    let mut brackets = 0;
+
+    //more vars
+    position += 2;
+    let mut group = false;
+
+    loop {
+        if contents[position] == "[" {
+            // if bracket run fn array
+            value_array = array_fn(
+                position - 1,
+                contents.clone(),
+                memory_names.clone(),
+                memory_values.clone(),
+                memory_types.clone(),
+                func_names.clone(),
+                func_par.clone(),
+                func_code.clone(),
+                dev,
+            );
+            break;
+        } else if contents[position] == "{" {
+            // if group run
+            value_group = group_fn(
+                position - 1,
+                contents.clone(),
+                memory_names.clone(),
+                memory_values.clone(),
+                memory_types.clone(),
+                func_names.clone(),
+                func_par.clone(),
+                func_code.clone(),
+                dev,
+            );
+            group = true;
+            squig += 1;
+        } else if contents[position] == "}" {
+            squig -= 1;
+            if group && squig == 0 && contents[position + 1] == "," {
+                clone_class = contents[position + 2].clone().to_string();
+            }
+        } else if contents[position] == "(" {
+            brackets += 1;
+        } else if contents[position] == ")" {
+            brackets -= 1;
+        } else if square_brackets == 0 {
+            if contents[position] == ";" {
+                if dev {
+                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
+                }
+                break;
+            } else if !group {
+                if (contents[position] == "\""
+                    || contents[position] == "\'"
+                    || contents[position] == r"\`")
+                    && contents[position - 1] != "\\"
+                {
+                    quote += 1;
+                } else if brackets == 0 {
+                    if contents[position] == "math" {
+                        value.push_str(
+                            math(
+                                position,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                            )
+                            .to_string()
+                            .as_str(),
+                        );
+                        n = 1;
+                    } else if contents[position] == "round" {
+                        value.push_str(
+                            round(
+                                position,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                            )
+                            .to_string()
+                            .as_str(),
+                        );
+                        n = 1;
+                    } else if contents[position] == "replace" {
+                        value.push_str(
+                            replace(
+                                position,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                            )
+                            .to_string()
+                            .as_str(),
+                        );
+                        n = 1;
+                    } else if contents[position] == "input" {
+                        value.push_str(input().to_string().as_str());
+                        n = 1;
+                    } else if contents[position] == "exec" {
+                        value.push_str(
+                            exec(
+                                position,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                            )
+                            .to_string()
+                            .as_str(),
+                        );
+                        n = 1;
+                    } else if contents[position] == "trim" {
+                        value.push_str(
+                            trim(
+                                position,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                            )
+                            .to_string()
+                            .as_str(),
+                        );
+                        n = 1;
+                    } else if contents[position] == "timeh" {
+                        value.push_str(
+                            time_readable().to_string().as_str(),
+                        );
+                        n = 1;
+                    } else if contents[position] == "time" {
+                        value.push_str(time().to_string().as_str());
+                        n = 1;
+                    } else if contents[position] == "getcont" {
+                        value.push_str(
+                            get_contents(
+                                position,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                            )
+                            .to_string()
+                            .as_str(),
+                        );
+                        n = 1;
+                    } else if n == 0 {
+                        if quote % 2 == 1 {
+                            value.push_str(contents[position].as_str());
+                        } else {
+                            let mut positions = memory_names_save.len();
+                            let mut skip = false;
+                            for pos in 0..memory_names_save.len() {
+                                if !skip
+                                    && memory_names_save[pos]
+                                        == contents[position]
+                                {
+                                    positions = pos;
+                                    skip = true;
+                                }
+                            }
+                            if positions != memory_names_save.len()
+                                && (contents[x + 1].trim() == ":"
+                                    || contents[x + 1].trim() == "=")
+                            {
+                                value.push_str(
+                                    memory_values_save[positions]
+                                        .to_string()
+                                        .as_str(),
+                                );
+                            } else {
+                                let mut postion = func_names.len();
+                                let mut skip = false;
+                                for pos in 0..func_names.len() {
+                                    if !skip
+                                        && func_names[pos] == contents[position]
+                                    {
+                                        postion = pos;
+                                        skip = true;
+                                    }
+                                }
+                                if postion != func_names.len() {
+                                    let mut contetntstr: Vec<String> =
+                                        Vec::new();
+                                    for x in func_code[postion].split(
+                                        "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
+                                    ) {
+                                        contetntstr.push(x.to_string());
+                                    }
+                                    value.push_str(
+                                        run::run(
+                                            contetntstr,
+                                            dev,
+                                            memory_names1.clone(),
+                                            memory_values1.clone(),
+                                            memory_types1.clone(),
+                                            func_names1.clone(),
+                                            func_par1.clone(),
+                                            func_code1.clone(),
+                                        )
+                                        .as_str(),
+                                    );
+                                } else {
+                                    value.push_str(contents[position].as_str());
+                                }
+                            }
+                        }
+                    }
+                    if n >= 1 && contents[position] == "(" {
+                        n += 1
+                    } else if n >= 1 && contents[position] == ")" {
+                        n -= 1;
+                        if n == 1 {
+                            n = 0;
+                        }
+                    }
+                }
+            }
+        }
+        position += 1;
+        if dev {
+            println!("position: {:?}", position);
+        }
+    }
+    if value_array.join("") != "" {
+        memory_values.push(
+            value_array
+                .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                .clone(),
+        );
+    } else if value_group.join("") != "" {
+        value_group.push(clone_class.clone());
+        memory_values.push(
+            value_group
+                .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                .clone(),
+        );
+        let name_of_item = memory_names[memory_names.len() - 1].clone();
+        for d in 0..value_group.len() - 1 {
+            let mut name: String = name_of_item.to_string();
+            name.push('.');
+            let mut location = 0;
+            for items in 0..group_memory.len() {
+                if items < group_memory.len() - 1
+                    && group_memory[items + 1].parse::<i32>().is_ok()
+                    && group_memory[items] == clone_class.clone()
+                {
+                    location = items + (d * 2) + 3;
+                }
+            }
+            name.push_str(&*group_memory[location]);
+            memory_names.push(name.clone());
+            memory_values.push(value_group[d].clone());
+            memory_types.push("str".parse().unwrap());
+        }
+    }
+    // } else if value.contains("+") && memory_types[memory_types.len() - 1] != "str"{
+    //     for names in 0..memory_names.len() {
+    //         value = str::replace(value.as_str(), memory_names[names].as_str(), memory_values[names].as_str());
+    //     }
+    let mut var_rep: Vec<String> = Vec::new();
+    for mut item in x + 4..contents.len() {
+        if contents[item] == ";" {
+            break;
+        } else if contents[item] == "\""
+            || contents[item] == "\'"
+            || contents[item] == "\r"
+            || contents[item] == "\n"
+        {
+            // || contents[item] == "\r" || contents[item] == "\n"
+            while true {
+                // println!("{:?}", contents[item]);
+                if contents[item] == "\""
+                    || contents[item] == "\'"
+                    || contents[item] == "+"
+                    || contents[item] == "-"
+                    || contents[item] == "/"
+                    || contents[item] == "*"
+                {
+                    // println!{"broken!"}
+                    break;
+                } else {
+                    item = item + 1;
+                }
+            }
+        } else {
+            if contents[item] == "\r" || contents[item] == "\n" {
+            } else {
+                var_rep.push(contents[item].clone());
+            }
+        }
+    }
+    // println!("{:?}", var_rep);
+    // // println!("{:?} success!", var_rep);
+    // println!("{:?}", var_rep.len());
+    if var_rep.len() == 0 {
+    } else {
+        for name in 0..memory_names.len() {
+            for item in 0..var_rep.len() {
+                let tempname =
+                    "123456789".to_string() + var_rep[item].clone().as_str();
+                // println!("{:?}, {:?}", tempname, memory_names[name]);
+                if memory_names[name] == tempname {
+                    value = value.to_string().replace(
+                        &memory_names[name].replace("123456789", ""),
+                        memory_values[name].as_str(),
+                    );
+                }
+            }
+        }
+    }
+    if memory_types[memory_types.len() - 1] == "int" {
+        let number = eval(value.clone().as_str());
+        if number.is_ok() {
+            memory_values.push(number.unwrap().to_string());
+        } else {
+            memory_values.push(value.clone());
+        }
+    } else {
+        memory_values.push(value.clone());
+    }
+
+    if types {
+        memory_names.push(value.clone());
+    }
+    if dev {
+        println!("memory_names: {:?}", memory_names);
+        println!("memory_types: {:?}", memory_types);
+        println!("memory_values: {:?}", memory_values);
+    }
 }
