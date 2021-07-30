@@ -1,2 +1,4 @@
-dec int barc : 10+10;
-log(barc)
+func(add(one, two)) {
+    ret(math(one+two))
+}
+log(add(1, 2));

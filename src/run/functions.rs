@@ -67,7 +67,7 @@ pub fn getstring(
     let mut n = 0;
     for y in x + 1..contents.len() {
         if !skip {
-            if int == 0 || int == 2 {
+            if int == 0 || int == 2  || int == 3 {
                 if contents[y] == "(" {
                     n += 1;
                 } else if contents[y] == ")" {
@@ -90,19 +90,20 @@ pub fn getstring(
     }
     vec.remove(0);
     vec.remove(vec.len() - 1);
-    if int == 0 || int == 2 {
+    if int == 0 || int == 2 || int == 3 {
         vec.remove(0);
     }
     let skip = false;
     let mut imput_s: String = "".to_string();
     let mut n = 0;
     let mut skips = 0;
+    let mut parent = 0;
     let mut output_array = Vec::new();
     for y in 0..vec.len() {
         if skips == 0 {
             if !skip {
                 let mut continues = true;
-                if n % 2 == 0 && vec[y] == "," {
+                if (n % 2 == 0 || int == 3) && vec[y] == "," {
                     output_array.push(imput_s);
                     imput_s = "".to_string();
                 } else if y < 1 {
@@ -118,8 +119,12 @@ pub fn getstring(
                 }
                 if !continues {
                 } else if vec[y] == "(" && n % 2 == 0 {
+                    parent = parent+1;
                 } else if vec[y] == ")" && n % 2 == 0 {
-                } else if n % 2 == 1 {
+                    parent = parent-1;
+                } else if parent != 0 {
+                }else if int == 3 && vec[y] == "," {
+                } else if n % 2 == 1 || vec[y].parse::<f64>().is_ok() {
                     imput_s.push_str(vec[y].as_str());
                 } else if vec[y] == "math" {
                     imput_s.push_str(
@@ -520,18 +525,27 @@ pub fn getstring(
                                 skip = true;
                             }
                         }
-                        let mut contetntstr: Vec<String> = Vec::new();
                         if postion != func_names.len() {
+                            let mut contetntstr: Vec<String> = Vec::new();
                             for x in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                             {
                                 contetntstr.push(x.to_string());
+                            }
+                            let mut contetntstr1: Vec<String> = Vec::new();
+                            for x in func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                            {
+                                contetntstr1.push(x.to_string());
+                            }
+                            let mut contetntstr2: Vec<String> = getstring(y, vec.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 0);
+                            for x in func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v") {
+                                contetntstr1.push(x.to_string());
                             }
                             imput_s.push_str(
                                 run::run(
                                     contetntstr,
                                     dev,
-                                    memory_names.clone(),
-                                    memory_values.clone(),
+                                    contetntstr1.clone(),
+                                    contetntstr2.clone(),
                                     memory_types.clone(),
                                     func_names.clone(),
                                     func_par.clone(),
@@ -539,6 +553,9 @@ pub fn getstring(
                                 )
                                 .as_str(),
                             );
+                        }
+                        else if int == 3 {
+                            imput_s.push_str(vec[y].as_str());
                         }
                     }
                 }
