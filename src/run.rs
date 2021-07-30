@@ -5,8 +5,8 @@ use std::process::Command;
 use std::{thread, time};
 extern crate chrono;
 extern crate eval;
-use eval::eval;
 use crate::run::functions::getstring;
+use eval::eval;
 
 pub fn run(
     mut contents: Vec<String>,
@@ -43,10 +43,14 @@ pub fn run(
                 {
                     quotes += 1;
                 }
-                if (contents[x] == "{" || contents[x] == "[" || contents[x] == "(") && quotes % 2 == 0 {
+                if (contents[x] == "{" || contents[x] == "[" || contents[x] == "(")
+                    && quotes % 2 == 0
+                {
                     squigle += 1;
                 }
-                if (contents[x] == "}" || contents[x] == "]" || contents[x] == ")") && quotes % 2 == 0 {
+                if (contents[x] == "}" || contents[x] == "]" || contents[x] == ")")
+                    && quotes % 2 == 0
+                {
                     squigle -= 1;
                 }
                 if quotes % 2 == 0 && squigle == 0 {
@@ -334,7 +338,19 @@ pub fn run(
                                 }
                             }
                         }
-                        let mut par = getstring(x + 2, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 3).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                        let mut par = getstring(
+                            x + 2,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
+                            dev,
+                            3,
+                        )
+                        .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
                         if dev {
                             println!("par: {}", par);
                             println!("code: {:?}", code);
