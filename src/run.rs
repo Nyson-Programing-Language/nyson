@@ -5,7 +5,6 @@ use std::process::Command;
 use std::{thread, time};
 extern crate chrono;
 extern crate eval;
-use crate::run::functions::getstring;
 use eval::eval;
 
 pub fn run(
@@ -338,7 +337,7 @@ pub fn run(
                                 }
                             }
                         }
-                        let mut par = getstring(
+                        let mut par = functions::getstring(
                             x + 2,
                             contents.clone(),
                             memory_names.clone(),
@@ -723,25 +722,44 @@ pub fn run(
                                                         }
                                                     }
                                                     if postion != func_names.len() {
-                                                        let mut contetntstr: Vec<String> =
-                                                            Vec::new();
-                                                        for x in func_code[postion].split(
-                                                            "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                                        ) {
-                                                            contetntstr.push(x.to_string());
+                                                        let mut contetntstr: Vec<String> = Vec::new();
+                                                        for t in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr.push(t.to_string());
+                                                        }
+                                                        let mut contetntstr1: Vec<String> = Vec::new();
+                                                        for t in func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr1.push(t.to_string());
+                                                        }
+                                                        let mut contetntstr2: Vec<String> = functions::getstring(
+                                                            x,
+                                                            contents.clone(),
+                                                            memory_names_save.clone(),
+                                                            memory_values_save.clone(),
+                                                            memory_types.clone(),
+                                                            func_names.clone(),
+                                                            func_par.clone(),
+                                                            func_code.clone(),
+                                                            dev,
+                                                            0,
+                                                        );
+                                                        for t in func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr1.push(t.to_string());
                                                         }
                                                         value.push_str(
                                                             run(
                                                                 contetntstr,
                                                                 dev,
-                                                                memory_names1.clone(),
-                                                                memory_values1.clone(),
-                                                                memory_types1.clone(),
-                                                                func_names1.clone(),
-                                                                func_par1.clone(),
-                                                                func_code1.clone(),
+                                                                contetntstr1.clone(),
+                                                                contetntstr2.clone(),
+                                                                memory_types.clone(),
+                                                                func_names.clone(),
+                                                                func_par.clone(),
+                                                                func_code.clone(),
                                                             )
-                                                            .as_str(),
+                                                                .as_str(),
                                                         );
                                                     } else {
                                                         value.push_str(contents[position].as_str());
@@ -1386,25 +1404,44 @@ pub fn run(
                                                         }
                                                     }
                                                     if postion != func_names.len() {
-                                                        let mut contetntstr: Vec<String> =
-                                                            Vec::new();
-                                                        for x in func_code_save[postion].split(
-                                                            "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                                        ) {
-                                                            contetntstr.push(x.to_string());
+                                                        let mut contetntstr: Vec<String> = Vec::new();
+                                                        for t in func_code_save[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr.push(t.to_string());
+                                                        }
+                                                        let mut contetntstr1: Vec<String> = Vec::new();
+                                                        for t in func_par_save[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr1.push(t.to_string());
+                                                        }
+                                                        let mut contetntstr2: Vec<String> = functions::getstring(
+                                                            x,
+                                                            contents.clone(),
+                                                            memory_names_save.clone(),
+                                                            memory_values_save.clone(),
+                                                            memory_types.clone(),
+                                                            func_names_save.clone(),
+                                                            func_par_save.clone(),
+                                                            func_code_save.clone(),
+                                                            dev,
+                                                            0,
+                                                        );
+                                                        for t in func_par_save[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr1.push(t.to_string());
                                                         }
                                                         value.push_str(
                                                             run(
                                                                 contetntstr,
                                                                 dev,
-                                                                memory_names_save.clone(),
-                                                                memory_values_save.clone(),
-                                                                memmory_types_save.clone(),
+                                                                contetntstr1.clone(),
+                                                                contetntstr2.clone(),
+                                                                memory_types.clone(),
                                                                 func_names_save.clone(),
                                                                 func_par_save.clone(),
                                                                 func_code_save.clone(),
                                                             )
-                                                            .as_str(),
+                                                                .as_str(),
                                                         );
                                                     }
                                                 }
@@ -1638,25 +1675,44 @@ pub fn run(
                                                         }
                                                     }
                                                     if postion != func_names.len() {
-                                                        let mut contetntstr: Vec<String> =
-                                                            Vec::new();
-                                                        for x in func_code[postion].split(
-                                                            "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                                        ) {
-                                                            contetntstr.push(x.to_string());
+                                                        let mut contetntstr: Vec<String> = Vec::new();
+                                                        for t in func_code_save[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr.push(t.to_string());
+                                                        }
+                                                        let mut contetntstr1: Vec<String> = Vec::new();
+                                                        for t in func_par_save[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr1.push(t.to_string());
+                                                        }
+                                                        let mut contetntstr2: Vec<String> = functions::getstring(
+                                                            x,
+                                                            contents.clone(),
+                                                            memory_names_save.clone(),
+                                                            memory_values_save.clone(),
+                                                            memory_types.clone(),
+                                                            func_names_save.clone(),
+                                                            func_par_save.clone(),
+                                                            func_code_save.clone(),
+                                                            dev,
+                                                            0,
+                                                        );
+                                                        for t in func_par_save[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                                        {
+                                                            contetntstr1.push(t.to_string());
                                                         }
                                                         value.push_str(
                                                             run(
                                                                 contetntstr,
                                                                 dev,
-                                                                memory_names_save.clone(),
-                                                                memory_values_save.clone(),
-                                                                memmory_types_save.clone(),
+                                                                contetntstr1.clone(),
+                                                                contetntstr2.clone(),
+                                                                memory_types.clone(),
                                                                 func_names_save.clone(),
                                                                 func_par_save.clone(),
                                                                 func_code_save.clone(),
                                                             )
-                                                            .as_str(),
+                                                                .as_str(),
                                                         );
                                                     }
                                                 }
