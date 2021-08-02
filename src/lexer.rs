@@ -26,7 +26,7 @@ pub fn no_extra_whitespace(mut input: Vec<String>, dev: bool) -> Vec<String> {
     let mut delete = Vec::new();
     let mut deleted = 0;
     for i in 0..input.len() {
-        if (input[i] == "\"" || input[i] == "\'" || input[i] == r"\`") && input[i-1] != "\\" {
+        if (input[i] == "\"" || input[i] == "\'" || input[i] == r"\`") && input[i - 1] != "\\" {
             quotes += 1;
         }
         if quotes % 2 == 0 && input[i] == " " {
