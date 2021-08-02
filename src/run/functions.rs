@@ -1,5 +1,5 @@
 use crate::{lexer, run};
-use curl::easy::Easy;
+use curl::easy::{Easy, List};
 use rand::Rng;
 use std::fs::File;
 use std::io::{Read, Write};
@@ -115,6 +115,10 @@ pub fn getstring(
                     && vec[y - 1] != "\\"
                 {
                     n += 1;
+                    continues = false;
+                } else if (vec[y+1] == "\"" || vec[y+1] == "\'" || vec[y+1] == r"\`")
+                    && vec[y] == "\\"
+                {
                     continues = false;
                 }
                 if !continues {
@@ -1389,7 +1393,7 @@ pub fn post_request(
     func_code: Vec<String>,
     dev: bool,
 ) {
-    let reply = getstring(
+    let mut reply = getstring(
         x,
         contents,
         memory_names,
@@ -1408,12 +1412,22 @@ pub fn post_request(
         println!("imput_s: {}", imput_s);
         println!("find_s: {}", find_s);
     }
+    reply.remove(0);
+    reply.remove(0);
+    let mut list = List::new();
+    for i in reply {
+        list.append(i.as_str()).unwrap();
+    }
+    if dev {
+        println!("list: {:?}", list);
+    }
     let mut data = find_s.as_bytes();
 
     let mut easy = Easy::new();
     easy.url(&*imput_s).unwrap();
     easy.post(true).unwrap();
     easy.post_field_size(data.len() as u64).unwrap();
+    easy.http_headers(list).unwrap();
 
     let mut transfer = easy.transfer();
     transfer
