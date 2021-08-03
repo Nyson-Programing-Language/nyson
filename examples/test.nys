@@ -1,1 +1,1 @@
-log(request("PUT", "https://amtitan.free.beeceptor.com", '{\"content\":\"hello :person_shrugging:\"}', "Content-Type: application/json"));
+request("PUT", "https://amtitan.free.beeceptor.com", '{\"content\":\"hello :person_shrugging:\"}', "Content-Type: application/json");
