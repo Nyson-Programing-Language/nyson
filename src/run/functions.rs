@@ -1367,7 +1367,7 @@ pub fn request(
     let type_of_request = reply[0].to_string();
     let imput_s = reply[1].to_string();
     let mut find_s = "".to_string();
-    let mut types_that_send = ["POST", "PUT", "PATCH"];
+    let types_that_send = ["POST", "PUT", "PATCH"];
     if types_that_send.contains(&&*type_of_request) {
         find_s = reply[2].to_string();
     }
