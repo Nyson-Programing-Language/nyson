@@ -410,13 +410,12 @@ pub fn run(
                         }
                         let mut new_vec = Vec::new();
                         for itom in 0..contents.len() {
-                            if itom == x-1 {
+                            if itom == x - 1 {
                                 new_vec.push(contents[itom].clone());
                                 for item in imp.clone() {
                                     new_vec.push(item);
                                 }
-                            }
-                            else {
+                            } else {
                                 new_vec.push(contents[itom].clone());
                             }
                         }
@@ -462,13 +461,12 @@ pub fn run(
                         }
                         let mut new_vec = Vec::new();
                         for itom in 0..contents.len() {
-                            if itom == x-1 {
+                            if itom == x - 1 {
                                 new_vec.push(contents[itom].clone());
                                 for item in imp.clone() {
                                     new_vec.push(item);
                                 }
-                            }
-                            else {
+                            } else {
                                 new_vec.push(contents[itom].clone());
                             }
                         }
@@ -1856,13 +1854,12 @@ pub(crate) fn hard(
                     }
                     let mut new_vec = Vec::new();
                     for itom in 0..contents.len() {
-                        if itom == x-1 {
+                        if itom == x - 1 {
                             new_vec.push(contents[itom].clone());
                             for item in imp.clone() {
                                 new_vec.push(item);
                             }
-                        }
-                        else {
+                        } else {
                             new_vec.push(contents[itom].clone());
                         }
                     }
