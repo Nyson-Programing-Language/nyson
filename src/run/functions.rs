@@ -116,7 +116,8 @@ pub fn getstring(
                 {
                     n += 1;
                     continues = false;
-                } else if (int != 3 || (int == 3 && y + 1 < vec.len())) && (vec[y + 1] == "\"" || vec[y + 1] == "\'" || vec[y + 1] == r"\`")
+                } else if (int != 3 || (int == 3 && y + 1 < vec.len()))
+                    && (vec[y + 1] == "\"" || vec[y + 1] == "\'" || vec[y + 1] == r"\`")
                     && vec[y] == "\\"
                 {
                     continues = false;

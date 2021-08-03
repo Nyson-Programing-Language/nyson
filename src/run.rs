@@ -1202,50 +1202,43 @@ pub fn run(
                             }
                         }
                         if postion != func_names.len() {
-                            let mut contetntstr: Vec<String> =
-                                Vec::new();
-                            for t in func_code[postion].split(
-                                "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                            ) {
+                            let mut contetntstr: Vec<String> = Vec::new();
+                            for t in func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                            {
                                 contetntstr.push(t.to_string());
                             }
-                            let mut contetntstr1: Vec<String> =
-                                Vec::new();
-                            for t in func_par[postion].split(
-                                "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                            ) {
+                            let mut contetntstr1: Vec<String> = Vec::new();
+                            for t in func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                            {
                                 contetntstr1.push(t.to_string());
                             }
-                            let contetntstr2: Vec<String> =
-                                functions::getstring(
-                                    x,
-                                    contents.clone(),
-                                    memory_names.clone(),
-                                    memory_values.clone(),
-                                    memory_types.clone(),
-                                    func_names.clone(),
-                                    func_par.clone(),
-                                    func_code.clone(),
-                                    dev,
-                                    0,
-                                );
-                            for t in func_par[postion].split(
-                                "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                            ) {
+                            let contetntstr2: Vec<String> = functions::getstring(
+                                x,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                                0,
+                            );
+                            for t in func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                            {
                                 contetntstr1.push(t.to_string());
                             }
-                            let _output =
-                                run(
-                                    contetntstr,
-                                    dev,
-                                    contetntstr1.clone(),
-                                    contetntstr2.clone(),
-                                    memory_types.clone(),
-                                    func_names.clone(),
-                                    func_par.clone(),
-                                    func_code.clone(),
-                                )
-                                    .as_str();
+                            let _output = run(
+                                contetntstr,
+                                dev,
+                                contetntstr1.clone(),
+                                contetntstr2.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                            )
+                            .as_str();
                         } else {
                             let mut postion = memory_names.len();
                             let mut skip = false;
