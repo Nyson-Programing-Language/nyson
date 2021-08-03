@@ -123,9 +123,9 @@ pub fn getstring(
                 }
                 if !continues {
                 } else if vec[y] == "(" && n % 2 == 0 {
-                    parent = parent + 1;
+                    parent += 1;
                 } else if vec[y] == ")" && n % 2 == 0 {
-                    parent = parent - 1;
+                    parent -= 1;
                 } else if parent != 0 {
                 } else if int == 3 && vec[y] == "," {
                 } else if n % 2 == 1 || vec[y].parse::<f64>().is_ok() {
@@ -540,7 +540,7 @@ pub fn getstring(
                             {
                                 contetntstr1.push(x.to_string());
                             }
-                            let mut contetntstr2: Vec<String> = getstring(
+                            let contetntstr2: Vec<String> = getstring(
                                 y,
                                 vec.clone(),
                                 memory_names.clone(),
@@ -612,7 +612,7 @@ pub fn eval(
         .unwrap()
         .as_str(),
     );
-    return lexer::lexer(stringz, dev);
+    lexer::lexer(stringz, dev)
 }
 
 pub fn exec(

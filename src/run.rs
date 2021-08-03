@@ -337,7 +337,7 @@ pub fn run(
                                 }
                             }
                         }
-                        let mut par = functions::getstring(
+                        let par = functions::getstring(
                             x + 2,
                             contents.clone(),
                             memory_names.clone(),
@@ -473,12 +473,12 @@ pub fn run(
                         contents = new_vec;
                         println!("{:?}", contents);
                     } else if contents[x] == "dec" {
-                        let memory_names1 = memory_names.clone();
-                        let memory_values1 = memory_values.clone();
-                        let memory_types1 = memory_types.clone();
-                        let func_names1 = func_names.clone();
-                        let func_par1 = func_par.clone();
-                        let func_code1 = func_code.clone();
+                        let _memory_names1 = memory_names.clone();
+                        let _memory_values1 = memory_values.clone();
+                        let _memory_types1 = memory_types.clone();
+                        let _func_names1 = func_names.clone();
+                        let _func_par1 = func_par.clone();
+                        let _func_code1 = func_code.clone();
                         let memory_names_save = memory_names.clone();
                         let memory_values_save = memory_values.clone();
                         let mut types = false;
@@ -741,7 +741,7 @@ pub fn run(
                                                         ) {
                                                             contetntstr1.push(t.to_string());
                                                         }
-                                                        let mut contetntstr2: Vec<String> =
+                                                        let contetntstr2: Vec<String> =
                                                             functions::getstring(
                                                                 x,
                                                                 contents.clone(),
@@ -1236,7 +1236,7 @@ pub fn run(
                                 let mut quote = 0;
                                 let memory_names_save = memory_names.clone();
                                 let memory_values_save = memory_values.clone();
-                                let memmory_types_save = memory_types.clone();
+                                let _memmory_types_save = memory_types.clone();
                                 let func_names_save = func_names.clone();
                                 let func_code_save = func_code.clone();
                                 let func_par_save = func_par.clone();
@@ -1429,7 +1429,7 @@ pub fn run(
                                                         ) {
                                                             contetntstr1.push(t.to_string());
                                                         }
-                                                        let mut contetntstr2: Vec<String> =
+                                                        let contetntstr2: Vec<String> =
                                                             functions::getstring(
                                                                 x,
                                                                 contents.clone(),
@@ -1514,7 +1514,7 @@ pub fn run(
                                 let mut quote = 0;
                                 let memory_names_save = memory_names.clone();
                                 let memory_values_save = memory_values.clone();
-                                let memmory_types_save = memory_types.clone();
+                                let _memmory_types_save = memory_types.clone();
                                 let func_names_save = func_names.clone();
                                 let func_code_save = func_code.clone();
                                 let func_par_save = func_par.clone();
@@ -1706,7 +1706,7 @@ pub fn run(
                                                         ) {
                                                             contetntstr1.push(t.to_string());
                                                         }
-                                                        let mut contetntstr2: Vec<String> =
+                                                        let contetntstr2: Vec<String> =
                                                             functions::getstring(
                                                                 x,
                                                                 contents.clone(),
