@@ -1,1 +1,1 @@
-eval("log(\"hi\")");
+POST("https://discord.com/api/webhooks/871871472199675934/A-JWCJnMKqIjyIs-xZ2aMUgh_GeN2PBk2wDqhvayLPDv6bxdySCSq_Y18aDZwEtO8iOD", '{\"content\":\"hello :person_shrugging:\"}', "Content-Type: application/json");

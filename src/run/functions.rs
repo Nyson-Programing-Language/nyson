@@ -103,7 +103,7 @@ pub fn getstring(
         if skips == 0 {
             if !skip {
                 let mut continues = true;
-                if (n % 2 == 0 || int == 3) && vec[y] == "," {
+                if (n % 2 == 0 || int == 3) && vec[y] == "," && n % 2 == 0 {
                     output_array.push(imput_s);
                     imput_s = "".to_string();
                 } else if y < 1 {
@@ -116,7 +116,7 @@ pub fn getstring(
                 {
                     n += 1;
                     continues = false;
-                } else if (vec[y + 1] == "\"" || vec[y + 1] == "\'" || vec[y + 1] == r"\`")
+                } else if (int != 3 || (int == 3 && y + 1 < vec.len())) && (vec[y + 1] == "\"" || vec[y + 1] == "\'" || vec[y + 1] == r"\`")
                     && vec[y] == "\\"
                 {
                     continues = false;
