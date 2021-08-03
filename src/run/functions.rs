@@ -116,7 +116,8 @@ pub fn getstring(
                 {
                     n += 1;
                     continues = false;
-                } else if y + 1 < vec.len() && (vec[y + 1] == "\"" || vec[y + 1] == "\'" || vec[y + 1] == r"\`")
+                } else if y + 1 < vec.len()
+                    && (vec[y + 1] == "\"" || vec[y + 1] == "\'" || vec[y + 1] == r"\`")
                     && vec[y] == "\\"
                 {
                     continues = false;
@@ -1405,15 +1406,14 @@ pub fn request(
     easy.http_headers(list).unwrap();
 
     let mut transfer = easy.transfer();
-    if types_that_send.contains(&&*type_of_request){
+    if types_that_send.contains(&&*type_of_request) {
         transfer
             .read_function(|buf| {
                 dst.extend_from_slice(buf);
                 Ok(data.read(buf).unwrap_or(0))
             })
             .unwrap();
-    }
-    else {
+    } else {
         transfer
             .write_function(|data| {
                 dst.extend_from_slice(data);
