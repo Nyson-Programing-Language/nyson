@@ -83,6 +83,18 @@ pub fn run(
                         .to_string()
                         .trim()
                         .to_string();
+                    } else if contents[x] == "request" {
+                        let _output = functions::request(
+                            x,
+                            contents.clone(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
+                            dev,
+                        );
                     } else if contents[x] == "exit" {
                         std::process::exit(1);
                     } else if contents[x] == "audio" {
@@ -285,18 +297,6 @@ pub fn run(
                         if r.is_err() {
                             panic!("Could not set file contents.");
                         }
-                    } else if contents[x] == "POST" {
-                        functions::post_request(
-                            x,
-                            contents.clone(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            memory_types.clone(),
-                            func_names.clone(),
-                            func_par.clone(),
-                            func_code.clone(),
-                            dev,
-                        );
                     } else if contents[x] == "func" {
                         let mut skip = false;
                         let mut n = 1;
@@ -1314,9 +1314,9 @@ pub fn run(
                                                 .as_str(),
                                             );
                                             n = 1;
-                                        } else if contents[position] == "GET" {
+                                        } else if contents[position] == "request" {
                                             value.push_str(
-                                                functions::get_request(
+                                                functions::request(
                                                     position,
                                                     contents.clone(),
                                                     memory_names.clone(),
@@ -1592,9 +1592,9 @@ pub fn run(
                                                 .as_str(),
                                             );
                                             n = 1;
-                                        } else if contents[position] == "GET" {
+                                        } else if contents[position] == "request" {
                                             value.push_str(
-                                                functions::get_request(
+                                                functions::request(
                                                     position,
                                                     contents.clone(),
                                                     memory_names.clone(),
