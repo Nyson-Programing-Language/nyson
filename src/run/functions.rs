@@ -116,7 +116,7 @@ pub fn getstring(
                 {
                     n += 1;
                     continues = false;
-                } else if (vec[y+1] == "\"" || vec[y+1] == "\'" || vec[y+1] == r"\`")
+                } else if (vec[y + 1] == "\"" || vec[y + 1] == "\'" || vec[y + 1] == r"\`")
                     && vec[y] == "\\"
                 {
                     continues = false;
