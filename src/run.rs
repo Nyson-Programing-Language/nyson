@@ -410,12 +410,15 @@ pub fn run(
                         }
                         let mut new_vec = Vec::new();
                         for itom in 0..contents.len() {
-                            if itom == x {
+                            if itom == x-1 {
+                                new_vec.push(contents[itom].clone());
                                 for item in imp.clone() {
                                     new_vec.push(item);
                                 }
                             }
-                            new_vec.push(contents[itom].clone());
+                            else {
+                                new_vec.push(contents[itom].clone());
+                            }
                         }
                         contents = new_vec;
                     } else if contents[x] == "imp" {
@@ -459,14 +462,18 @@ pub fn run(
                         }
                         let mut new_vec = Vec::new();
                         for itom in 0..contents.len() {
-                            if itom == x {
+                            if itom == x-1 {
+                                new_vec.push(contents[itom].clone());
                                 for item in imp.clone() {
                                     new_vec.push(item);
                                 }
                             }
-                            new_vec.push(contents[itom].clone());
+                            else {
+                                new_vec.push(contents[itom].clone());
+                            }
                         }
                         contents = new_vec;
+                        println!("{:?}", contents);
                     } else if contents[x] == "dec" {
                         let memory_names1 = memory_names.clone();
                         let memory_values1 = memory_values.clone();
@@ -1849,12 +1856,15 @@ pub(crate) fn hard(
                     }
                     let mut new_vec = Vec::new();
                     for itom in 0..contents.len() {
-                        if itom == x {
+                        if itom == x-1 {
+                            new_vec.push(contents[itom].clone());
                             for item in imp.clone() {
                                 new_vec.push(item);
                             }
                         }
-                        new_vec.push(contents[itom].clone());
+                        else {
+                            new_vec.push(contents[itom].clone());
+                        }
                     }
                     contents = new_vec;
                 }

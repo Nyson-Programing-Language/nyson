@@ -594,22 +594,21 @@ pub fn eval(
     func_code: Vec<String>,
     dev: bool,
 ) -> Vec<String> {
+    let mut stringz = " ".to_string();
+    stringz.push_str(getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        func_names,
+        func_par,
+        func_code,
+        dev,
+        0,
+    ).first().unwrap().as_str());
     return lexer::lexer(
-        getstring(
-            x,
-            contents,
-            memory_names,
-            memory_values,
-            memory_types,
-            func_names,
-            func_par,
-            func_code,
-            dev,
-            0,
-        )
-        .first()
-        .unwrap()
-        .to_string(),
+        stringz,
         dev,
     );
 }
