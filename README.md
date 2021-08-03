@@ -4,6 +4,8 @@ The official home of the Nyson Programming Language, built off Rust.
 
 ![Logo](https://github.com/Nyelsonon/nyson-programming-language/blob/main/Logos/NysonLogo.png)
 
+https://user-images.githubusercontent.com/29708070/128087291-a6e4f541-d84f-4b28-9d02-ed5558e60878.mp4
+
 
 ## Contributors:
 
@@ -25,9 +27,11 @@ https://nyson-programing-language.github.io/
 
 https://github.com/Nyelsonon/nyson-programming-language
 
-## Social Medias:
+## Support Us ❤️:
 
-Discord Server: https://discord.gg/TSD7gpjd
+Nyelsonon: https://venmo.com/code?user_id=3150553001492480241&created=1626114671.90623&printed=1
+
+AMTitan: https://paypal.me/AMTitan
 
 ## Other Repos:
 
