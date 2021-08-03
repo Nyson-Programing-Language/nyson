@@ -3,22 +3,6 @@ on: push
 name: Format
 
 jobs:
-  clippy-check:
-    runs-on: ubuntu-latest
-    steps:
-        - uses: actions/checkout@v2
-        - uses: actions-rs/toolchain@v1
-          with:
-              toolchain: nightly
-              components: clippy
-              override: true
-        - uses: LoliGothick/clippy-check@master
-          with:
-              token: ${{ secrets.GITHUB_TOKEN }}
-              allow: >
-                nonstandard_macro_braces
-                mutex_atomic
-              deny: warnings  
   format:
     runs-on: ubuntu-latest
     steps:
