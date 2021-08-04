@@ -4,6 +4,8 @@ The official home of the Nyson Programming Language, built off Rust.
 
 ![Logo](https://github.com/Nyelsonon/nyson-programming-language/blob/main/Logos/NysonLogo.png)
 
+i cant believe we spent 7 dollars to buy a voice actor to say this stuff...
+
 https://user-images.githubusercontent.com/29708070/128087291-a6e4f541-d84f-4b28-9d02-ed5558e60878.mp4
 
 

@@ -119,18 +119,15 @@ pub fn split(text: String) -> Vec<String> {
         }
         if x < output.len() && output[x] == "/" && output[x + 1] == "/" {
             if_commented_out = true;
-        } else if output[x] == "\n" && if_commented_out == true {
+        } else if output[x] == "\n" && if_commented_out {
             if_commented_out = false;
-        } else if x < output.len()
-            && output[x] == "*"
-            && output[x + 1] == "/"
-            && if_commented_out1 == true
+        } else if x < output.len() && output[x] == "*" && output[x + 1] == "/" && if_commented_out1
         {
             if_commented_out1 = false;
         } else if x < output.len() && output[x] == "/" && output[x + 1] == "*" {
             if_commented_out1 = true;
         }
-        if if_commented_out == false && if_commented_out1 == false {
+        if !if_commented_out && !if_commented_out1 {
             outputs.push(String::from(output[x]));
         }
     }
