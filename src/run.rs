@@ -477,18 +477,31 @@ pub fn run(
                             position += 2;
                             let _group = false;
 
-                            let mut pass_vec : Vec<String> = Vec::new();
+                            let mut pass_vec: Vec<String> = Vec::new();
                             pass_vec.push("a".to_string());
                             pass_vec.push("(".to_string());
                             loop {
-                                if contents[position] == "\n" || contents[position] == ";"{
+                                if contents[position] == "\n" || contents[position] == ";" {
                                     break;
                                 }
                                 pass_vec.push(contents[position].clone().to_string());
-                                position = position+1;
+                                position = position + 1;
                             }
                             pass_vec.push(")".to_string());
-                            let value  = functions::getstring(0, pass_vec.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 0).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").to_string();
+                            let value = functions::getstring(
+                                0,
+                                pass_vec.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                                0,
+                            )
+                            .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                            .to_string();
                             if value_array.join("") != "" {
                                 memory_values.push(
                                     value_array
@@ -539,7 +552,7 @@ pub fn run(
                                 println!("memory_types: {:?}", memory_types);
                                 println!("memory_values: {:?}", memory_values);
                             }
-                        },
+                        }
                         "group" => {
                             let build_name = contents[x + 1].clone();
                             let mut objects: Vec<String> = Vec::new();
@@ -973,18 +986,33 @@ pub fn run(
                                         let func_names_save = func_names.clone();
                                         let func_code_save = func_code.clone();
                                         let func_par_save = func_par.clone();
-                                        let mut pass_vec : Vec<String> = Vec::new();
+                                        let mut pass_vec: Vec<String> = Vec::new();
                                         pass_vec.push("a".to_string());
                                         pass_vec.push("(".to_string());
                                         loop {
-                                            if contents[position] == "\n" || contents[position] == ";"{
+                                            if contents[position] == "\n"
+                                                || contents[position] == ";"
+                                            {
                                                 break;
                                             }
                                             pass_vec.push(contents[position].clone().to_string());
-                                            position = position+1;
+                                            position = position + 1;
                                         }
                                         pass_vec.push(")".to_string());
-                                        let value  = functions::getstring(0, pass_vec.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 0).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").to_string();
+                                        let value = functions::getstring(
+                                            0,
+                                            pass_vec.clone(),
+                                            memory_names.clone(),
+                                            memory_values.clone(),
+                                            memory_types.clone(),
+                                            func_names.clone(),
+                                            func_par.clone(),
+                                            func_code.clone(),
+                                            dev,
+                                            0,
+                                        )
+                                        .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                        .to_string();
                                         memory_values[postion] = value;
                                     } else if postion != memory_names.len()
                                         && contents[x + 1].trim() == "("
@@ -1025,18 +1053,33 @@ pub fn run(
                                         let func_names_save = func_names.clone();
                                         let func_code_save = func_code.clone();
                                         let func_par_save = func_par.clone();
-                                        let mut pass_vec : Vec<String> = Vec::new();
+                                        let mut pass_vec: Vec<String> = Vec::new();
                                         pass_vec.push("a".to_string());
                                         pass_vec.push("(".to_string());
                                         loop {
-                                            if contents[position] == "\n" || contents[position] == ";"{
+                                            if contents[position] == "\n"
+                                                || contents[position] == ";"
+                                            {
                                                 break;
                                             }
                                             pass_vec.push(contents[position].clone().to_string());
-                                            position = position+1;
+                                            position = position + 1;
                                         }
                                         pass_vec.push(")".to_string());
-                                        let value  = functions::getstring(0, pass_vec.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 0).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").to_string();
+                                        let value = functions::getstring(
+                                            0,
+                                            pass_vec.clone(),
+                                            memory_names.clone(),
+                                            memory_values.clone(),
+                                            memory_types.clone(),
+                                            func_names.clone(),
+                                            func_par.clone(),
+                                            func_code.clone(),
+                                            dev,
+                                            0,
+                                        )
+                                        .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                        .to_string();
                                         let mut new_value = memory_values[postion]
                                             .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                             .collect::<Vec<&str>>();
