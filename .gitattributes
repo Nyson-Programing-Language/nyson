@@ -1,1 +1,2 @@
 *.nys   diff=nyson
+*.rs    diff=rust
