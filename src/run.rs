@@ -53,8 +53,6 @@ pub fn run(
                     squigle -= 1;
                 }
 
-
-                
                 if quotes % 2 == 0 && squigle == 0 {
                     match contents[x].as_str() {
                         "log" => {
@@ -479,7 +477,21 @@ pub fn run(
                             position += 2;
                             let mut group = false;
 
-                            let value  = functions::getstring(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 4).first().unwrap().to_string();
+                            let value = functions::getstring(
+                                x,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                                4,
+                            )
+                            .first()
+                            .unwrap()
+                            .to_string();
 
                             if value_array.join("") != "" {
                                 memory_values.push(
