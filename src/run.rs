@@ -54,6 +54,15 @@ pub fn run(
                 }
                 if quotes % 2 == 0 && squigle == 0 {
                     match contents[x].as_str() {
+                        "``" => {
+                            for elem in 0..contents[x].len() {
+                                if contents[elem] == "\n" || contents[elem] == "//" {
+                                    break;
+                                } else {
+                                    contents[elem] == "".to_string();
+                                }
+                            }
+                        }
                         //divider--
                         "log" => {
                             functions::log(

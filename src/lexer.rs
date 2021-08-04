@@ -84,7 +84,8 @@ pub fn split(text: String) -> Vec<String> {
             !(c.is_alphanumeric()
                 || c == '\''
                 || c == ".".chars().next().unwrap()
-                || c == "_".chars().next().unwrap())
+                || c == "_".chars().next().unwrap()
+                || c == "`".chars().next().unwrap())
         }) {
             if last != index {
                 vec.push(&text[last..index]);
