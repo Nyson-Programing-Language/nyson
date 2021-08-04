@@ -1,2 +1,3 @@
-``log("hello");
-log("hello");
+dec str namem : "hi there";
+namem : "bye there";
+log(namem);
