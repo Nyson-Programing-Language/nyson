@@ -479,8 +479,18 @@ pub fn run(
                             position += 2;
                             let mut group = false;
 
-                            let value  = functions::getstring(x, contents.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 4).first().unwrap().to_string();
-
+                            let mut pass_vec : Vec<String> = Vec::new();
+                            pass_vec.push("a".to_string());
+                            pass_vec.push("(".to_string());
+                            loop {
+                                if contents[position] == "\n" || contents[position] == ";"{
+                                    break;
+                                }
+                                pass_vec.push(contents[position].clone().to_string());
+                                position = position+1;
+                            }
+                            pass_vec.push(")".to_string());
+                            let value  = functions::getstring(0, pass_vec.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 0).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").to_string();
                             if value_array.join("") != "" {
                                 memory_values.push(
                                     value_array
@@ -531,7 +541,7 @@ pub fn run(
                                 println!("memory_types: {:?}", memory_types);
                                 println!("memory_values: {:?}", memory_values);
                             }
-                        }
+                        },
                         "group" => {
                             let build_name = contents[x + 1].clone();
                             let mut objects: Vec<String> = Vec::new();
@@ -890,6 +900,7 @@ pub fn run(
                             }
                         }
                         _ => {
+                            //function names
                             if x > 2 && contents[x - 2] != "func" {
                                 let mut postion = func_names.len();
                                 let mut skip = false;
@@ -964,250 +975,18 @@ pub fn run(
                                         let func_names_save = func_names.clone();
                                         let func_code_save = func_code.clone();
                                         let func_par_save = func_par.clone();
+                                        let mut pass_vec : Vec<String> = Vec::new();
+                                        pass_vec.push("a".to_string());
+                                        pass_vec.push("(".to_string());
                                         loop {
-                                            if dev {
-                                                println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
-                                            }
-                                            if contents[position] == ";" {
+                                            if contents[position] == "\n" || contents[position] == ";"{
                                                 break;
-                                            } else if (contents[position] == "\""
-                                                || contents[position] == "\'"
-                                                || contents[position] == r"\`")
-                                                && contents[position - 1] != "\\"
-                                            {
-                                                quote += 1;
-                                            } else {
-                                                if contents[position] == "math" {
-                                                    value.push_str(
-                                                        functions::math(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "round" {
-                                                    value.push_str(
-                                                        functions::round(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "request" {
-                                                    value.push_str(
-                                                        functions::request(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "replace" {
-                                                    value.push_str(
-                                                        functions::replace(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "input" {
-                                                    value.push_str(
-                                                        functions::input().to_string().as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "exec" {
-                                                    value.push_str(
-                                                        functions::exec(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "trim" {
-                                                    value.push_str(
-                                                        functions::trim(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "timeh" {
-                                                    value.push_str(
-                                                        functions::time_readable()
-                                                            .to_string()
-                                                            .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "time" {
-                                                    value.push_str(
-                                                        functions::time().to_string().as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "getcont" {
-                                                    value.push_str(
-                                                        functions::get_contents(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if n == 0 {
-                                                    if quote % 2 == 1 {
-                                                        value.push_str(contents[position].as_str());
-                                                    } else {
-                                                        let mut positions = memory_names_save.len();
-                                                        let mut skip = false;
-                                                        for pos in 0..memory_names_save.len() {
-                                                            if !skip
-                                                                && memory_names_save[pos]
-                                                                    == contents[position]
-                                                            {
-                                                                positions = pos;
-                                                                skip = true;
-                                                            }
-                                                        }
-                                                        if positions != memory_names_save.len() {
-                                                            value.push_str(
-                                                                memory_values_save[positions]
-                                                                    .to_string()
-                                                                    .as_str(),
-                                                            );
-                                                        } else {
-                                                            let mut postion = func_names_save.len();
-                                                            let mut skip = false;
-                                                            for pos in 0..func_names_save.len() {
-                                                                if !skip
-                                                                    && func_names_save[pos]
-                                                                        == contents[position]
-                                                                {
-                                                                    postion = pos;
-                                                                    skip = true;
-                                                                }
-                                                            }
-                                                            if postion != func_names.len() {
-                                                                let mut contetntstr: Vec<String> =
-                                                                    Vec::new();
-                                                                for t in func_code_save[postion].split(
-                                                                    "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                                                ) {
-                                                                    contetntstr.push(t.to_string());
-                                                                }
-                                                                let mut contetntstr1: Vec<String> =
-                                                                    Vec::new();
-                                                                for t in func_par_save[postion].split(
-                                                                    "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                                                ) {
-                                                                    contetntstr1.push(t.to_string());
-                                                                }
-                                                                let contetntstr2: Vec<String> =
-                                                                    functions::getstring(
-                                                                        x,
-                                                                        contents.clone(),
-                                                                        memory_names_save.clone(),
-                                                                        memory_values_save.clone(),
-                                                                        memory_types.clone(),
-                                                                        func_names_save.clone(),
-                                                                        func_par_save.clone(),
-                                                                        func_code_save.clone(),
-                                                                        dev,
-                                                                        0,
-                                                                    );
-                                                                for t in func_par_save[postion].split(
-                                                                    "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                                                ) {
-                                                                    contetntstr1.push(t.to_string());
-                                                                }
-                                                                value.push_str(
-                                                                    run(
-                                                                        contetntstr,
-                                                                        dev,
-                                                                        contetntstr1.clone(),
-                                                                        contetntstr2.clone(),
-                                                                        memory_types.clone(),
-                                                                        func_names_save.clone(),
-                                                                        func_par_save.clone(),
-                                                                        func_code_save.clone(),
-                                                                    )
-                                                                    .as_str(),
-                                                                );
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                if n >= 1 && contents[position] == "(" {
-                                                    n += 1
-                                                } else if n >= 1 && contents[position] == ")" {
-                                                    n -= 1;
-                                                    if n == 1 {
-                                                        n = 0;
-                                                    }
-                                                }
                                             }
-                                            position += 1;
-                                            if dev {
-                                                println!("position: {:?}", position);
-                                            }
+                                            pass_vec.push(contents[position].clone().to_string());
+                                            position = position+1;
                                         }
+                                        pass_vec.push(")".to_string());
+                                        let value  = functions::getstring(0, pass_vec.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 0).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").to_string();
                                         memory_values[postion] = value;
                                     } else if postion != memory_names.len()
                                         && contents[x + 1].trim() == "("
@@ -1248,250 +1027,18 @@ pub fn run(
                                         let func_names_save = func_names.clone();
                                         let func_code_save = func_code.clone();
                                         let func_par_save = func_par.clone();
+                                        let mut pass_vec : Vec<String> = Vec::new();
+                                        pass_vec.push("a".to_string());
+                                        pass_vec.push("(".to_string());
                                         loop {
-                                            if contents[position] == ";" {
-                                                if dev {
-                                                    println!("contents[x+move_up+move_up+move_up_up+move_final]: {:?}", contents[position]);
-                                                }
+                                            if contents[position] == "\n" || contents[position] == ";"{
                                                 break;
-                                            } else if (contents[position] == "\""
-                                                || contents[position] == "\'"
-                                                || contents[position] == r"\`")
-                                                && contents[position - 1] != "\\"
-                                            {
-                                                quote += 1;
-                                            } else {
-                                                if contents[position] == "math" {
-                                                    value.push_str(
-                                                        functions::math(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "round" {
-                                                    value.push_str(
-                                                        functions::round(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "request" {
-                                                    value.push_str(
-                                                        functions::request(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "replace" {
-                                                    value.push_str(
-                                                        functions::replace(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "input" {
-                                                    value.push_str(
-                                                        functions::input().to_string().as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "exec" {
-                                                    value.push_str(
-                                                        functions::exec(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "trim" {
-                                                    value.push_str(
-                                                        functions::trim(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "timeh" {
-                                                    value.push_str(
-                                                        functions::time_readable()
-                                                            .to_string()
-                                                            .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "time" {
-                                                    value.push_str(
-                                                        functions::time().to_string().as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if contents[position] == "getcont" {
-                                                    value.push_str(
-                                                        functions::get_contents(
-                                                            position,
-                                                            contents.clone(),
-                                                            memory_names.clone(),
-                                                            memory_values.clone(),
-                                                            memory_types.clone(),
-                                                            func_names.clone(),
-                                                            func_par.clone(),
-                                                            func_code.clone(),
-                                                            dev,
-                                                        )
-                                                        .to_string()
-                                                        .as_str(),
-                                                    );
-                                                    n = 1;
-                                                } else if n == 0 {
-                                                    if quote % 2 == 1 {
-                                                        value.push_str(contents[position].as_str());
-                                                    } else {
-                                                        let mut positions = memory_names_save.len();
-                                                        let mut skip = false;
-                                                        for pos in 0..memory_names_save.len() {
-                                                            if !skip
-                                                                && memory_names_save[pos]
-                                                                    == contents[position]
-                                                            {
-                                                                positions = pos;
-                                                                skip = true;
-                                                            }
-                                                        }
-                                                        if positions != memory_names_save.len() {
-                                                            value.push_str(
-                                                                memory_values_save[positions]
-                                                                    .to_string()
-                                                                    .as_str(),
-                                                            );
-                                                        } else {
-                                                            let mut postion = func_names.len();
-                                                            let mut skip = false;
-                                                            for pos in 0..func_names.len() {
-                                                                if !skip
-                                                                    && func_names[pos]
-                                                                        == contents[position]
-                                                                {
-                                                                    postion = pos;
-                                                                    skip = true;
-                                                                }
-                                                            }
-                                                            if postion != func_names.len() {
-                                                                let mut contetntstr: Vec<String> =
-                                                                    Vec::new();
-                                                                for t in func_code_save[postion].split(
-                                                                    "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                                                ) {
-                                                                    contetntstr.push(t.to_string());
-                                                                }
-                                                                let mut contetntstr1: Vec<String> =
-                                                                    Vec::new();
-                                                                for t in func_par_save[postion].split(
-                                                                    "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                                                ) {
-                                                                    contetntstr1.push(t.to_string());
-                                                                }
-                                                                let contetntstr2: Vec<String> =
-                                                                    functions::getstring(
-                                                                        x,
-                                                                        contents.clone(),
-                                                                        memory_names_save.clone(),
-                                                                        memory_values_save.clone(),
-                                                                        memory_types.clone(),
-                                                                        func_names_save.clone(),
-                                                                        func_par_save.clone(),
-                                                                        func_code_save.clone(),
-                                                                        dev,
-                                                                        0,
-                                                                    );
-                                                                for t in func_par_save[postion].split(
-                                                                    "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v",
-                                                                ) {
-                                                                    contetntstr1.push(t.to_string());
-                                                                }
-                                                                value.push_str(
-                                                                    run(
-                                                                        contetntstr,
-                                                                        dev,
-                                                                        contetntstr1.clone(),
-                                                                        contetntstr2.clone(),
-                                                                        memory_types.clone(),
-                                                                        func_names_save.clone(),
-                                                                        func_par_save.clone(),
-                                                                        func_code_save.clone(),
-                                                                    )
-                                                                    .as_str(),
-                                                                );
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                if n >= 1 && contents[position] == "(" {
-                                                    n += 1
-                                                } else if n >= 1 && contents[position] == ")" {
-                                                    n -= 1;
-                                                    if n == 1 {
-                                                        n = 0;
-                                                    }
-                                                }
                                             }
-                                            position += 1;
-                                            if dev {
-                                                println!("position: {:?}", position);
-                                            }
+                                            pass_vec.push(contents[position].clone().to_string());
+                                            position = position+1;
                                         }
+                                        pass_vec.push(")".to_string());
+                                        let value  = functions::getstring(0, pass_vec.clone(), memory_names.clone(), memory_values.clone(), memory_types.clone(), func_names.clone(), func_par.clone(), func_code.clone(), dev, 0).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").to_string();
                                         let mut new_value = memory_values[postion]
                                             .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                             .collect::<Vec<&str>>();

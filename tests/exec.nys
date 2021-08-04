@@ -1,1 +1,1 @@
-log(exec("ls -a"));
+log(exec("dir"))
