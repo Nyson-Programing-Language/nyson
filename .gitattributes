@@ -1,2 +1,2 @@
-*.nys   text diff=nyson
-*.rs    linguist-language=rust
+*.nys   diff=nyson
+*.rs    diff=rust
