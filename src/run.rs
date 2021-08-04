@@ -429,11 +429,11 @@ pub fn run(
                             let _func_names1 = func_names.clone();
                             let _func_par1 = func_par.clone();
                             let _func_code1 = func_code.clone();
-                            let memory_names_save = memory_names.clone();
-                            let memory_values_save = memory_values.clone();
+                            let _memory_names_save = memory_names.clone();
+                            let _memory_values_save = memory_values.clone();
                             let mut types = false;
                             let mut position = x + 1;
-                            let square_brackets = 0;
+                            let _square_brackets = 0;
 
                             // get type
                             if contents[position] == "int" {
@@ -462,20 +462,20 @@ pub fn run(
                             }
 
                             //more vars
-                            let mut clone_class = String::from("");
-                            let mut value = String::new();
-                            let mut value_array: Vec<String> = Vec::new();
+                            let clone_class = String::from("");
+                            let _value = String::new();
+                            let value_array: Vec<String> = Vec::new();
                             let mut value_group = Vec::new();
 
                             //more vars
-                            let mut n = 0;
-                            let mut quote = 0;
-                            let mut squig = 0; // brace/squiggly bracket checker
-                            let mut brackets = 0;
+                            let _n = 0;
+                            let _quote = 0;
+                            let _squig = 0; // brace/squiggly bracket checker
+                            let _brackets = 0;
 
                             //more vars
                             position += 2;
-                            let mut group = false;
+                            let _group = false;
 
                             let mut pass_vec : Vec<String> = Vec::new();
                             pass_vec.push("a".to_string());
