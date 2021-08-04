@@ -3,7 +3,7 @@ use curl::easy::{Easy, List};
 use rand::Rng;
 use std::fs::File;
 use std::io::{Read, Write};
-use std::ops::{Add, Div, Mul, Sub};
+
 use std::process::Command;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use std::{env, fs};
@@ -1097,7 +1097,7 @@ pub fn math(
     }
     // println!("{:?}", vec);
     let number = meval::eval_str(vec.clone().join("").as_str());
-    return number.unwrap().to_string().parse::<f32>().unwrap();
+    number.unwrap().to_string().parse::<f32>().unwrap()
 }
 
 pub fn trim(
