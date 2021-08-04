@@ -422,7 +422,6 @@ pub fn run(
                                 }
                             }
                             contents = new_vec;
-                            println!("{:?}", contents);
                         },
                         //divider--
                         "dec" => {
