@@ -1,2 +1,1 @@
-# Example of a `.gitattributes` file which reclassifies `.rb` files as Java:
-*.nys linguist-language=Nyson
+*.nys linguist-vendored
