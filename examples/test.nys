@@ -1,2 +1,4 @@
-``log("hello");
-log("hello");
+/*log("hello");
+log("hello");*/
+log("HI");
+//log("hi 2");
