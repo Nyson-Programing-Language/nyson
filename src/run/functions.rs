@@ -104,7 +104,7 @@ pub fn getstring(
         if skips == 0 {
             if !skip {
                 let mut continues = true;
-                if (n % 2 == 0 || int == 3) && vec[y] == ","{
+                if (n % 2 == 0 || int == 3) && vec[y] == "," {
                     output_array.push(imput_s);
                     imput_s = "".to_string();
                 } else if y < 1 {
