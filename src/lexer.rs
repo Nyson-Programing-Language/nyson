@@ -1,14 +1,5 @@
 pub fn lexer(contents: String, dev: bool) -> Vec<String> {
     let contents_literal = split(contents);
-    /*
-    for n in 0..contents_literal.len() {
-        let lex_vec: Vec<String> = Vec::new();
-        let mut lex_str = String::new();
-        lex_str.push(contents_literal.chars().nth(n).unwrap());
-        check_enum(String::from(contents_literal.chars().nth(n).unwrap()));
-        println!("{:?}", contents_literal.chars().nth(n).unwrap())
-    }
-    */
     let mut outputs: Vec<String> = Vec::new();
     for x in contents_literal.clone() {
         outputs.push(x);

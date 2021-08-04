@@ -1,1 +1,9 @@
-request("PUT", "https://amtitan.free.beeceptor.com", '{\"content\":\"hello :person_shrugging:\"}', "Content-Type: application/json");
+log("hello i am nyelson");
+dec str name : "nyelson";
+log(name);
+dec int names = math(1+1);
+log(names);
+dec str hjsdikj : input();
+log(hjsdikj);
+name = "nyelsondfsf";
+log(name);
