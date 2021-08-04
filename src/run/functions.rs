@@ -1095,9 +1095,7 @@ pub fn math(
             }
         }
     }
-    // println!("{:?}", vec);
-    let number = meval::eval_str(vec.clone().join("").as_str());
-    number.unwrap().to_string().parse::<f32>().unwrap()
+    meval::eval_str(vec.clone().join("").as_str()).unwrap().to_string().parse::<f32>().unwrap()
 }
 
 pub fn trim(
@@ -1138,31 +1136,6 @@ pub fn time_readable() -> String {
     // Formats the combined date and time with the specified format string.
     let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
     timestamp_str
-}
-
-pub fn array_fn(
-    x: usize,
-    contents: Vec<String>,
-    memory_names: Vec<String>,
-    memory_values: Vec<String>,
-    memory_types: Vec<String>,
-    func_names: Vec<String>,
-    func_par: Vec<String>,
-    func_code: Vec<String>,
-    dev: bool,
-) -> Vec<String> {
-    getstring(
-        x,
-        contents,
-        memory_names,
-        memory_values,
-        memory_types,
-        func_names,
-        func_par,
-        func_code,
-        dev,
-        1,
-    )
 }
 
 pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
