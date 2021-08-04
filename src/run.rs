@@ -420,7 +420,7 @@ pub fn run(
                                 }
                             }
                             contents = new_vec;
-                        },
+                        }
                         //divider--
                         "dec" => {
                             let _memory_names1 = memory_names.clone();
