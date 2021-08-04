@@ -57,7 +57,10 @@ pub fn split(text: String) -> Vec<String> {
         if result[n].contains(' ') {
             let mut number_of_string_selectors = 0;
             for x in 0..n {
-                if result[x].contains('\"') || result[x].contains('\'') || result[x].contains(r"\`")
+                if (result[x].contains('\"')
+                    || result[x].contains('\'')
+                    || result[x].contains(r"\`"))
+                    && !(x > 0 && (result[x - 1].contains('\\')))
                 {
                     number_of_string_selectors += 1;
                 }
@@ -104,8 +107,32 @@ pub fn split(text: String) -> Vec<String> {
 
     let mut outputs: Vec<String> = Vec::new();
 
-    for x in output {
-        outputs.push(String::from(x));
+    let mut if_commented_out = false;
+    let mut if_commented_out1 = false;
+    let mut number_of_string_selectors = 0;
+
+    for x in 0..output.len() {
+        if (output[x].contains('\"') || output[x].contains('\'') || output[x].contains(r"\`"))
+            && !(x > 0 && (output[x - 1].contains('\\')))
+        {
+            number_of_string_selectors += 1;
+        }
+        if x < output.len() && output[x] == "/" && output[x + 1] == "/" {
+            if_commented_out = true;
+        } else if output[x] == "\n" && if_commented_out == true {
+            if_commented_out = false;
+        } else if x < output.len()
+            && output[x] == "*"
+            && output[x + 1] == "/"
+            && if_commented_out1 == true
+        {
+            if_commented_out1 = false;
+        } else if x < output.len() && output[x] == "/" && output[x + 1] == "*" {
+            if_commented_out1 = true;
+        }
+        if if_commented_out == false && if_commented_out1 == false {
+            outputs.push(String::from(output[x]));
+        }
     }
 
     outputs

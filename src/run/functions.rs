@@ -1399,7 +1399,7 @@ pub fn request(
 
     let mut easy = Easy::new();
     easy.url(&*imput_s).unwrap();
-    easy.custom_request(type_of_request.as_str());
+    let _output = easy.custom_request(type_of_request.as_str());
     if types_that_send.contains(&&*type_of_request) {
         easy.post_field_size(data.len() as u64).unwrap();
     }

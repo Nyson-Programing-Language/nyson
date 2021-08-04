@@ -13,9 +13,9 @@ pub fn run(
     mut memory_names: Vec<String>,
     mut memory_values: Vec<String>,
     mut memory_types: Vec<String>,
-    mut func_names: Vec<String>,
-    mut func_par: Vec<String>,
-    mut func_code: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
 ) -> String {
     if dev {
         println!("contents: {:?}", contents);
@@ -57,7 +57,6 @@ pub fn run(
                 
                 if quotes % 2 == 0 && squigle == 0 {
                     match contents[x].as_str() {
-                        //divider--
                         "log" => {
                             functions::log(
                                 x,
@@ -79,9 +78,9 @@ pub fn run(
                                 memory_names.clone(),
                                 memory_values.clone(),
                                 memory_types.clone(),
-                                func_names.clone(),
-                                func_par.clone(),
-                                func_code.clone(),
+                                func_names,
+                                func_par,
+                                func_code,
                                 dev,
                                 0,
                             )
