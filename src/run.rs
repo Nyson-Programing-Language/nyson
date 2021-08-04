@@ -53,8 +53,6 @@ pub fn run(
                     squigle -= 1;
                 }
 
-
-                
                 if quotes % 2 == 0 && squigle == 0 {
                     match contents[x].as_str() {
                         "log" => {
