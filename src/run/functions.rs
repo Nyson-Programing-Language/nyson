@@ -1095,7 +1095,11 @@ pub fn math(
             }
         }
     }
-    meval::eval_str(vec.clone().join("").as_str()).unwrap().to_string().parse::<f32>().unwrap()
+    meval::eval_str(vec.clone().join("").as_str())
+        .unwrap()
+        .to_string()
+        .parse::<f32>()
+        .unwrap()
 }
 
 pub fn trim(
