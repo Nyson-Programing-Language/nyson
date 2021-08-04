@@ -122,10 +122,7 @@ pub fn split(text: String) -> Vec<String> {
             if_commented_out = true;
         } else if output[x] == "\n" && if_commented_out {
             if_commented_out = false;
-        } else if x < output.len()
-            && output[x] == "*"
-            && output[x + 1] == "/"
-            && if_commented_out1
+        } else if x < output.len() && output[x] == "*" && output[x + 1] == "/" && if_commented_out1
         {
             if_commented_out1 = false;
         } else if x < output.len() && output[x] == "/" && output[x + 1] == "*" {
