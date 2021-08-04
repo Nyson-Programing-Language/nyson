@@ -485,7 +485,7 @@ pub fn run(
                                     break;
                                 }
                                 pass_vec.push(contents[position].clone().to_string());
-                                position = position + 1;
+                                position += 1;
                             }
                             pass_vec.push(")".to_string());
                             let value = functions::getstring(
@@ -977,15 +977,15 @@ pub fn run(
                                         && contents[x - 2].trim() != "dec"
                                     {
                                         let mut position = x + 2;
-                                        let mut value = String::new();
-                                        let mut n = 0;
-                                        let mut quote = 0;
-                                        let memory_names_save = memory_names.clone();
-                                        let memory_values_save = memory_values.clone();
+                                        let _value = String::new();
+                                        let _n = 0;
+                                        let _quote = 0;
+                                        let _memory_names_save = memory_names.clone();
+                                        let _memory_values_save = memory_values.clone();
                                         let _memmory_types_save = memory_types.clone();
-                                        let func_names_save = func_names.clone();
-                                        let func_code_save = func_code.clone();
-                                        let func_par_save = func_par.clone();
+                                        let _func_names_save = func_names.clone();
+                                        let _func_code_save = func_code.clone();
+                                        let _func_par_save = func_par.clone();
                                         let mut pass_vec: Vec<String> = Vec::new();
                                         pass_vec.push("a".to_string());
                                         pass_vec.push("(".to_string());
@@ -996,7 +996,7 @@ pub fn run(
                                                 break;
                                             }
                                             pass_vec.push(contents[position].clone().to_string());
-                                            position = position + 1;
+                                            position += 1;
                                         }
                                         pass_vec.push(")".to_string());
                                         let value = functions::getstring(
@@ -1044,15 +1044,15 @@ pub fn run(
                                             }
                                         }
                                         let mut position = pos + 2;
-                                        let mut value = String::new();
-                                        let mut n = 0;
-                                        let mut quote = 0;
-                                        let memory_names_save = memory_names.clone();
-                                        let memory_values_save = memory_values.clone();
+                                        let _value = String::new();
+                                        let _n = 0;
+                                        let _quote = 0;
+                                        let _memory_names_save = memory_names.clone();
+                                        let _memory_values_save = memory_values.clone();
                                         let _memmory_types_save = memory_types.clone();
-                                        let func_names_save = func_names.clone();
-                                        let func_code_save = func_code.clone();
-                                        let func_par_save = func_par.clone();
+                                        let _func_names_save = func_names.clone();
+                                        let _func_code_save = func_code.clone();
+                                        let _func_par_save = func_par.clone();
                                         let mut pass_vec: Vec<String> = Vec::new();
                                         pass_vec.push("a".to_string());
                                         pass_vec.push("(".to_string());
@@ -1063,7 +1063,7 @@ pub fn run(
                                                 break;
                                             }
                                             pass_vec.push(contents[position].clone().to_string());
-                                            position = position + 1;
+                                            position += 1;
                                         }
                                         pass_vec.push(")".to_string());
                                         let value = functions::getstring(
