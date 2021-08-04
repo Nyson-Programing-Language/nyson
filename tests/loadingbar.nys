@@ -1,4 +1,4 @@
-number: "-1";
+number: math(-1);
 dec str loading: "";
 loop(7) {
     loading: "";
@@ -10,5 +10,5 @@ loop(7) {
     }
     log(loading);
     sleep(1000);
-    number = math(number+1);
+    number : math(number+1);
 }

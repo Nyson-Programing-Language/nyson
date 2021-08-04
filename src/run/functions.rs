@@ -10,6 +10,7 @@ use std::{env, fs};
 extern crate chrono;
 use chrono::prelude::DateTime;
 use chrono::Utc;
+extern crate meval;
 
 pub fn find_greatest(list_of_numbers: &[i32]) -> &i32 {
     let mut largest = &list_of_numbers[0];
@@ -584,7 +585,7 @@ pub fn getstring(
     output_array
 }
 
-pub fn eval(
+pub fn eval_eval(
     x: usize,
     contents: Vec<String>,
     memory_names: Vec<String>,
@@ -1043,6 +1044,7 @@ pub fn math(
     } else {
         let mut keep_going = true;
         while keep_going {
+            keep_going = false;
             let mut skip = false;
             for y in 0..vec.len() {
                 if !skip {
@@ -1063,6 +1065,7 @@ pub fn math(
                             if !skip && memory_names[pos] == vec[y] {
                                 postion1 = pos;
                                 skip = true;
+                                keep_going = true;
                             }
                         }
                         if postion1 != memory_names.len() {
@@ -1073,176 +1076,7 @@ pub fn math(
                         vec[y] = rng.gen::<f32>().to_string();
 
                         skip = true;
-                    } else if vec[y] == "+" {
-                        if vec[y + 1].to_lowercase() == "random" {
-                            vec[y + 1] = rng.gen::<f32>().to_string();
-                        }
-                        let if_number = vec[y + 1].chars();
-                        let mut if_number_bool = true;
-                        for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool {
-                                if_number_bool = true;
-                            } else {
-                                if_number_bool = false;
-                            }
-                        }
-                        if !if_number_bool {
-                            let mut postion1 = memory_names.len();
-                            let mut skip = false;
-                            for pos in 0..memory_names.len() {
-                                if !skip && memory_names[pos] == vec[y + 1] {
-                                    postion1 = pos;
-                                    skip = true;
-                                }
-                            }
-                            if postion1 != memory_names.len() {
-                                vec[y + 1] = memory_values[postion1].to_string();
-                            }
-                        }
-                        vec[y - 1] = vec[y - 1]
-                            .parse::<f32>()
-                            .unwrap()
-                            .add(vec[y + 1].parse::<f32>().unwrap())
-                            .to_string();
-                        vec.remove(y);
-                        vec.remove(y);
-                        skip = true;
-                    } else if vec[y] == "-" {
-                        if vec[y + 1].to_lowercase() == "random" {
-                            vec[y + 1] = rng.gen::<f32>().to_string();
-                        }
-                        let if_number = vec[y + 1].chars();
-                        let mut if_number_bool = true;
-                        for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool {
-                                if_number_bool = true;
-                            } else {
-                                if_number_bool = false;
-                            }
-                        }
-                        if !if_number_bool {
-                            let mut postion1 = memory_names.len();
-                            let mut skip = false;
-                            for pos in 0..memory_names.len() {
-                                if !skip && memory_names[pos] == vec[y + 1] {
-                                    postion1 = pos;
-                                    skip = true;
-                                }
-                            }
-                            if postion1 != memory_names.len() {
-                                vec[y + 1] = memory_values[postion1].to_string();
-                            }
-                        }
-                        vec[y - 1] = vec[y - 1]
-                            .parse::<f32>()
-                            .unwrap()
-                            .sub(vec[y + 1].parse::<f32>().unwrap())
-                            .to_string();
-                        vec.remove(y);
-                        vec.remove(y);
-                        skip = true;
-                    } else if vec[y] == "*" {
-                        if vec[y + 1].to_lowercase() == "random" {
-                            vec[y + 1] = rng.gen::<f32>().to_string();
-                        }
-                        let if_number = vec[y + 1].chars();
-                        let mut if_number_bool = true;
-                        for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool {
-                                if_number_bool = true;
-                            } else {
-                                if_number_bool = false;
-                            }
-                        }
-                        if !if_number_bool {
-                            let mut postion1 = memory_names.len();
-                            let mut skip = false;
-                            for pos in 0..memory_names.len() {
-                                if !skip && memory_names[pos] == vec[y + 1] {
-                                    postion1 = pos;
-                                    skip = true;
-                                }
-                            }
-                            if postion1 != memory_names.len() {
-                                vec[y + 1] = memory_values[postion1].to_string();
-                            }
-                        }
-                        vec[y - 1] = vec[y - 1]
-                            .parse::<f32>()
-                            .unwrap()
-                            .mul(vec[y + 1].parse::<f32>().unwrap())
-                            .to_string();
-                        vec.remove(y);
-                        vec.remove(y);
-                        skip = true;
-                    } else if vec[y] == "/" {
-                        if vec[y + 1].to_lowercase() == "random" {
-                            vec[y + 1] = rng.gen::<f32>().to_string();
-                        }
-                        let if_number = vec[y + 1].chars();
-                        let mut if_number_bool = true;
-                        for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool {
-                                if_number_bool = true;
-                            } else {
-                                if_number_bool = false;
-                            }
-                        }
-                        if !if_number_bool {
-                            let mut postion1 = memory_names.len();
-                            let mut skip = false;
-                            for pos in 0..memory_names.len() {
-                                if !skip && memory_names[pos] == vec[y + 1] {
-                                    postion1 = pos;
-                                    skip = true;
-                                }
-                            }
-                            if postion1 != memory_names.len() {
-                                vec[y + 1] = memory_values[postion1].to_string();
-                            }
-                        }
-                        vec[y - 1] = vec[y - 1]
-                            .parse::<f32>()
-                            .unwrap()
-                            .div(vec[y + 1].parse::<f32>().unwrap())
-                            .to_string();
-                        vec.remove(y);
-                        vec.remove(y);
-                        skip = true;
-                    } else if vec[y] == "^" {
-                        if vec[y + 1].to_lowercase() == "random" {
-                            vec[y + 1] = rng.gen::<f32>().to_string();
-                        }
-                        let if_number = vec[y + 1].chars();
-                        let mut if_number_bool = true;
-                        for c in if_number {
-                            if (char::is_numeric(c) || c == '.') && if_number_bool {
-                                if_number_bool = true;
-                            } else {
-                                if_number_bool = false;
-                            }
-                        }
-                        if !if_number_bool {
-                            let mut postion1 = memory_names.len();
-                            let mut skip = false;
-                            for pos in 0..memory_names.len() {
-                                if !skip && memory_names[pos] == vec[y + 1] {
-                                    postion1 = pos;
-                                    skip = true;
-                                }
-                            }
-                            if postion1 != memory_names.len() {
-                                vec[y + 1] = memory_values[postion1].to_string();
-                            }
-                        }
-                        vec[y - 1] = vec[y - 1]
-                            .parse::<f32>()
-                            .unwrap()
-                            .powf(vec[y + 1].parse::<f32>().unwrap())
-                            .to_string();
-                        vec.remove(y);
-                        vec.remove(y);
-                        skip = true;
+                        keep_going = true;
                     } else {
                         let mut postion = memory_names.len();
                         let mut skip = false;
@@ -1250,6 +1084,7 @@ pub fn math(
                             if !skip && memory_names[pos] == vec[y] {
                                 postion = pos;
                                 skip = true;
+                                keep_going = true;
                             }
                         }
                         if postion != memory_names.len() {
@@ -1258,12 +1093,11 @@ pub fn math(
                     }
                 }
             }
-            if vec.len() == 1 {
-                keep_going = false;
-            }
         }
     }
-    vec[0].parse().unwrap()
+    // println!("{:?}", vec);
+    let number = meval::eval_str(vec.clone().join("").as_str());
+    return number.unwrap().to_string().parse::<f32>().unwrap();
 }
 
 pub fn trim(

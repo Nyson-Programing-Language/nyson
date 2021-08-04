@@ -4,8 +4,7 @@ use std::env;
 use std::process::Command;
 use std::{thread, time};
 extern crate chrono;
-extern crate eval;
-use eval::eval;
+extern crate meval;
 
 pub fn run(
     mut contents: Vec<String>,
@@ -318,7 +317,7 @@ pub fn run(
                         }
                         //divider--
                         "eval" => {
-                            let imp = functions::eval(
+                            let imp = functions::eval_eval(
                                 x,
                                 contents.clone(),
                                 memory_names.clone(),
@@ -534,7 +533,7 @@ pub fn run(
                                     memory_types.push("str".parse().unwrap());
                                 }
                             } else if memory_types[memory_types.len() - 1] == "int" {
-                                let number = eval(value.clone().as_str());
+                                let number = meval::eval_str(value.clone().as_str());
                                 if number.is_ok() {
                                     memory_values.push(number.unwrap().to_string());
                                 } else {
