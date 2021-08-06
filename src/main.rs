@@ -28,15 +28,15 @@ fn main() {
     let mut hard = false;
     let mut run = false;
     for arg in args {
-        if arg == "-dev" {
+        if arg == "--dev" {
             dev = true;
-        } else if arg == "-compile" {
+        } else if arg == "--compile" {
             compile = true;
-        } else if arg == "-hard" {
+        } else if arg == "--hard" || arg == "-h" {
             hard = true;
         } else if arg == "run" {
             run = true;
-        } else if arg == "-install" {
+        } else if arg == "--install" || arg == "-i" {
             if Path::new(".gitignore").exists() {
                 let mut cont = fs::read_to_string(".gitignore").unwrap();
                 cont.push_str("\n\n# Nyson\ndep");
@@ -49,7 +49,7 @@ fn main() {
             }
             make_path("".to_string());
             std::process::exit(1);
-        } else if arg == "-init" {
+        } else if arg == "--init" {
             let r = set_cont("Nyson.json".to_string(), "{\n\t\"name\": \"My Program\",\n\t\"dep\": {\n\t\t\"Example\": \"https://github.com/Nyson-Programing-Language/example-dep.git\"\n\t}\n}".to_string());
             if r.is_err() {
                 panic!("Could not set file contents.");
@@ -66,19 +66,19 @@ fn main() {
                 panic!("Could not set file contents.");
             }
             std::process::exit(1);
-        } else if arg == "-help" {
+        } else if arg == "--help" || arg == "-h" {
             println!("                            HELP                            ");
-            println!("------------------------------------------------------------");
-            println!("| -help      - shows you help                              |");
-            println!("| -dev       - shows you some dev stuff so if you make a   |");
-            println!("|              issue on github we will need you to do this |");
-            println!("| -compile   - compiles the code into a binary or exe      |");
-            println!("| -hard      - (need -compile b4) but compiles with imp aka|");
-            println!("|              apps offline if you use a imp from the web  |");
-            println!("| -init      - makes the init files                        |");
-            println!("| -install   - install all the dependencies                |");
-            println!("| run        - runs the main.nys                           |");
-            println!("------------------------------------------------------------");
+            println!("-------------------------------------------------------------");
+            println!("| --help      - shows you help                              |");
+            println!("| --dev       - shows you some dev stuff so if you make a   |");
+            println!("|              issue on github we will need you to do this  |");
+            println!("| --compile   - compiles the code into a binary or exe      |");
+            println!("| --hard      - (need -compile b4) but compiles with imp aka|");
+            println!("|              apps offline if you use a imp from the web   |");
+            println!("| --init      - makes the init files                        |");
+            println!("| --install   - install all the dependencies                |");
+            println!("| run        - runs the main.nys                            |");
+            println!("-------------------------------------------------------------");
             std::process::exit(1);
         }
     }
@@ -226,9 +226,9 @@ use std::process::Command;
 
 fn main() {
     let dev = false;
-    let output = run::run([\""
+    let output = run::run([r\""
         .to_string();
-    ruturns.push_str(content.join("\", \"").as_str());
+    ruturns.push_str(content.join("\", r\"").as_str());
     ruturns.push_str("\"].to_vec().iter().map(|s| s.to_string()).collect(), dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
     }");
     ruturns
