@@ -228,7 +228,7 @@ fn main() {
     ruturns.push_str(content.join("\", r\"").as_str());
     ruturns.push_str("\"].to_vec().iter().map(|s| s.to_string()).collect(), dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
     }");
-    ruturns
+    ruturns.to_string()
 }
 
 fn set_cont(loc: String, cont: String) -> std::io::Result<()> {

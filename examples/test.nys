@@ -1,4 +1,2 @@
-/*log("hello");
-log("hello");*/
-log("HI");
-//log("hi 2");
+dec str output: request("GET", "http://dummy.restapiexample.com/api/v1/employees");
+log(output["status"])
