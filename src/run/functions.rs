@@ -128,7 +128,7 @@ pub fn getstring(
                     parent += 1;
                 } else if vec[y] == ")" && n % 2 == 0 {
                     parent -= 1;
-                } else if parent != 0 || (int == 3 && vec[y] == ","){
+                } else if parent != 0 || (int == 3 && vec[y] == ",") {
                 } else if n % 2 == 1 || vec[y].parse::<f64>().is_ok() {
                     imput_s.push_str(vec[y].as_str());
                 } else if vec[y] == "math" {
