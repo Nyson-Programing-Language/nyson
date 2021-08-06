@@ -72,9 +72,9 @@ pub fn run(
                             return functions::getstring(
                                 x,
                                 contents.clone(),
-                                memory_names.clone(),
-                                memory_values.clone(),
-                                memory_types.clone(),
+                                memory_names,
+                                memory_values,
+                                memory_types,
                                 func_names,
                                 func_par,
                                 func_code,
@@ -155,9 +155,7 @@ pub fn run(
                                 } else if env::consts::OS == "macos" {
                                     let mut vecs = stringreturn.replace("\n", " ");
                                     vecs = vecs.replace("\t", " ");
-                                    let mut endvec: Vec<&str> = Vec::new();
-                                    endvec.push("-I");
-                                    endvec.push("rc");
+                                    let mut endvec: Vec<&str> = vec!["-I", "rc"];
                                     for q in vecs.split(' ') {
                                         endvec.push(q);
                                     }
@@ -985,9 +983,7 @@ pub fn run(
                                         let _func_names_save = func_names.clone();
                                         let _func_code_save = func_code.clone();
                                         let _func_par_save = func_par.clone();
-                                        let mut pass_vec: Vec<String> = Vec::new();
-                                        pass_vec.push("a".to_string());
-                                        pass_vec.push("(".to_string());
+                                        let mut pass_vec: Vec<String> = vec!["a".to_string(), "(".to_string()];
                                         loop {
                                             if contents[position] == "\n"
                                                 || contents[position] == ";"
@@ -1052,9 +1048,7 @@ pub fn run(
                                         let _func_names_save = func_names.clone();
                                         let _func_code_save = func_code.clone();
                                         let _func_par_save = func_par.clone();
-                                        let mut pass_vec: Vec<String> = Vec::new();
-                                        pass_vec.push("a".to_string());
-                                        pass_vec.push("(".to_string());
+                                        let mut pass_vec: Vec<String> = vec!["a".to_string(), "(".to_string()];
                                         loop {
                                             if contents[position] == "\n"
                                                 || contents[position] == ";"
@@ -1115,12 +1109,11 @@ pub(crate) fn hard(
     }
     let mut quotes = 0;
     let mut squigle = 0;
-    let mut readfrom = 0;
     let mut read = true;
     while read {
         read = false;
         let mut skiperwiper = false;
-        for x in readfrom..contents.len() {
+        for x in 0..contents.len() {
             if !skiperwiper {
                 if dev {
                     println!("contents[x]: {}", contents[x]);
@@ -1152,7 +1145,6 @@ pub(crate) fn hard(
                         dev,
                         "".to_string(),
                     );
-                    readfrom = x;
                     skiperwiper = true;
                     read = true;
                     let mut delete = Vec::new();

@@ -1,13 +1,19 @@
+// tests whileloop
 log("<---whileloop.nys--->")
-imp("tests/whileloop.nys");
+imp("tests/test_code/whileloop.nys");
+// tests whileloop, ifstatements, variables
 log("<---numberguess.nys--->")
-imp("tests/numberguess.nys");
+imp("tests/test_code/numberguess.nys");
+// tests command line
 log("<---exec.nys--->")
-imp("tests/exec.nys");
+imp("tests/test_code/exec.nys");
+// tests sleeping and concatenation
 log("<---loadingbar.nys--->")
-imp("tests/loadingbar.nys");
+imp("tests/test_code/loadingbar.nys");
+// tests cutting arrays
 log("<---cut.nys--->")
-imp("tests/cut.nys");
+imp("tests/test_code/cut.nys");
+// tests replacing arrays
 log("<---replace.nys--->")
-imp("tests/replace.nys");
+imp("tests/test_code/replace.nys");
 log("<---DONE--->")

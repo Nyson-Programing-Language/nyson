@@ -646,9 +646,7 @@ pub fn exec(
     let mut vecs = stringreturn.replace("\n", " ");
     vecs = vecs.replace("\t", " ");
     if env::consts::OS == "windows" {
-        let mut endvec: Vec<&str> = Vec::new();
-        endvec.push("/C");
-        endvec.push(&stringreturn);
+        let endvec: Vec<&str> = vec!["/C", &stringreturn];
         if dev {
             println!("Command args: {:?}", endvec);
         }
@@ -851,10 +849,10 @@ pub fn imp(
     }
     let mut contents;
     let mut came_from_imp = false;
-    if string.clone().starts_with("https://") || string.starts_with("http://") {
+    if string.starts_with("https://") || string.starts_with("http://") {
         let mut dst = Vec::new();
         let mut easy = Easy::new();
-        easy.url(&*string.clone()).unwrap();
+        easy.url(&*string).unwrap();
 
         let mut transfer = easy.transfer();
         transfer
@@ -867,7 +865,7 @@ pub fn imp(
         drop(transfer);
 
         contents = dst.iter().map(|&c| c as char).collect::<String>();
-    } else if string.clone().ends_with(".nys") {
+    } else if string.ends_with(".nys") {
         let maybe_contents = fs::read_to_string(string.clone());
         contents = if maybe_contents.is_ok() {
             maybe_contents.unwrap()
@@ -882,7 +880,7 @@ pub fn imp(
         } else {
             newstring.push_str("/dep/");
         }
-        newstring.push_str(string.clone().as_str());
+        newstring.push_str(string.as_str());
         newstring.push_str("/src/main.nys");
         println!("{}", newstring);
         let maybe_contents = fs::read_to_string(newstring);
@@ -951,7 +949,7 @@ pub fn imp(
                         );
                         readfrom = x;
                         skiperwiper = true;
-                        read = true;
+                        // read = true;
                         let mut delete = Vec::new();
                         let mut deleted = 0;
                         let mut skirt = false;
@@ -1094,7 +1092,7 @@ pub fn math(
             }
         }
     }
-    meval::eval_str(vec.clone().join("").as_str())
+    meval::eval_str(vec.join("").as_str())
         .unwrap()
         .to_string()
         .parse::<f32>()

@@ -158,7 +158,7 @@ fn main() {
             .output()
             .expect("failed to execute process");
         pb.inc();
-        let mut contents = lexer::lexer(contents.clone(), dev);
+        let mut contents = lexer::lexer(contents, dev);
         pb.inc();
         if hard {
             contents = run::hard(
@@ -179,7 +179,7 @@ fn main() {
         pb.inc();
         let r = set_cont(
             "nyson/src/main.rs".to_string(),
-            get_new_code(contents.clone()),
+            get_new_code(contents),
         );
         if r.is_err() {
             panic!("Could not set file contents.");
@@ -275,7 +275,7 @@ fn make_path(path: String) {
     if r.is_err() {
         panic!("Could not delete dir.");
     }
-    let r = fs::create_dir(path_made.clone());
+    let r = fs::create_dir(path_made);
     if r.is_err() {
         panic!("Could not create dir.");
     }
