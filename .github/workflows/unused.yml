@@ -1,0 +1,15 @@
+name: unused
+on: push
+jobs:
+  unused:
+    name: Rust project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy
+      - run: git pull
+      - run: cargo install cargo-udeps && cargo +nightly udeps
