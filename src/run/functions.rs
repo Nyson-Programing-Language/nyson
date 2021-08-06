@@ -83,8 +83,8 @@ pub fn getstring(
             }
             if n == 0 {
                 skip = true;
-                for z in x..y + 1 {
-                    vec.push(contents[z].to_string());
+                for elem in x..y + 1 {
+                    vec.push(contents[elem].to_string());
                 }
             }
         }
@@ -128,8 +128,7 @@ pub fn getstring(
                     parent += 1;
                 } else if vec[y] == ")" && n % 2 == 0 {
                     parent -= 1;
-                } else if parent != 0 {
-                } else if int == 3 && vec[y] == "," {
+                } else if parent != 0 || (int == 3 && vec[y] == ",") {
                 } else if n % 2 == 1 || vec[y].parse::<f64>().is_ok() {
                     imput_s.push_str(vec[y].as_str());
                 } else if vec[y] == "math" {
@@ -188,20 +187,20 @@ pub fn getstring(
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
-                    for f in y + 1..vec.len() {
+                    for elem in y + 1..vec.len() {
                         if !skip1 {
                             if vec[y + 1] != "(" {
                                 println!("You have to put a parentheses after a log");
                                 std::process::exit(1);
                             }
-                            if contents[f] == "(" {
+                            if contents[elem] == "(" {
                                 n2 += 1;
-                            } else if contents[f] == ")" {
+                            } else if contents[elem] == ")" {
                                 n2 -= 1;
                             }
                             if n2 == 0 {
                                 skip1 = true;
-                                for _z in y + 1..f + 1 {
+                                for _z in y + 1..elem + 1 {
                                     leng += 1;
                                 }
                             }
@@ -1246,27 +1245,27 @@ pub fn time() -> f64 {
     since_the_epoch.as_millis() as f64
 }
 
-pub fn group_fn(
-    x: usize,
-    contents: Vec<String>,
-    memory_names: Vec<String>,
-    memory_values: Vec<String>,
-    memory_types: Vec<String>,
-    func_names: Vec<String>,
-    func_par: Vec<String>,
-    func_code: Vec<String>,
-    dev: bool,
-) -> Vec<String> {
-    getstring(
-        x,
-        contents,
-        memory_names,
-        memory_values,
-        memory_types,
-        func_names,
-        func_par,
-        func_code,
-        dev,
-        1,
-    )
-}
+// pub fn group_fn(
+//     x: usize,
+//     contents: Vec<String>,
+//     memory_names: Vec<String>,
+//     memory_values: Vec<String>,
+//     memory_types: Vec<String>,
+//     func_names: Vec<String>,
+//     func_par: Vec<String>,
+//     func_code: Vec<String>,
+//     dev: bool,
+// ) -> Vec<String> {
+//     getstring(
+//         x,
+//         contents,
+//         memory_names,
+//         memory_values,
+//         memory_types,
+//         func_names,
+//         func_par,
+//         func_code,
+//         dev,
+//         1,
+//     )
+// }
