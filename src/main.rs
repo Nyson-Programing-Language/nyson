@@ -177,10 +177,7 @@ fn main() {
             contents[item] = contents[item].replace("\"", "\\\"");
         }
         pb.inc();
-        let r = set_cont(
-            "nyson/src/main.rs".to_string(),
-            get_new_code(contents),
-        );
+        let r = set_cont("nyson/src/main.rs".to_string(), get_new_code(contents));
         if r.is_err() {
             panic!("Could not set file contents.");
         }

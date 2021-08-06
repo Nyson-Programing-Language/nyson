@@ -983,7 +983,8 @@ pub fn run(
                                         let _func_names_save = func_names.clone();
                                         let _func_code_save = func_code.clone();
                                         let _func_par_save = func_par.clone();
-                                        let mut pass_vec: Vec<String> = vec!["a".to_string(), "(".to_string()];
+                                        let mut pass_vec: Vec<String> =
+                                            vec!["a".to_string(), "(".to_string()];
                                         loop {
                                             if contents[position] == "\n"
                                                 || contents[position] == ";"
@@ -1048,7 +1049,8 @@ pub fn run(
                                         let _func_names_save = func_names.clone();
                                         let _func_code_save = func_code.clone();
                                         let _func_par_save = func_par.clone();
-                                        let mut pass_vec: Vec<String> = vec!["a".to_string(), "(".to_string()];
+                                        let mut pass_vec: Vec<String> =
+                                            vec!["a".to_string(), "(".to_string()];
                                         loop {
                                             if contents[position] == "\n"
                                                 || contents[position] == ";"
