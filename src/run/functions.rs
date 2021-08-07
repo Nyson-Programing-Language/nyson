@@ -48,7 +48,7 @@ pub fn log(
     .first()
     .unwrap()
     .to_string();
-    println!("{}", string);
+    print!("{}\n", string);
 }
 
 pub fn getstring(
@@ -90,11 +90,23 @@ pub fn getstring(
         }
     }
     vec.remove(0);
-    vec.remove(vec.len() - 1);
-    if int == 0 || int == 2 || int == 3 {
-        vec.remove(0);
+    vec.pop();
+    match int {
+        0 => 
+        {
+            vec.remove(0);
+        },
+        2 => {
+            vec.remove(0);
+        },
+        3 => {
+            vec.remove(0);
+        },
+        _ => {
+
+        }
     }
-    let skip = false;
+    skip = false;
     let mut imput_s: String = "".to_string();
     let mut n = 0;
     let mut skips = 0;
