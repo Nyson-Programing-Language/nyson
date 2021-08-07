@@ -6,25 +6,25 @@ The official home of the Nyson Programming Language, built off Rust.
 
 To Do List:
 
-variables -> complete
+Variables -> :white_check_mark:
 
-item -> :white_check_mark:
+If Statements -> :white_check_mark:
 
-item -> :x:
+Loops -> :white_check_mark:
 
-item -> complete
+math -> :white_check_mark:
 
-item -> complete
+IDE -> :x:
 
-item -> complete
+VS Code -> :x:
 
-item -> complete
+Classes -> :white_check_mark:
 
-item -> complete
+Print/Log -> :white_check_mark:
 
-item -> complete
+Dependencies -> :white_check_mark:
 
-item -> complete
+GUI Installer -> :x:
 
 
 I cant believe we spent 7 dollars to buy a voice actor to say this stuff...
