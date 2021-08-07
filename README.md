@@ -26,6 +26,7 @@ Dependencies -> :white_check_mark:
 
 GUI Installer -> :x:
 
+## Advertisement
 
 I cant believe we spent 7 dollars to buy a voice actor to say this stuff...
 
