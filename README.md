@@ -8,7 +8,7 @@ To Do List:
 
 variables -> complete
 
-item -> :white-check-mark:
+item -> :white_check_mark:
 
 item -> complete
 
