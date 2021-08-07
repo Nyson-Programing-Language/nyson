@@ -6,25 +6,25 @@ The official home of the Nyson Programming Language, built off Rust.
 
 ## To Do List:
 
-Variables -> :white_check_mark:
+Variables :white_check_mark:
 
-If Statements -> :white_check_mark:
+If Statements :white_check_mark:
 
-Loops -> :white_check_mark:
+Loops :white_check_mark:
 
-math -> :white_check_mark:
+math :white_check_mark:
 
-IDE -> :x:
+IDE :x:
 
-VS Code -> :x:
+VS Code :x:
 
-Classes -> :white_check_mark:
+Classes :white_check_mark:
 
-Print/Log -> :white_check_mark:
+Print/Log :white_check_mark:
 
-Dependencies -> :white_check_mark:
+Dependencies :white_check_mark:
 
-GUI Installer -> :x:
+GUI Installer :x:
 
 ## Advertisement
 
