@@ -12,7 +12,9 @@ If Statements :white_check_mark:
 
 Loops :white_check_mark:
 
-math :white_check_mark:
+Math :white_check_mark:
+
+Documentation :white_check_mark:
 
 IDE :x:
 
