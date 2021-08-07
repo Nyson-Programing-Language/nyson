@@ -10,7 +10,7 @@ variables -> complete
 
 item -> :white_check_mark:
 
-item -> complete
+item -> :X:
 
 item -> complete
 
