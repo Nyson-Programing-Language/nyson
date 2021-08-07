@@ -94,19 +94,16 @@ pub fn getstring(
     vec.remove(0);
     vec.pop();
     match int {
-        0 => 
-        {
+        0 => {
             vec.remove(0);
-        },
+        }
         2 => {
             vec.remove(0);
-        },
+        }
         3 => {
             vec.remove(0);
-        },
-        _ => {
-
         }
+        _ => {}
     }
     skip = false;
     let mut imput_s: String = "".to_string();
