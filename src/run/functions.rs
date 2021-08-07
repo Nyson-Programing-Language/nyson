@@ -50,7 +50,7 @@ pub fn log(
     .first()
     .unwrap()
     .to_string();
-    print!("{}\n", string);
+    println!("{}", string);
 }
 
 pub fn getstring(
