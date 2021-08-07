@@ -4,7 +4,7 @@ The official home of the Nyson Programming Language, built off Rust.
 
 ![Logo](https://github.com/Nyelsonon/nyson-programming-language/blob/main/Logos/NysonLogo.png)
 
-To Do List:
+## To Do List:
 
 Variables -> :white_check_mark:
 
