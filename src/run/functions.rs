@@ -10,6 +10,8 @@ use std::{env, fs};
 extern crate chrono;
 use chrono::prelude::DateTime;
 use chrono::Utc;
+use rustc_serialize::json::Json;
+
 extern crate meval;
 
 pub fn find_greatest(list_of_numbers: &[i32]) -> &i32 {
@@ -74,7 +76,7 @@ pub fn getstring(
                 } else if contents[y] == ")" {
                     n -= 1;
                 }
-            } else if int == 1 {
+            } else if int == 1 || int == 4 {
                 if contents[y] == "[" {
                     n += 1;
                 } else if contents[y] == "]" {
@@ -117,7 +119,9 @@ pub fn getstring(
             if !skip {
                 let mut continues = true;
                 if (n % 2 == 0 || int == 3) && vec[y] == "," {
-                    output_array.push(imput_s);
+                    if imput_s.trim() != "" {
+                        output_array.push(imput_s.trim().to_string());
+                    }
                     imput_s = "".to_string();
                 } else if y < 1 {
                     if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
@@ -527,6 +531,25 @@ pub fn getstring(
                                         .unwrap()
                                         .to_string(),
                                 );
+                            } else if vec[y + 1] == "[" {
+                                let json = Json::from_str(memory_values[postion].trim()).unwrap();
+                                let original = getstring(
+                                    y,
+                                    vec.clone(),
+                                    memory_names.clone(),
+                                    memory_values.clone(),
+                                    memory_types.clone(),
+                                    func_names.clone(),
+                                    func_par.clone(),
+                                    func_code.clone(),
+                                    dev,
+                                    4,
+                                );
+                                let slices: Vec<&str> =
+                                    original.iter().map(AsRef::as_ref).collect();
+                                imput_s.push_str(
+                                    json.find_path(&*slices).unwrap().to_string().as_str(),
+                                );
                             } else {
                                 imput_s.push_str(&*memory_values[postion].to_string());
                             }
@@ -592,7 +615,9 @@ pub fn getstring(
             skips -= 1;
         }
     }
-    output_array.push(imput_s);
+    if imput_s.trim() != "" {
+        output_array.push(imput_s.trim().to_string());
+    }
     output_array
 }
 
