@@ -4,30 +4,6 @@ The official home of the Nyson Programming Language, built off Rust.
 
 ![Logo](https://github.com/Nyelsonon/nyson-programming-language/blob/main/Logos/NysonLogo.png)
 
-## To Do List:
-
-Variables :white_check_mark:
-
-If Statements :white_check_mark:
-
-Loops :white_check_mark:
-
-Math :white_check_mark:
-
-Documentation :white_check_mark:
-
-IDE :x:
-
-VS Code :x:
-
-Classes :white_check_mark:
-
-Print/Log :white_check_mark:
-
-Dependencies :white_check_mark:
-
-GUI Installer :x:
-
 ## Advertisement
 
 I cant believe we spent 7 dollars to buy a voice actor to say this stuff...
@@ -96,3 +72,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## To Do List:
+
+Variables :white_check_mark:
+
+If Statements :white_check_mark:
+
+Loops :white_check_mark:
+
+Math :white_check_mark:
+
+Documentation :white_check_mark:
+
+IDE :x:
+
+VS Code :x:
+
+Classes :white_check_mark:
+
+Print/Log :white_check_mark:
+
+Dependencies :white_check_mark:
+
+GUI Installer :x:
