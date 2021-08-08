@@ -4,6 +4,8 @@ The official home of the Nyson Programming Language, built off Rust.
 
 ![Logo](https://github.com/Nyelsonon/nyson-programming-language/blob/main/Logos/NysonLogo.png)
 
+## Advertisement
+
 I cant believe we spent 7 dollars to buy a voice actor to say this stuff...
 
 https://user-images.githubusercontent.com/29708070/128087291-a6e4f541-d84f-4b28-9d02-ed5558e60878.mp4
@@ -13,9 +15,9 @@ https://user-images.githubusercontent.com/29708070/128087291-a6e4f541-d84f-4b28-
 
 #### List of users who contributed to this project! 👍
 
-##### AMTitan: https://github.com/AMTitan [![wakatime](https://wakatime.com/badge/github/AMTitan/nyson-programming-language.svg)](https://wakatime.com/badge/github/AMTitan/nyson-programming-language)
-
 ##### Nyelsonon: https://github.com/Nyelsonon [![wakatime](https://wakatime.com/badge/github/Nyson-Programing-Language/nyson.svg)](https://wakatime.com/badge/github/Nyson-Programing-Language/nyson)
+
+##### AMTitan: https://github.com/AMTitan [![wakatime](https://wakatime.com/badge/github/AMTitan/nyson-programming-language.svg)](https://wakatime.com/badge/github/AMTitan/nyson-programming-language)
 
 <a href="https://github.com/Nyson-Programing-Language/nyson/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Nyson-Programing-Language/nyson" />
@@ -70,3 +72,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## To Do List:
+
+Variables :white_check_mark:
+
+If Statements :white_check_mark:
+
+Loops :white_check_mark:
+
+Math :white_check_mark:
+
+Documentation :white_check_mark:
+
+IDE :x:
+
+VS Code :x:
+
+Classes :white_check_mark:
+
+Print/Log :white_check_mark:
+
+Dependencies :white_check_mark:
+
+GUI Installer :x:

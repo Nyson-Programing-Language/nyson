@@ -100,11 +100,20 @@ pub fn getstring(
         }
     }
     vec.remove(0);
-    vec.remove(vec.len() - 1);
-    if int == 0 || int == 2 || int == 3 || int == 4 {
-        vec.remove(0);
+    vec.pop();
+    match int {
+        0 => {
+            vec.remove(0);
+        }
+        2 => {
+            vec.remove(0);
+        }
+        3 => {
+            vec.remove(0);
+        }
+        _ => {}
     }
-    let skip = false;
+    skip = false;
     let mut imput_s: String = "".to_string();
     let mut n = 0;
     let mut skips = 0;
@@ -114,7 +123,7 @@ pub fn getstring(
         if skips == 0 {
             if !skip {
                 let mut continues = true;
-                if (n % 2 == 0 || int == 3) && vec[y] == ","{
+                if (n % 2 == 0 || int == 3) && vec[y] == "," {
                     if imput_s.trim() != "" {
                         output_array.push(imput_s.trim().to_string());
                     }
@@ -566,8 +575,11 @@ pub fn getstring(
                                     dev,
                                     4,
                                 );
-                                let slices: Vec<&str> = original.iter().map(AsRef::as_ref).collect();
-                                imput_s.push_str(json.find_path(&*slices).unwrap().to_string().as_str());
+                                let slices: Vec<&str> =
+                                    original.iter().map(AsRef::as_ref).collect();
+                                imput_s.push_str(
+                                    json.find_path(&*slices).unwrap().to_string().as_str(),
+                                );
                             } else {
                                 imput_s.push_str(&*memory_values[postion].to_string());
                             }
