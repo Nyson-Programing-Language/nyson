@@ -12,10 +12,18 @@ pub fn run(
     mut memory_names: Vec<String>,
     mut memory_values: Vec<String>,
     mut memory_types: Vec<String>,
-    func_names: Vec<String>,
-    func_par: Vec<String>,
-    func_code: Vec<String>,
+    mut func_names: Vec<String>,
+    mut func_par: Vec<String>,
+    mut func_code: Vec<String>,
 ) -> String {
+    let mut newcont:Vec<String> = vec![" ".to_string()];
+    for i in lexer::lexer(code_to_add(), dev) {
+        newcont.push(i);
+    }
+    for i in contents {
+        newcont.push(i);
+    }
+    contents = newcont.clone();
     if dev {
         println!("contents: {:?}", contents);
     }
@@ -645,6 +653,80 @@ pub fn run(
                             }
                             memory_values[count] = change;
                         }
+                        "func" => {
+                            let mut skip = false;
+                            let mut n = 1;
+                            let mut reached = false;
+                            let mut name: String = "".parse().unwrap();
+                            for y in x + 2..contents.len() {
+                                if !skip {
+                                    if contents[y] == "(" {
+                                        n -= 1;
+                                        reached = true;
+                                    } else if contents[y] == ")" {
+                                        n -= 1;
+                                    }
+                                    if n > 0 {
+                                        name.push_str(&contents[y]);
+                                    } else if reached {
+                                        skip = true;
+                                    }
+                                }
+                            }
+                            let mut code = Vec::new();
+                            skip = false;
+                            n = 0;
+                            reached = false;
+                            for y in x + 1..contents.len() {
+                                if !skip {
+                                    if contents[y] == "}" {
+                                        n -= 1;
+                                    }
+                                    if n > 0 {
+                                        code.push(&contents[y]);
+                                    } else if reached {
+                                        skip = true;
+                                    }
+                                    if contents[y] == "{" {
+                                        n += 1;
+                                        reached = true;
+                                    }
+                                }
+                            }
+                            let par = functions::getstring(
+                                x + 2,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                                3,
+                            )
+                                .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                            if dev {
+                                println!("par: {}", par);
+                                println!("code: {:?}", code);
+                                println!("name: {}", name);
+                            }
+                            let mut strinogeuroheu = "".to_string();
+                            for x in 0..code.len() {
+                                strinogeuroheu.push_str(code[x]);
+                                if x != code.len() {
+                                    strinogeuroheu.push_str("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                                }
+                            }
+                            func_par.push(par);
+                            func_code.push(strinogeuroheu);
+                            func_names.push(name);
+                            if dev {
+                                println!("func_par: {:?}", func_par);
+                                println!("func_code: {:?}", func_code);
+                                println!("func_names: {:?}", func_names);
+                            }
+                        }
                         "if" => {
                             let mut loc1 = 0;
                             let mut loc2 = 0;
@@ -1189,4 +1271,23 @@ pub(crate) fn hard(
         }
     }
     contents
+}
+
+fn code_to_add() -> String {
+    //Put code here to add it everywhere
+    "
+func(linux.kernal()) {
+    ret(exec(\"uname -r\"));
+}
+func(linux.hostname()) {
+    ret(exec(\"hostnamectl hostname\"));
+}
+func(linux.release()) {
+    ret(exec(\"lsb_release -rs\"));
+}
+func(linux.distro()) {
+    ret(trim(exec(\"lsb_release -ds\"), \"\\\"\"));
+}
+    "
+        .to_string()
 }

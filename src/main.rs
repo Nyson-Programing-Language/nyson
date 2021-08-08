@@ -124,7 +124,7 @@ fn main() {
     } else {
         panic!("Could not open file for reading.");
     };
-    let mut space: String = code_to_add();
+    let mut space: String = " ".to_string();
     space.push_str(contents.as_str());
     contents = space;
     if dev {
@@ -313,12 +313,4 @@ fn make_path(path: String) {
         new_path.push_str("dep/");
     }
     loop_throught_dir(new_path.as_ref());
-}
-
-fn code_to_add() -> String {
-    //Put code here to add it everywhere
-    " 
-
-    "
-    .to_string()
 }

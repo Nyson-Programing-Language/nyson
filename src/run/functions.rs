@@ -65,6 +65,14 @@ pub fn getstring(
     dev: bool,
     int: i32,
 ) -> Vec<String> {
+    if dev {
+        println!("memory_names: {:?}", memory_names);
+        println!("memory_values: {:?}", memory_values);
+        println!("memory_types: {:?}", memory_types);
+        println!("func_names: {:?}", func_names);
+        println!("func_par: {:?}", func_par);
+        println!("func_code: {:?}", func_code);
+    }
     let mut vec: Vec<String> = Vec::new();
     let mut skip = false;
     let mut n = 0;
@@ -1157,7 +1165,7 @@ pub fn trim(
     func_code: Vec<String>,
     dev: bool,
 ) -> String {
-    return getstring(
+    let getstirng = getstring(
         x,
         contents,
         memory_names,
@@ -1168,12 +1176,22 @@ pub fn trim(
         func_code,
         dev,
         0,
-    )
-    .first()
-    .unwrap()
-    .to_string()
-    .trim()
-    .to_string();
+    );
+    return if getstirng.len() > 1 {
+        getstirng
+            .first()
+            .unwrap()
+            .to_string()
+            .trim_matches(getstirng[1].chars().next().unwrap())
+            .to_string()
+    } else {
+        getstirng
+            .first()
+            .unwrap()
+            .to_string()
+            .trim()
+            .to_string()
+    }
 }
 
 pub fn time_readable() -> String {

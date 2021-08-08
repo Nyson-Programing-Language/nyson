@@ -1,2 +1,1 @@
-dec str output: request("GET", "http://dummy.restapiexample.com/api/v1/employees");
-log(output["status"])
+log(linux.os());
