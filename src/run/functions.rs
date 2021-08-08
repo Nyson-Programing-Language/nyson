@@ -1197,13 +1197,8 @@ pub fn trim(
             .trim_matches(getstirng[1].chars().next().unwrap())
             .to_string()
     } else {
-        getstirng
-            .first()
-            .unwrap()
-            .to_string()
-            .trim()
-            .to_string()
-    }
+        getstirng.first().unwrap().to_string().trim().to_string()
+    };
 }
 
 pub fn time_readable() -> String {

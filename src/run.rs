@@ -16,7 +16,7 @@ pub fn run(
     mut func_par: Vec<String>,
     mut func_code: Vec<String>,
 ) -> String {
-    let mut newcont:Vec<String> = vec![" ".to_string()];
+    let mut newcont: Vec<String> = vec![" ".to_string()];
     for i in lexer::lexer(code_to_add(), dev) {
         newcont.push(i);
     }
@@ -705,7 +705,7 @@ pub fn run(
                                 dev,
                                 3,
                             )
-                                .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
+                            .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
                             if dev {
                                 println!("par: {}", par);
                                 println!("code: {:?}", code);
@@ -1289,5 +1289,5 @@ func(linux.distro()) {
     ret(trim(exec(\"lsb_release -ds\"), \"\\\"\"));
 }
     "
-        .to_string()
+    .to_string()
 }
