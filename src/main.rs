@@ -8,6 +8,7 @@ use std::io::Write;
 use std::process::Command;
 extern crate pbr;
 extern crate serde_json;
+use sysinfo;
 use std::collections::HashMap;
 
 use git2::Repository;
