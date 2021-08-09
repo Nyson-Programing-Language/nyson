@@ -8,8 +8,8 @@ use std::io::Write;
 use std::process::Command;
 extern crate pbr;
 extern crate serde_json;
-use sysinfo;
 use std::collections::HashMap;
+use sysinfo;
 
 use git2::Repository;
 use pbr::ProgressBar;
