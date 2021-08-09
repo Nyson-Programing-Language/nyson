@@ -9,7 +9,6 @@ use std::process::Command;
 extern crate pbr;
 extern crate serde_json;
 use std::collections::HashMap;
-use sysinfo;
 
 use git2::Repository;
 use pbr::ProgressBar;

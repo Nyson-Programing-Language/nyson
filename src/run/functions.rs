@@ -413,7 +413,7 @@ pub fn getstring(
                     use sysinfo::{NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
                     let mut sys = System::new_all();
                     sys.refresh_all();
-                    imput_s.push_str(sys.total_memory());
+                    imput_s.push_str(sys.total_memory().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -441,7 +441,7 @@ pub fn getstring(
                     use sysinfo::{NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
                     let mut sys = System::new_all();
                     sys.refresh_all();
-                    imput_s.push_str(sys.used_memory());
+                    imput_s.push_str(sys.used_memory().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -469,7 +469,7 @@ pub fn getstring(
                     use sysinfo::{NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
                     let mut sys = System::new_all();
                     sys.refresh_all();
-                    imput_s.push_str(sys.total_swap());
+                    imput_s.push_str(sys.total_swap().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -497,7 +497,7 @@ pub fn getstring(
                     use sysinfo::{NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
                     let mut sys = System::new_all();
                     sys.refresh_all();
-                    imput_s.push_str(sys.used_swap());
+                    imput_s.push_str(sys.used_swap().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
