@@ -1,1 +1,1 @@
-log(os.used_swap());
+log(os.load_average.fifteen());

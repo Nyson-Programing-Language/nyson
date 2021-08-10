@@ -11,6 +11,7 @@ extern crate chrono;
 use chrono::prelude::DateTime;
 use chrono::Utc;
 use rustc_serialize::json::Json;
+use sysinfo::SystemExt;
 
 extern crate meval;
 
@@ -498,6 +499,90 @@ pub fn getstring(
                     let mut sys = System::new_all();
                     sys.refresh_all();
                     imput_s.push_str(sys.used_swap().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "os.load_average.one" {
+                    use sysinfo::{System, SystemExt};
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.load_average().one.to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "os.load_average.five" {
+                    use sysinfo::{System, SystemExt};
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.load_average().five.to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "os.load_average.fifteen" {
+                    use sysinfo::{System, SystemExt};
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.load_average().fifteen.to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
