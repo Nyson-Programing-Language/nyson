@@ -411,7 +411,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "os.total_memory" {
-                    use sysinfo::{System, SystemExt};
+                    use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
                     imput_s.push_str(sys.total_memory().to_string().as_str());
@@ -439,7 +439,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "os.used_memory" {
-                    use sysinfo::{System, SystemExt};
+                    use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
                     imput_s.push_str(sys.used_memory().to_string().as_str());
@@ -467,7 +467,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "os.total_swap" {
-                    use sysinfo::{System, SystemExt};
+                    use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
                     imput_s.push_str(sys.total_swap().to_string().as_str());
@@ -495,7 +495,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "os.used_swap" {
-                    use sysinfo::{System, SystemExt};
+                    use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
                     imput_s.push_str(sys.used_swap().to_string().as_str());
@@ -523,7 +523,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "os.load_average.one" {
-                    use sysinfo::{System, SystemExt};
+                    use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
                     imput_s.push_str(sys.load_average().one.to_string().as_str());
@@ -551,7 +551,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "os.load_average.five" {
-                    use sysinfo::{System, SystemExt};
+                    use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
                     imput_s.push_str(sys.load_average().five.to_string().as_str());
@@ -579,7 +579,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "os.load_average.fifteen" {
-                    use sysinfo::{System, SystemExt};
+                    use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
                     imput_s.push_str(sys.load_average().fifteen.to_string().as_str());
