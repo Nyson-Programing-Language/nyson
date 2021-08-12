@@ -1353,9 +1353,6 @@ pub fn math(
             }
         }
     }
-    if true {
-        println!("{:?}", vec);
-    }
     meval::eval_str(vec.join("").as_str())
         .unwrap()
         .to_string()
