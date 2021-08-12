@@ -1,1 +1,1 @@
-log(os.load_average.one());
+log(math(5*(5+5)))
