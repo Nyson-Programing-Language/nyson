@@ -68,12 +68,24 @@ pub fn getstring(
     let mut skip = false;
     let mut n = 0;
     if int == 0 || int == 2 || int == 3 {
-        if contents[x+1] != "(" {
-            run::error(["You need to have a \"(\" after the function on line ", get_line(x, contents.clone()).to_string().as_str()].join(""));
+        if contents[x + 1] != "(" {
+            run::error(
+                [
+                    "You need to have a \"(\" after the function on line ",
+                    get_line(x, contents.clone()).to_string().as_str(),
+                ]
+                .join(""),
+            );
         }
     } else if int == 1 || int == 4 {
-        if contents[x+1] == "[" {
-            run::error(["You need to have a \"[\" after the function on line ", get_line(x, contents.clone()).to_string().as_str()].join(""));
+        if contents[x + 1] == "[" {
+            run::error(
+                [
+                    "You need to have a \"[\" after the function on line ",
+                    get_line(x, contents.clone()).to_string().as_str(),
+                ]
+                .join(""),
+            );
         }
     }
     for y in x + 1..contents.len() {

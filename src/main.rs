@@ -303,7 +303,10 @@ fn make_path(path: String) {
         let url = item.1;
         let _repo = match Repository::clone(url.as_str(), new_path.clone()) {
             Ok(repo) => repo,
-            Err(e) => {run::error(["failed to clone: ", e.to_string().as_str()].join("")); Repository::clone(url.as_str(), new_path.clone()).unwrap()},
+            Err(e) => {
+                run::error(["failed to clone: ", e.to_string().as_str()].join(""));
+                Repository::clone(url.as_str(), new_path.clone()).unwrap()
+            }
         };
         pb.inc();
     }
