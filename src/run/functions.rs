@@ -67,6 +67,15 @@ pub fn getstring(
     let mut vec: Vec<String> = Vec::new();
     let mut skip = false;
     let mut n = 0;
+    if int == 0 || int == 2 || int == 3 {
+        if contents[x+1] != "(" {
+            panic!("You need to have a \"(\" after the function on line {}", get_line(x, contents));
+        }
+    } else if int == 1 || int == 4 {
+        if contents[x+1] == "[" {
+            panic!("You need to have a \"[\" after the function on line {}", get_line(x, contents));
+        }
+    }
     for y in x + 1..contents.len() {
         if !skip {
             if int == 0 || int == 2 || int == 3 {
@@ -1402,7 +1411,7 @@ pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
             line += 1;
         }
     }
-    line
+    (line - run::code_to_add().matches("\n").count() + 1) as i32
 }
 
 pub fn request(
