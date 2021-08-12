@@ -18,7 +18,7 @@ fn main() {
     if !Path::new("dep").exists() {
         let r = fs::create_dir("dep");
         if r.is_err() {
-            panic!("Could not create dir.");
+            run::error("Could not create dir.".to_string());
         }
     }
     let maybe_file = env::args().nth(1);
@@ -44,7 +44,7 @@ fn main() {
             } else {
                 let r = set_cont(".gitignore".to_string(), "# Nyson\ndep".to_string());
                 if r.is_err() {
-                    panic!("Could not set file contents.");
+                    run::error("Could not set file contents.".to_string());
                 }
             }
             make_path("".to_string());
@@ -52,18 +52,18 @@ fn main() {
         } else if arg == "--init" {
             let r = set_cont("Nyson.json".to_string(), "{\n\t\"name\": \"My Program\",\n\t\"dep\": {\n\t\t\"Example\": \"https://github.com/Nyson-Programing-Language/example-dep.git\"\n\t}\n}".to_string());
             if r.is_err() {
-                panic!("Could not set file contents.");
+                run::error("Could not set file contents.".to_string());
             }
             let r = fs::create_dir("src");
             if r.is_err() {
-                panic!("Could not create dir.");
+                run::error("Could not create dir.".to_string());
             }
             let r = set_cont(
                 "src/main.nys".to_string(),
                 "log(\"Hello World\");".to_string(),
             );
             if r.is_err() {
-                panic!("Could not set file contents.");
+                run::error("Could not set file contents.".to_string());
             }
             std::process::exit(1);
         } else if arg == "--help" || arg == "-h" {
@@ -122,7 +122,8 @@ fn main() {
     let mut contents = if maybe_contents.is_ok() {
         maybe_contents.unwrap()
     } else {
-        panic!("Could not open file for reading.");
+        run::error("Could not open file for reading.".to_string());
+        "".to_string()
     };
     let mut space: String = " ".to_string();
     space.push_str(contents.as_str());
@@ -179,7 +180,7 @@ fn main() {
         pb.inc();
         let r = set_cont("nyson/src/main.rs".to_string(), get_new_code(contents));
         if r.is_err() {
-            panic!("Could not set file contents.");
+            run::error("Could not set file contents.".to_string());
         }
         pb.inc();
         Command::new("cargo")
@@ -203,7 +204,7 @@ fn main() {
         pb.inc();
         let r = delete("nyson".to_string());
         if r.is_err() {
-            panic!("Could not delete file.");
+            run::error("Could not delete file.".to_string());
         }
         pb.inc();
         pb.finish_print("done");
@@ -270,11 +271,11 @@ fn make_path(path: String) {
     }
     let r = fs::remove_dir_all(path_made.clone());
     if r.is_err() {
-        panic!("Could not delete dir.");
+        run::error("Could not delete dir.".to_string());
     }
     let r = fs::create_dir(path_made);
     if r.is_err() {
-        panic!("Could not create dir.");
+        run::error("Could not create dir.".to_string());
     }
     let mut path_made = path.clone();
     if !path.is_empty() {
@@ -302,7 +303,7 @@ fn make_path(path: String) {
         let url = item.1;
         let _repo = match Repository::clone(url.as_str(), new_path.clone()) {
             Ok(repo) => repo,
-            Err(e) => panic!("failed to clone: {}", e),
+            Err(e) => {run::error(["failed to clone: ", e.to_string().as_str()].join("")); Repository::clone(url.as_str(), new_path.clone()).unwrap()},
         };
         pb.inc();
     }

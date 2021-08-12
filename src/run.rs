@@ -321,7 +321,7 @@ pub fn run(
                                 dev,
                             );
                             if r.is_err() {
-                                panic!("Could not set file contents.");
+                                error("Could not set file contents.".to_string());
                             }
                         }
                         //divider--
@@ -1293,4 +1293,9 @@ func(linux.distro()) {
 }
     "
     .to_string()
+}
+
+pub fn error(error:String) {
+    println!("{}", error);
+    std::process::exit(1);
 }

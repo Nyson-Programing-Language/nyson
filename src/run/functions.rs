@@ -69,11 +69,11 @@ pub fn getstring(
     let mut n = 0;
     if int == 0 || int == 2 || int == 3 {
         if contents[x+1] != "(" {
-            panic!("You need to have a \"(\" after the function on line {}", get_line(x, contents));
+            run::error(["You need to have a \"(\" after the function on line ", get_line(x, contents.clone()).to_string().as_str()].join(""));
         }
     } else if int == 1 || int == 4 {
         if contents[x+1] == "[" {
-            panic!("You need to have a \"[\" after the function on line {}", get_line(x, contents));
+            run::error(["You need to have a \"[\" after the function on line ", get_line(x, contents.clone()).to_string().as_str()].join(""));
         }
     }
     for y in x + 1..contents.len() {
@@ -1034,7 +1034,8 @@ pub fn get_contents(
     if maybe_contents.is_ok() {
         maybe_contents.unwrap()
     } else {
-        panic!("Could not open file for reading.");
+        run::error("Could not open file for reading.".to_string());
+        "".to_string()
     }
 }
 
@@ -1133,7 +1134,8 @@ pub fn imp(
         contents = if maybe_contents.is_ok() {
             maybe_contents.unwrap()
         } else {
-            panic!("Could not open file for reading.");
+            run::error("Could not open file for reading.".to_string());
+            "".to_string()
         };
     } else {
         came_from_imp = true;
@@ -1150,7 +1152,8 @@ pub fn imp(
         contents = if maybe_contents.is_ok() {
             maybe_contents.unwrap()
         } else {
-            panic!("Could not open file for reading.");
+            run::error("Could not open file for reading.".to_string());
+            "".to_string()
         };
     }
     let mut space: String = " ".parse().unwrap();
