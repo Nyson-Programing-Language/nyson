@@ -1,1 +1,1 @@
-log(os.load_average.fifteen());
+log(os.load_average.one());

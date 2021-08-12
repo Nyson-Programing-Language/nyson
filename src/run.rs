@@ -38,12 +38,6 @@ pub fn run(
         let mut skiperwiper = false;
         for x in readfrom..contents.len() {
             if !skiperwiper {
-                if dev {
-                    println!("contents[x]: {}", contents[x]);
-                    println!("x: {}", x);
-                    println!("quotes: {}", quotes);
-                    println!("squigle: {}", squigle);
-                }
                 if (contents[x] == "\"" || contents[x] == "\'" || contents[x] == r"\`")
                     && contents[x - 1] != "\\"
                 {
@@ -58,6 +52,13 @@ pub fn run(
                     && quotes % 2 == 0
                 {
                     squigle -= 1;
+                }
+
+                if dev {
+                    println!("contents[x]: {}", contents[x]);
+                    println!("x: {}", x);
+                    println!("quotes: {}", quotes);
+                    println!("squigle: {}", squigle);
                 }
 
                 if quotes % 2 == 0 && squigle == 0 {
@@ -201,7 +202,9 @@ pub fn run(
                                         if contents[y] == "{" {
                                             n += 1;
                                             reached = true;
-                                            loc1 = y;
+                                            if n == 1 {
+                                                loc1 = y;
+                                            }
                                         } else if contents[y] == "}" {
                                             n -= 1;
                                         }
