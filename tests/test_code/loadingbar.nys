@@ -1,6 +1,6 @@
-number: math(-1);
+number: math(0);
 dec str loading: "";
-loop(7) {
+loop(6) {
     loading: "";
     loop(number) {
         loading: loading "#";
