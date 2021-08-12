@@ -15,16 +15,6 @@ use sysinfo::SystemExt;
 
 extern crate meval;
 
-pub fn find_greatest(list_of_numbers: &[i32]) -> &i32 {
-    let mut largest = &list_of_numbers[0];
-    for number in list_of_numbers {
-        if number > largest {
-            largest = number
-        }
-    }
-    largest
-}
-
 pub fn log(
     x: usize,
     contents: Vec<String>,
