@@ -914,7 +914,7 @@ pub fn exec(
         dev,
         0,
     );
-    if string.len() > 0 {
+    if string.len() < 1 {
         run::error(
             [
                 "You have to put stuff in the exec command on line ",
