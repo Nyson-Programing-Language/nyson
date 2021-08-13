@@ -77,16 +77,14 @@ pub fn getstring(
                 .join(""),
             );
         }
-    } else if int == 1 || int == 4 {
-        if contents[x + 1] == "[" {
-            run::error(
-                [
-                    "You need to have a \"[\" after the function on line ",
-                    get_line(x, contents.clone()).to_string().as_str(),
-                ]
-                .join(""),
-            );
-        }
+    } else if (int == 1 || int == 4) && contents[x + 1] == "[" {
+        run::error(
+            [
+                "You need to have a \"[\" after the function on line ",
+                get_line(x, contents.clone()).to_string().as_str(),
+            ]
+            .join(""),
+        );
     }
     for y in x + 1..contents.len() {
         if !skip {
