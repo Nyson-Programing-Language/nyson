@@ -920,7 +920,7 @@ pub fn exec(
         run::error(
             [
                 "You have to put stuff in the exec command on line ",
-                get_line(x, contents),
+                get_line(x, contents).to_string(),
             ]
             .join(""),
         )
