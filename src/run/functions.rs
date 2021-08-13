@@ -8,7 +8,6 @@ use std::process::Command;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use std::{env, fs};
 extern crate chrono;
-use crate::run::error;
 use chrono::prelude::DateTime;
 use chrono::Utc;
 use rustc_serialize::json::Json;
@@ -914,18 +913,17 @@ pub fn exec(
         func_code,
         dev,
         0,
-    )
-    .first();
-    if !string.is_ok() {
+    );
+    if string.len() > 0 {
         run::error(
             [
                 "You have to put stuff in the exec command on line ",
-                get_line(x, contents).to_string(),
+                get_line(x, contents).to_string().as_str(),
             ]
             .join(""),
         )
     }
-    let string = string.unwrap().to_string();
+    let string = string.first().unwrap().to_string();
     let stringreturn = string;
     let mut vecs = stringreturn.replace("\n", " ");
     vecs = vecs.replace("\t", " ");
