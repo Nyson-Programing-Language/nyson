@@ -1557,5 +1557,5 @@ pub fn time() -> f64 {
 // }
 
 pub fn all_the_allowed_stuff() -> Vec<String> {
-    vec![")".to_string(), "}".to_string(), "]".to_string()]
+    vec![")".to_string(), "}".to_string(), "]".to_string(), "(".to_string(), "{".to_string(), "[".to_string(), ",".to_string()]
 }
