@@ -912,7 +912,7 @@ pub fn exec(
         dev,
         0,
     );
-    if string.len() < 1 {
+    if string.is_empty() {
         run::error(
             [
                 "You have to put stuff in the exec command on line ",
@@ -1431,7 +1431,7 @@ pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
             line += 1;
         }
     }
-    (line - run::code_to_add().matches("\n").count() + 1) as i32
+    (line - run::code_to_add().matches('\n').count() + 1) as i32
 }
 
 pub fn request(
