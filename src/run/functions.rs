@@ -843,9 +843,16 @@ pub fn getstring(
                             );
                         } else if int == 3 {
                             imput_s.push_str(vec[y].as_str());
-                        }
-                        else if !all_the_allowed_stuff().contains(&vec[y]) {
-                            run::error(["I have no idea what \"", vec[y].to_string().as_str(), "\" is on line ", get_line(x, contents.clone()).to_string().as_str()].join(""))
+                        } else if !all_the_allowed_stuff().contains(&vec[y]) {
+                            run::error(
+                                [
+                                    "I have no idea what \"",
+                                    vec[y].to_string().as_str(),
+                                    "\" is on line ",
+                                    get_line(x, contents.clone()).to_string().as_str(),
+                                ]
+                                .join(""),
+                            )
                         }
                     }
                 }
@@ -1557,5 +1564,13 @@ pub fn time() -> f64 {
 // }
 
 pub fn all_the_allowed_stuff() -> Vec<String> {
-    vec![")".to_string(), "}".to_string(), "]".to_string(), "(".to_string(), "{".to_string(), "[".to_string(), ",".to_string()]
+    vec![
+        ")".to_string(),
+        "}".to_string(),
+        "]".to_string(),
+        "(".to_string(),
+        "{".to_string(),
+        "[".to_string(),
+        ",".to_string(),
+    ]
 }
