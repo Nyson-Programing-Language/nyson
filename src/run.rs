@@ -1295,7 +1295,7 @@ func(linux.distro()) {
     .to_string()
 }
 
-pub fn error(error:String) {
+pub fn error(error: String) {
     println!("{}", error);
     std::process::exit(1);
 }
