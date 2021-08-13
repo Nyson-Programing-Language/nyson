@@ -77,16 +77,14 @@ pub fn getstring(
                 .join(""),
             );
         }
-    } else if int == 1 || int == 4 {
-        if contents[x + 1] == "[" {
-            run::error(
-                [
-                    "You need to have a \"[\" after the function on line ",
-                    get_line(x, contents.clone()).to_string().as_str(),
-                ]
-                .join(""),
-            );
-        }
+    } else if (int == 1 || int == 4) && contents[x + 1] == "[" {
+        run::error(
+            [
+                "You need to have a \"[\" after the function on line ",
+                get_line(x, contents.clone()).to_string().as_str(),
+            ]
+            .join(""),
+        );
     }
     for y in x + 1..contents.len() {
         if !skip {
@@ -914,7 +912,7 @@ pub fn exec(
         dev,
         0,
     );
-    if string.len() > 0 {
+    if !string.is_empty() {
         run::error(
             [
                 "You have to put stuff in the exec command on line ",
@@ -1433,7 +1431,7 @@ pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
             line += 1;
         }
     }
-    (line - run::code_to_add().matches("\n").count() + 1) as i32
+    (line - run::code_to_add().matches('\n').count() + 1) as i32
 }
 
 pub fn request(
