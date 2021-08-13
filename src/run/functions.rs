@@ -8,11 +8,11 @@ use std::process::Command;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use std::{env, fs};
 extern crate chrono;
+use crate::run::error;
 use chrono::prelude::DateTime;
 use chrono::Utc;
 use rustc_serialize::json::Json;
 use sysinfo::SystemExt;
-use crate::run::error;
 
 extern crate meval;
 
@@ -69,12 +69,24 @@ pub fn getstring(
     let mut skip = false;
     let mut n = 0;
     if int == 0 || int == 2 || int == 3 {
-        if contents[x+1] != "(" {
-            run::error(["You need to have a \"(\" after the function on line ", get_line(x, contents.clone()).to_string().as_str()].join(""));
+        if contents[x + 1] != "(" {
+            run::error(
+                [
+                    "You need to have a \"(\" after the function on line ",
+                    get_line(x, contents.clone()).to_string().as_str(),
+                ]
+                .join(""),
+            );
         }
     } else if int == 1 || int == 4 {
-        if contents[x+1] == "[" {
-            run::error(["You need to have a \"[\" after the function on line ", get_line(x, contents.clone() ).to_string().as_str()].join(""));
+        if contents[x + 1] == "[" {
+            run::error(
+                [
+                    "You need to have a \"[\" after the function on line ",
+                    get_line(x, contents.clone()).to_string().as_str(),
+                ]
+                .join(""),
+            );
         }
     }
     for y in x + 1..contents.len() {
@@ -905,7 +917,13 @@ pub fn exec(
     )
     .first();
     if !string.is_ok() {
-        run::error(["You have to put stuff in the exec command on line ", get_line(x, contents)].join(""))
+        run::error(
+            [
+                "You have to put stuff in the exec command on line ",
+                get_line(x, contents),
+            ]
+            .join(""),
+        )
     }
     let string = string.unwrap().to_string();
     let stringreturn = string;
