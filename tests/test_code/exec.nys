@@ -1,1 +1,6 @@
-log(exec("dir"))
+if (os() != "macos") {
+    log(exec("dir"));
+}
+else {
+    log(exec("ls"));
+}
