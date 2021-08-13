@@ -12,6 +12,7 @@ use chrono::prelude::DateTime;
 use chrono::Utc;
 use rustc_serialize::json::Json;
 use sysinfo::SystemExt;
+use crate::run::error;
 
 extern crate meval;
 
@@ -73,7 +74,7 @@ pub fn getstring(
         }
     } else if int == 1 || int == 4 {
         if contents[x+1] == "[" {
-            run::error(["You need to have a \"[\" after the function on line ", get_line(x, contents.clone()).to_string().as_str()].join(""));
+            run::error(["You need to have a \"[\" after the function on line ", get_line(x, contents.clone() ).to_string().as_str()].join(""));
         }
     }
     for y in x + 1..contents.len() {
@@ -892,7 +893,7 @@ pub fn exec(
 ) -> String {
     let string = getstring(
         x,
-        contents,
+        contents.clone(),
         memory_names,
         memory_values,
         memory_types,
@@ -902,9 +903,11 @@ pub fn exec(
         dev,
         0,
     )
-    .first()
-    .unwrap()
-    .to_string();
+    .first();
+    if !string.is_ok() {
+        run::error(["You have to put stuff in the exec command on line ", get_line(x, contents)].join(""))
+    }
+    let string = string.unwrap().to_string();
     let stringreturn = string;
     let mut vecs = stringreturn.replace("\n", " ");
     vecs = vecs.replace("\t", " ");
