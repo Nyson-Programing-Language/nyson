@@ -1295,25 +1295,28 @@ pub fn math(
     _func_par: Vec<String>,
     _func_code: Vec<String>,
 ) -> f32 {
-    meval::eval_str(getstring(
-        x,
-        contents,
-        memory_names.clone(),
-        memory_values,
-        memory_names,
-        _func_names,
-        _func_par,
-        _func_code,
-        false,
-        3,
-    )
+    meval::eval_str(
+        getstring(
+            x,
+            contents,
+            memory_names.clone(),
+            memory_values,
+            memory_names,
+            _func_names,
+            _func_par,
+            _func_code,
+            false,
+            3,
+        )
         .first()
         .unwrap()
-        .to_string().as_str())
-        .unwrap()
         .to_string()
-        .parse::<f32>()
-        .unwrap()
+        .as_str(),
+    )
+    .unwrap()
+    .to_string()
+    .parse::<f32>()
+    .unwrap()
 }
 
 pub fn trim(
