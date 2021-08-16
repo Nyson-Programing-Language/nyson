@@ -273,6 +273,8 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "random" {
+                    imput_s.push_str(rand::thread_rng().gen::<f32>().to_string().as_str());
                 } else if vec[y] == "request" {
                     imput_s.push_str(
                         request(
@@ -1328,100 +1330,28 @@ pub fn math(
     _func_par: Vec<String>,
     _func_code: Vec<String>,
 ) -> f32 {
-    let mut vec: Vec<String> = Vec::new();
-    let mut skip = false;
-    let mut n = 0;
-    for y in x + 1..contents.len() {
-        if !skip {
-            if contents[x + 1] != "(" {
-                println!(
-                    "You have to put a parentheses after the function on line {}",
-                    get_line(x, contents)
-                );
-                std::process::exit(1);
-            }
-            if contents[y] == "(" {
-                n += 1;
-            } else if contents[y] == ")" {
-                n -= 1;
-            }
-            if n == 0 {
-                skip = true;
-                for z in x + 1..y + 1 {
-                    vec.push(contents[z].to_string());
-                }
-            }
-        }
-    }
-    let mut n = 0;
-    let mut what_to_do_first = Vec::new();
-    vec.remove(0);
-    vec.remove(vec.len() - 1);
-    for y in 0..vec.len() {
-        if vec[y] == "(" {
-            n += 1;
-        } else if vec[y] == ")" {
-            n -= 1;
-        }
-        what_to_do_first.push(n);
-    }
-    let mut keep_going = true;
-    while keep_going {
-        keep_going = false;
-        let mut skip = false;
-        for y in 0..vec.len() {
-            if !skip {
-                let mut rng = rand::thread_rng();
-                let if_number = vec[y].chars();
-                let mut if_number_bool = true;
-                for c in if_number {
-                    if (char::is_numeric(c) || c == '.') && if_number_bool {
-                        if_number_bool = true;
-                    } else {
-                        if_number_bool = false;
-                    }
-                }
-                if !if_number_bool {
-                    let mut postion1 = memory_names.len();
-                    let mut skip = false;
-                    for pos in 0..memory_names.len() {
-                        if !skip && memory_names[pos] == vec[y] {
-                            postion1 = pos;
-                            skip = true;
-                            keep_going = true;
-                        }
-                    }
-                    if postion1 != memory_names.len() {
-                        vec[y] = memory_values[postion1].to_string();
-                    }
-                }
-                if vec[y].to_lowercase() == "random" {
-                    vec[y] = rng.gen::<f32>().to_string();
-
-                    skip = true;
-                    keep_going = true;
-                } else {
-                    let mut postion = memory_names.len();
-                    let mut skip = false;
-                    for pos in 0..memory_names.len() {
-                        if !skip && memory_names[pos] == vec[y] {
-                            postion = pos;
-                            skip = true;
-                            keep_going = true;
-                        }
-                    }
-                    if postion != memory_names.len() {
-                        vec[y] = memory_values[postion].to_string();
-                    }
-                }
-            }
-        }
-    }
-    meval::eval_str(vec.join("").as_str())
+    meval::eval_str(
+        getstring(
+            x,
+            contents,
+            memory_names.clone(),
+            memory_values,
+            memory_names,
+            _func_names,
+            _func_par,
+            _func_code,
+            false,
+            3,
+        )
+        .first()
         .unwrap()
         .to_string()
-        .parse::<f32>()
-        .unwrap()
+        .as_str(),
+    )
+    .unwrap()
+    .to_string()
+    .parse::<f32>()
+    .unwrap()
 }
 
 pub fn trim(

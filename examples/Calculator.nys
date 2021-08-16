@@ -1,0 +1,6 @@
+log("This is a calculator type an equation, or type \"stop\" to stop");
+dec str equation: input();
+while(equation != "stop") {
+    log(equation"="math(equation));
+    equation: input();
+}
