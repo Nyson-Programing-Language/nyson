@@ -199,6 +199,41 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "arg" {
+                    imput_s.push_str(
+                        env::args().nth(math(
+                            y,
+                            vec.to_vec(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
+                        ) as usize).unwrap().as_str(),
+                    );
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "round" {
                     imput_s.push_str(
                         round(
