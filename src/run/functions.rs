@@ -201,15 +201,18 @@ pub fn getstring(
                     skips = leng;
                 } else if vec[y] == "arg" {
                     imput_s.push_str(
-                        env::args().nth(math(
-                            y,
-                            vec.to_vec(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            func_names.clone(),
-                            func_par.clone(),
-                            func_code.clone(),
-                        ) as usize).unwrap().as_str(),
+                        env::args()
+                            .nth(math(
+                                y,
+                                vec.to_vec(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                            ) as usize)
+                            .unwrap()
+                            .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
