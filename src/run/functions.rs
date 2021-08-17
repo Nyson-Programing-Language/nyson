@@ -276,6 +276,45 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "length" {
+                    imput_s.push_str(
+                        length(
+                            y,
+                            vec.to_vec(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
+                            dev,
+                        )
+                            .to_string()
+                            .as_str(),
+                    );
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for elem in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if contents[elem] == "(" {
+                                n2 += 1;
+                            } else if contents[elem] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..elem + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "random" {
                     imput_s.push_str(rand::thread_rng().gen::<f32>().to_string().as_str());
                 } else if vec[y] == "request" {
@@ -1027,6 +1066,31 @@ pub fn round(
     .parse::<f32>()
     .unwrap()
     .round() as i32
+}
+
+pub fn length(
+    x: usize,
+    contents: Vec<String>,
+    memory_names: Vec<String>,
+    memory_values: Vec<String>,
+    memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
+    dev: bool,
+) -> i32 {
+    getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        func_names,
+        func_par,
+        func_code,
+        dev,
+        0,
+    ).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").collect::<Vec<&str>>().len() as i32
 }
 
 pub fn set_contents(
