@@ -289,8 +289,8 @@ pub fn getstring(
                             func_code.clone(),
                             dev,
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -328,7 +328,7 @@ pub fn getstring(
                             func_code.clone(),
                             dev,
                         )
-                            .as_str(),
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -366,7 +366,7 @@ pub fn getstring(
                             func_code.clone(),
                             dev,
                         )
-                            .as_str(),
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -1166,7 +1166,11 @@ pub fn length(
         func_code,
         dev,
         0,
-    ).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").collect::<Vec<&str>>().len() as i32
+    )
+    .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+    .collect::<Vec<&str>>()
+    .len() as i32
 }
 
 pub fn first(
@@ -1191,7 +1195,13 @@ pub fn first(
         func_code,
         dev,
         0,
-    ).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").collect::<Vec<&str>>().first().unwrap().to_string()
+    )
+    .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+    .collect::<Vec<&str>>()
+    .first()
+    .unwrap()
+    .to_string()
 }
 
 pub fn last(
@@ -1216,7 +1226,13 @@ pub fn last(
         func_code,
         dev,
         0,
-    ).join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").collect::<Vec<&str>>().last().unwrap().to_string()
+    )
+    .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+    .collect::<Vec<&str>>()
+    .last()
+    .unwrap()
+    .to_string()
 }
 
 pub fn set_contents(
