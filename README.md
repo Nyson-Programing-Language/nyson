@@ -27,6 +27,10 @@ https://user-images.githubusercontent.com/29708070/128087291-a6e4f541-d84f-4b28-
 
 https://nyson-programing-language.github.io/
 
+## Discord
+
+https://discord.gg/qDznKHuM
+
 ## Repo:
 
 https://github.com/Nyelsonon/nyson-programming-language
