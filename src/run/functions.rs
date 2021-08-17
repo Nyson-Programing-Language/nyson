@@ -1169,8 +1169,7 @@ pub fn length(
     )
     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
     .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-    .collect::<Vec<&str>>()
-    .len() as i32
+    .count() as i32
 }
 
 pub fn first(
