@@ -1545,7 +1545,7 @@ pub fn math(
     _func_names: Vec<String>,
     _func_par: Vec<String>,
     _func_code: Vec<String>,
-) -> f32 {
+) -> f64 {
     meval::eval_str(
         getstring(
             x,
@@ -1566,7 +1566,7 @@ pub fn math(
     )
     .unwrap()
     .to_string()
-    .parse::<f32>()
+    .parse::<f64>()
     .unwrap()
 }
 
