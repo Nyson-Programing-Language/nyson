@@ -771,15 +771,21 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "timeh" {
-                    imput_s.push_str(time_readable(y,
-                                                   vec.to_vec(),
-                                                   memory_names.clone(),
-                                                   memory_values.clone(),
-                                                   memory_types.clone(),
-                                                   func_names.clone(),
-                                                   func_par.clone(),
-                                                   func_code.clone(),
-                                                   dev,).to_string().as_str());
+                    imput_s.push_str(
+                        time_readable(
+                            y,
+                            vec.to_vec(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
+                            dev,
+                        )
+                        .to_string()
+                        .as_str(),
+                    );
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -1614,7 +1620,8 @@ pub fn time_readable(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,) -> String {
+    dev: bool,
+) -> String {
     let getstirng = getstring(
         x,
         contents,
@@ -1628,25 +1635,22 @@ pub fn time_readable(
         0,
     );
     if getstirng.len() > 0 {
-        let time:f64 = getstirng
-            .first()
-            .unwrap().parse().unwrap();
+        let time: f64 = getstirng.first().unwrap().parse().unwrap();
         println!("{}", time);
         let d = UNIX_EPOCH + Duration::from_millis(time as u64);
         // Create DateTime from SystemTime
         let datetime = DateTime::<Utc>::from(d);
         // Formats the combined date and time with the specified format string.
         let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
-        return timestamp_str
-    }
-    else {
+        return timestamp_str;
+    } else {
         let time = time();
         let d = UNIX_EPOCH + Duration::from_millis(time as u64);
         // Create DateTime from SystemTime
         let datetime = DateTime::<Utc>::from(d);
         // Formats the combined date and time with the specified format string.
         let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
-        return timestamp_str
+        return timestamp_str;
     }
 }
 
