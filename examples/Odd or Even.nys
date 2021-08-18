@@ -1,4 +1,6 @@
-if (math(arg(2)%2) == "0") {
+log("Hi this is the odd or even example type a number");
+dec int number: input();
+if (math(number%2) == "0") {
     log("even");
 }
 else {
