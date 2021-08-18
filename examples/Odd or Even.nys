@@ -1,0 +1,6 @@
+if (math(arg(2)%2) == "0") {
+    log("even");
+}
+else {
+    log("odd");
+}
