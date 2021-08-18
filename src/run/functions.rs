@@ -1634,7 +1634,7 @@ pub fn time_readable(
         dev,
         0,
     );
-    if getstirng.len() > 0 {
+    if !getstirng.is_empty() {
         let time: f64 = getstirng.first().unwrap().parse().unwrap();
         println!("{}", time);
         let d = UNIX_EPOCH + Duration::from_millis(time as u64);
@@ -1642,7 +1642,7 @@ pub fn time_readable(
         let datetime = DateTime::<Utc>::from(d);
         // Formats the combined date and time with the specified format string.
         let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
-        return timestamp_str;
+        timestamp_str
     } else {
         let time = time();
         let d = UNIX_EPOCH + Duration::from_millis(time as u64);
@@ -1650,7 +1650,7 @@ pub fn time_readable(
         let datetime = DateTime::<Utc>::from(d);
         // Formats the combined date and time with the specified format string.
         let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
-        return timestamp_str;
+        timestamp_str
     }
 }
 
