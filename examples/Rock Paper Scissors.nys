@@ -1,0 +1,12 @@
+log("This is rock paper scissors pick one (R/P/S)");
+dec int picked: round(math(random*2));
+dec str picked_player: input();
+if (picked == "0") {
+    log("it was a draw");
+}
+if (picked == "1") {
+    log("you lost");
+}
+if (picked == "2") {
+    log("you won");
+}
