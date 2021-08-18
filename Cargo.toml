@@ -15,4 +15,6 @@ rand = "0.8.4"
 serde_json = "1.0.66"
 meval = "0.2.0"
 rustc-serialize = "0.3.24"
+openssl = { version = "0.10", features = ["vendored"] }
 sysinfo = "0.20.0"
+
