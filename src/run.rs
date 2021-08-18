@@ -192,7 +192,7 @@ pub fn run(
                                 func_par.clone(),
                                 func_code.clone(),
                             );
-                            if number_of_times > 0 as f32 {
+                            if number_of_times > 0 as f64 {
                                 let mut n = 0;
                                 let mut reached = false;
                                 let mut loc1 = 0;

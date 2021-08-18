@@ -1,6 +1,6 @@
-dec str number: "-1";
+dec int number: 0;
 dec str loading: "";
-loop(7) {
+loop(6) {
     loading: "";
     loop(number) {
         loading: loading "#";
