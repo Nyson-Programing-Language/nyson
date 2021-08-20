@@ -23,6 +23,7 @@ https://user-images.githubusercontent.com/29708070/128087291-a6e4f541-d84f-4b28-
   <img src="https://contrib.rocks/image?repo=Nyson-Programing-Language/nyson" />
 </a>
 
+[![Stargazers repo roster for @Nyson-Programing-Language/nyson](https://reporoster.com/stars/Nyson-Programing-Language/nyson)](https://github.com/Nyson-Programing-Language/nyson/stargazers)
 ## Documentation:
 
 https://nyson-programing-language.github.io/
