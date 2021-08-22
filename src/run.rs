@@ -118,8 +118,8 @@ pub fn run(
                     } else if "exit" == contents[x].as_str() {
                         std::process::exit(1);
                     } else if "audio" == contents[x].as_str()
-                        && uses[1] == "true".to_string()
-                        && !("use" == contents[x - 1].as_str())
+                        && uses[1] == *"true"
+                        && "use" != contents[x - 1].as_str()
                     {
                         let contents_save = contents.clone();
                         let memory_types_save = memory_types.clone();

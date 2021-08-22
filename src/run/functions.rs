@@ -37,7 +37,7 @@ pub fn log(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     )
     .first()
@@ -230,7 +230,6 @@ pub fn getstring(
                     if leng == 2 {
                         imput_s.push_str(
                             &(env::args()
-                                .map(|arg| arg.to_string())
                                 .collect::<Vec<String>>()
                                 .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                 .to_owned())[..],
@@ -637,7 +636,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.total_memory" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.total_memory" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -665,7 +664,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.uptime" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.uptime" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -693,7 +692,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.name" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.name" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -721,7 +720,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.kernel_version" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.kernel_version" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -749,7 +748,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.os_version" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.os_version" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -777,7 +776,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.host_name" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.host_name" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -805,7 +804,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.used_memory" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.used_memory" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -833,7 +832,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.total_swap" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.total_swap" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -861,7 +860,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.used_swap" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.used_swap" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -889,7 +888,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.load_average.one" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.load_average.one" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -917,7 +916,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.cpu_usage" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.cpu_usage" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -945,7 +944,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.cpu_name" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.cpu_name" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -973,7 +972,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.load_average.five" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.load_average.five" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -1001,7 +1000,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.load_average.fifteen" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os.load_average.fifteen" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -1069,7 +1068,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os" && uses[0] == "true".to_string() {
+                } else if vec[y] == "os" && uses[0] == *"true" {
                     imput_s.push_str(env::consts::OS);
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -1327,7 +1326,7 @@ pub fn eval_eval(
             func_par,
             func_code,
             dev,
-            uses.clone(),
+            uses,
             0,
         )
         .first()
@@ -1359,7 +1358,7 @@ pub fn exec(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     );
     if string.is_empty() {
@@ -1423,7 +1422,7 @@ pub fn round(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     )[0]
     .parse::<f32>()
@@ -1453,7 +1452,7 @@ pub fn length(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     )
     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1483,7 +1482,7 @@ pub fn first(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     )
     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1516,7 +1515,7 @@ pub fn last(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     )
     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1549,7 +1548,7 @@ pub fn set_contents(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     );
     let file_s = vec[0].to_string();
@@ -1592,7 +1591,7 @@ pub fn get_contents(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     )
     .first()
@@ -1630,7 +1629,7 @@ pub fn is_number(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     )
     .first()
@@ -1661,7 +1660,7 @@ pub fn replace(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     );
     let imput_s = vec[0].to_string();
@@ -1883,7 +1882,7 @@ pub fn math(
             _func_par,
             _func_code,
             false,
-            uses.clone(),
+            uses,
             3,
         )
         .first()
@@ -1919,7 +1918,7 @@ pub fn trim(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     );
     return if getstirng.len() > 1 {
@@ -1956,7 +1955,7 @@ pub fn time_readable(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     );
     if !getstirng.is_empty() {
@@ -1994,7 +1993,7 @@ pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
     if line >= run::code_to_add().matches('\n').count() {
         return (line - run::code_to_add().matches('\n').count() + 1) as i32;
     } else {
-        return (line + 1) as i32;
+        (line + 1) as i32
     }
 }
 
@@ -2020,7 +2019,7 @@ pub fn request(
         func_par,
         func_code,
         dev,
-        uses.clone(),
+        uses,
         0,
     );
     let type_of_request = reply[0].to_string();
