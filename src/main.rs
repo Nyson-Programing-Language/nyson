@@ -27,6 +27,7 @@ fn main() {
     let mut compile = false;
     let mut hard = false;
     let mut run = false;
+    let mut uses:Vec<String> = vec!["false".to_string()];
     for arg in args {
         if arg == "--dev" {
             dev = true;
@@ -102,7 +103,7 @@ fn main() {
                 let to_parse = lexer::lexer(contents, dev);
                 let _output = run::run(
                     to_parse,
-                    dev,
+                    dev, uses.clone(),
                     Vec::new(),
                     Vec::new(),
                     Vec::new(),
@@ -135,7 +136,7 @@ fn main() {
         let to_parse = lexer::lexer(contents, dev);
         let _output = run::run(
             to_parse,
-            dev,
+            dev, uses,
             Vec::new(),
             Vec::new(),
             Vec::new(),
@@ -164,7 +165,7 @@ fn main() {
         if hard {
             contents = run::hard(
                 contents,
-                dev,
+                dev, uses,
                 Vec::new(),
                 Vec::new(),
                 Vec::new(),
@@ -227,7 +228,7 @@ fn main() {
     let output = run::run([r\""
         .to_string();
     ruturns.push_str(content.join("\", r\"").as_str());
-    ruturns.push_str("\"].to_vec().iter().map(|s| s.to_string()).collect(), dev, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
+    ruturns.push_str("\"].to_vec().iter().map(|s| s.to_string()).collect(), dev, uses, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
     }");
     ruturns.to_string()
 }

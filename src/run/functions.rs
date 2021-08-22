@@ -24,7 +24,7 @@ pub fn log(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) {
     let string = getstring(
         x,
@@ -35,7 +35,7 @@ pub fn log(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     )
     .first()
@@ -53,7 +53,7 @@ pub fn getstring(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
     int: i32,
 ) -> Vec<String> {
     if dev {
@@ -172,6 +172,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
+                            uses.clone()
                         )
                         .to_string()
                         .as_str(),
@@ -239,6 +240,7 @@ pub fn getstring(
                                     func_names.clone(),
                                     func_par.clone(),
                                     func_code.clone(),
+                                    uses.clone()
                                 ) as usize)
                                 .unwrap()
                                 .as_str(),
@@ -255,7 +257,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .to_string()
                         .as_str(),
@@ -294,7 +296,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .to_string()
                         .as_str(),
@@ -333,7 +335,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .as_str(),
                     );
@@ -371,7 +373,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .as_str(),
                     );
@@ -411,7 +413,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .to_string()
                         .as_str(),
@@ -450,7 +452,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .to_string()
                         .as_str(),
@@ -489,7 +491,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                             .to_string()
                             .as_str(),
@@ -553,7 +555,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .to_string()
                         .as_str(),
@@ -592,7 +594,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .to_string()
                         .as_str(),
@@ -620,7 +622,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.total_memory" {
+                } else if vec[y] == "os.total_memory" && uses[0] == "true".to_string() {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -648,7 +650,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.used_memory" {
+                } else if vec[y] == "os.used_memory" && uses[0] == "true".to_string() {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -676,7 +678,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.total_swap" {
+                } else if vec[y] == "os.total_swap" && uses[0] == "true".to_string() {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -704,7 +706,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.used_swap" {
+                } else if vec[y] == "os.used_swap" && uses[0] == "true".to_string() {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -732,7 +734,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.load_average.one" {
+                } else if vec[y] == "os.load_average.one" && uses[0] == "true".to_string() {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -760,7 +762,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.load_average.five" {
+                } else if vec[y] == "os.load_average.five" && uses[0] == "true".to_string() {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -788,7 +790,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os.load_average.fifteen" {
+                } else if vec[y] == "os.load_average.fifteen" && uses[0] == "true".to_string() {
                     use sysinfo::System;
                     let mut sys = System::new_all();
                     sys.refresh_all();
@@ -827,7 +829,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .to_string()
                         .as_str(),
@@ -855,7 +857,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                } else if vec[y] == "os" {
+                } else if vec[y] == "os" && uses[0] == "true".to_string() {
                     imput_s.push_str(env::consts::OS);
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -916,7 +918,7 @@ pub fn getstring(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                         )
                         .to_string()
                         .as_str(),
@@ -975,6 +977,7 @@ pub fn getstring(
                                     func_names.clone(),
                                     func_par.clone(),
                                     func_code.clone(),
+                                    uses.clone()
                                 )
                                 .to_string();
                                 imput_s.push_str(
@@ -995,7 +998,7 @@ pub fn getstring(
                                     func_names.clone(),
                                     func_par.clone(),
                                     func_code.clone(),
-                                    dev,
+                                    dev, uses.clone(),
                                     4,
                                 );
                                 let slices: Vec<&str> =
@@ -1038,7 +1041,7 @@ pub fn getstring(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                                 0,
                             );
                             for x in func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1048,7 +1051,7 @@ pub fn getstring(
                             imput_s.push_str(
                                 run::run(
                                     contetntstr,
-                                    dev,
+                                    dev, uses.clone(),
                                     contetntstr1.clone(),
                                     contetntstr2.clone(),
                                     memory_types.clone(),
@@ -1093,7 +1096,7 @@ pub fn eval_eval(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> Vec<String> {
     let mut stringz = " ".to_string();
     stringz.push_str(
@@ -1106,7 +1109,7 @@ pub fn eval_eval(
             func_names,
             func_par,
             func_code,
-            dev,
+            dev, uses.clone(),
             0,
         )
         .first()
@@ -1125,7 +1128,7 @@ pub fn exec(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> String {
     let string = getstring(
         x,
@@ -1136,7 +1139,7 @@ pub fn exec(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     );
     if string.is_empty() {
@@ -1187,7 +1190,7 @@ pub fn round(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> i32 {
     getstring(
         x,
@@ -1198,7 +1201,7 @@ pub fn round(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     )[0]
     .parse::<f32>()
@@ -1215,7 +1218,7 @@ pub fn length(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> i32 {
     getstring(
         x,
@@ -1226,7 +1229,7 @@ pub fn length(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     )
     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1243,7 +1246,7 @@ pub fn first(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> String {
     getstring(
         x,
@@ -1254,7 +1257,7 @@ pub fn first(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     )
     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1274,7 +1277,7 @@ pub fn last(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> String {
     getstring(
         x,
@@ -1285,7 +1288,7 @@ pub fn last(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     )
     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1305,7 +1308,7 @@ pub fn set_contents(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> std::io::Result<()> {
     let vec = getstring(
         x,
@@ -1316,7 +1319,7 @@ pub fn set_contents(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     );
     let file_s = vec[0].to_string();
@@ -1346,7 +1349,7 @@ pub fn get_contents(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> String {
     let string = getstring(
         x,
@@ -1357,7 +1360,7 @@ pub fn get_contents(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     )
     .first()
@@ -1382,7 +1385,7 @@ pub fn is_number(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> bool {
     getstring(
         x,
@@ -1393,7 +1396,7 @@ pub fn is_number(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     )
         .first()
@@ -1409,7 +1412,7 @@ pub fn replace(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> String {
     let vec = getstring(
         x,
@@ -1420,7 +1423,7 @@ pub fn replace(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     );
     let imput_s = vec[0].to_string();
@@ -1444,7 +1447,7 @@ pub fn imp(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
     begining: String,
 ) -> Vec<String> {
     let mut string = begining.clone();
@@ -1461,7 +1464,7 @@ pub fn imp(
             func_names.clone(),
             func_par.clone(),
             func_code.clone(),
-            dev,
+            dev, uses.clone(),
             0,
         )
         .first()
@@ -1571,7 +1574,7 @@ pub fn imp(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev,
+                            dev, uses.clone(),
                             new_loc,
                         );
                         readfrom = x;
@@ -1626,6 +1629,7 @@ pub fn math(
     _func_names: Vec<String>,
     _func_par: Vec<String>,
     _func_code: Vec<String>,
+    uses: Vec<String>
 ) -> f64 {
     meval::eval_str(
         getstring(
@@ -1637,7 +1641,7 @@ pub fn math(
             _func_names,
             _func_par,
             _func_code,
-            false,
+            false, uses.clone(),
             3,
         )
         .first()
@@ -1660,7 +1664,7 @@ pub fn trim(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> String {
     let getstirng = getstring(
         x,
@@ -1671,7 +1675,7 @@ pub fn trim(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     );
     return if getstirng.len() > 1 {
@@ -1695,7 +1699,7 @@ pub fn time_readable(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> String {
     let getstirng = getstring(
         x,
@@ -1706,7 +1710,7 @@ pub fn time_readable(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     );
     if !getstirng.is_empty() {
@@ -1748,7 +1752,7 @@ pub fn request(
     func_names: Vec<String>,
     func_par: Vec<String>,
     func_code: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
 ) -> String {
     let mut reply = getstring(
         x,
@@ -1759,7 +1763,7 @@ pub fn request(
         func_names,
         func_par,
         func_code,
-        dev,
+        dev, uses.clone(),
         0,
     );
     let type_of_request = reply[0].to_string();
@@ -1842,7 +1846,7 @@ pub fn time() -> f64 {
 //     func_names: Vec<String>,
 //     func_par: Vec<String>,
 //     func_code: Vec<String>,
-//     dev: bool,
+//     dev: bool, uses: Vec<String>,
 // ) -> Vec<String> {
 //     getstring(
 //         x,
@@ -1853,7 +1857,7 @@ pub fn time() -> f64 {
 //         func_names,
 //         func_par,
 //         func_code,
-//         dev,
+//         dev, uses.clone(),
 //         1,
 //     )
 // }

@@ -1,1 +1,2 @@
-log(arg(0));
+use os;
+log(os);

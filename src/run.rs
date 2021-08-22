@@ -8,7 +8,7 @@ extern crate meval;
 
 pub fn run(
     mut contents: Vec<String>,
-    dev: bool,
+    dev: bool, mut uses: Vec<String>,
     mut memory_names: Vec<String>,
     mut memory_values: Vec<String>,
     mut memory_types: Vec<String>,
@@ -73,7 +73,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                             );
                         }
                         //divider--
@@ -87,7 +87,7 @@ pub fn run(
                                 func_names,
                                 func_par,
                                 func_code,
-                                dev,
+                                dev, uses.clone(),
                                 0,
                             )
                             .first()
@@ -95,6 +95,11 @@ pub fn run(
                             .to_string()
                             .trim()
                             .to_string();
+                        }
+                        "use" => {
+                            if contents[x+1].as_str() == "os" {
+                                uses[0] = "true".to_string();
+                            }
                         }
                         //divider--
                         "request" => {
@@ -107,7 +112,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                             );
                         }
                         //divider--
@@ -121,6 +126,7 @@ pub fn run(
                             let func_names_save = func_names.clone();
                             let func_par_save = func_par.clone();
                             let func_code_save = func_code.clone();
+                            let uses_save = uses.clone();
                             let handle = thread::spawn(move || {
                                 let stringreturn = functions::getstring(
                                     x,
@@ -131,7 +137,7 @@ pub fn run(
                                     func_names_save.clone(),
                                     func_par_save.clone(),
                                     func_code_save.clone(),
-                                    dev,
+                                    dev, uses_save,
                                     0,
                                 )
                                 .first()
@@ -191,6 +197,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
+                                uses.clone()
                             );
                             if number_of_times > 0 as f64 {
                                 let mut n = 0;
@@ -290,6 +297,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
+                                uses.clone()
                             );
                             thread::sleep(time::Duration::from_millis(number_of_times as u64));
                         }
@@ -304,7 +312,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                             );
                         }
                         //divider--
@@ -318,7 +326,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                             );
                             if r.is_err() {
                                 error("Could not set file contents.".to_string());
@@ -335,7 +343,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                             );
                             readfrom = x;
                             skiperwiper = true;
@@ -387,7 +395,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                                 "".to_string(),
                             );
                             readfrom = x;
@@ -505,7 +513,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                                 0,
                             )
                             .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -530,7 +538,7 @@ pub fn run(
                                     let mut location = 0;
                                     for items in 0..group_memory.len() {
                                         if items < group_memory.len() - 1
-                                            && group_memory[items + 1].parse::<i32>().is_ok()
+                                            && group_memory[items + 1].parse::<f64>().is_ok()
                                             && group_memory[items] == clone_class.clone()
                                         {
                                             location = items + (d * 2) + 3;
@@ -705,7 +713,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                                 3,
                             )
                             .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
@@ -791,7 +799,7 @@ pub fn run(
                                 func_names.clone(),
                                 func_par.clone(),
                                 func_code.clone(),
-                                dev,
+                                dev, uses.clone(),
                                 2,
                             )
                             .first()
@@ -875,17 +883,17 @@ pub fn run(
                                     || (output[item] == "!="
                                         && output[item - 1] != output[item + 1])
                                     || (output[item] == ">="
-                                        && output[item - 1].parse::<i32>().unwrap()
-                                            >= output[item + 1].parse::<i32>().unwrap())
+                                        && output[item - 1].parse::<f64>().unwrap()
+                                            >= output[item + 1].parse::<f64>().unwrap())
                                     || (output[item] == "<="
-                                        && output[item - 1].parse::<i32>().unwrap()
-                                            <= output[item + 1].parse::<i32>().unwrap())
+                                        && output[item - 1].parse::<f64>().unwrap()
+                                            <= output[item + 1].parse::<f64>().unwrap())
                                     || (output[item] == "<"
-                                        && output[item - 1].parse::<i32>().unwrap()
-                                            < output[item + 1].parse::<i32>().unwrap())
+                                        && output[item - 1].parse::<f64>().unwrap()
+                                            < output[item + 1].parse::<f64>().unwrap())
                                     || (output[item] == ">"
-                                        && output[item - 1].parse::<i32>().unwrap()
-                                            > output[item + 1].parse::<i32>().unwrap())
+                                        && output[item - 1].parse::<f64>().unwrap()
+                                            > output[item + 1].parse::<f64>().unwrap())
                                 {
                                     output[item] = "true".to_string();
                                     output[item - 1] = "".to_string();
@@ -895,17 +903,17 @@ pub fn run(
                                     || (output[item] == "!="
                                         && !(output[item - 1] != output[item + 1]))
                                     || (output[item] == ">="
-                                        && !(output[item - 1].parse::<i32>().unwrap()
-                                            >= output[item + 1].parse::<i32>().unwrap()))
+                                        && !(output[item - 1].parse::<f64>().unwrap()
+                                            >= output[item + 1].parse::<f64>().unwrap()))
                                     || (output[item] == "<="
-                                        && !(output[item - 1].parse::<i32>().unwrap()
-                                            <= output[item + 1].parse::<i32>().unwrap()))
+                                        && !(output[item - 1].parse::<f64>().unwrap()
+                                            <= output[item + 1].parse::<f64>().unwrap()))
                                     || (output[item] == "<"
-                                        && !(output[item - 1].parse::<i32>().unwrap()
-                                            < output[item + 1].parse::<i32>().unwrap()))
+                                        && !(output[item - 1].parse::<f64>().unwrap()
+                                            < output[item + 1].parse::<f64>().unwrap()))
                                     || (output[item] == ">"
-                                        && !(output[item - 1].parse::<i32>().unwrap()
-                                            > output[item + 1].parse::<i32>().unwrap()))
+                                        && !(output[item - 1].parse::<f64>().unwrap()
+                                            > output[item + 1].parse::<f64>().unwrap()))
                                 {
                                     output[item] = "false".to_string();
                                     output[item - 1] = "".to_string();
@@ -1025,7 +1033,7 @@ pub fn run(
                                         func_names.clone(),
                                         func_par.clone(),
                                         func_code.clone(),
-                                        dev,
+                                        dev, uses.clone(),
                                         0,
                                     );
                                     for t in func_par[postion]
@@ -1035,7 +1043,7 @@ pub fn run(
                                     }
                                     let _output = run(
                                         contetntstr,
-                                        dev,
+                                        dev, uses.clone(),
                                         contetntstr1.clone(),
                                         contetntstr2.clone(),
                                         memory_types.clone(),
@@ -1089,7 +1097,7 @@ pub fn run(
                                             func_names.clone(),
                                             func_par.clone(),
                                             func_code.clone(),
-                                            dev,
+                                            dev, uses.clone(),
                                             0,
                                         )
                                         .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1107,6 +1115,7 @@ pub fn run(
                                             func_names.clone(),
                                             func_par.clone(),
                                             func_code.clone(),
+                                            uses.clone()
                                         );
                                         let mut skipz = false;
                                         let mut nigro = 0;
@@ -1155,7 +1164,7 @@ pub fn run(
                                             func_names.clone(),
                                             func_par.clone(),
                                             func_code.clone(),
-                                            dev,
+                                            dev, uses.clone(),
                                             0,
                                         )
                                         .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1183,7 +1192,7 @@ pub fn run(
 
 pub(crate) fn hard(
     mut contents: Vec<String>,
-    dev: bool,
+    dev: bool, uses: Vec<String>,
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
@@ -1229,7 +1238,7 @@ pub(crate) fn hard(
                         func_names.clone(),
                         func_par.clone(),
                         func_code.clone(),
-                        dev,
+                        dev, uses.clone(),
                         "".to_string(),
                     );
                     skiperwiper = true;
