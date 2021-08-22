@@ -9,7 +9,8 @@ extern crate meval;
 
 pub fn run(
     mut contents: Vec<String>,
-    dev: bool, mut uses: Vec<String>,
+    dev: bool,
+    mut uses: Vec<String>,
     mut memory_names: Vec<String>,
     mut memory_values: Vec<String>,
     mut memory_types: Vec<String>,
@@ -73,10 +74,10 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                         );
-                    }
-                    else if "ret" == contents[x].as_str() {
+                    } else if "ret" == contents[x].as_str() {
                         return functions::getstring(
                             x,
                             contents.clone(),
@@ -86,7 +87,8 @@ pub fn run(
                             func_names,
                             func_par,
                             func_code,
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                             0,
                         )
                         .first()
@@ -94,16 +96,13 @@ pub fn run(
                         .to_string()
                         .trim()
                         .to_string();
-                    }
-                    else if "use" == contents[x].as_str() {
-                        if contents[x+1].as_str() == "os" {
+                    } else if "use" == contents[x].as_str() {
+                        if contents[x + 1].as_str() == "os" {
                             uses[0] = "true".to_string();
-                        }
-                        else if contents[x+1].as_str() == "audio" {
+                        } else if contents[x + 1].as_str() == "audio" {
                             uses[1] = "true".to_string();
                         }
-                    }
-                    else if "request" == contents[x].as_str() {
+                    } else if "request" == contents[x].as_str() {
                         let _output = functions::request(
                             x,
                             contents.clone(),
@@ -113,13 +112,15 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                         );
-                    }
-                    else if "exit" == contents[x].as_str() {
+                    } else if "exit" == contents[x].as_str() {
                         std::process::exit(1);
-                    }
-                    else if "audio" == contents[x].as_str() && uses[1] == "true".to_string() && !("use" == contents[x-1].as_str()) {
+                    } else if "audio" == contents[x].as_str()
+                        && uses[1] == "true".to_string()
+                        && !("use" == contents[x - 1].as_str())
+                    {
                         let contents_save = contents.clone();
                         let memory_types_save = memory_types.clone();
                         let memory_values_save = memory_values.clone();
@@ -138,7 +139,8 @@ pub fn run(
                                 func_names_save.clone(),
                                 func_par_save.clone(),
                                 func_code_save.clone(),
-                                dev, uses_save,
+                                dev,
+                                uses_save,
                                 0,
                             )
                             .first()
@@ -182,8 +184,7 @@ pub fn run(
                             }
                         });
                         threads.push(handle);
-                    }
-                    else if "loop" == contents[x].as_str() {
+                    } else if "loop" == contents[x].as_str() {
                         readfrom = x + 1;
                         skiperwiper = true;
                         read = true;
@@ -197,7 +198,7 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            uses.clone()
+                            uses.clone(),
                         );
                         if number_of_times > 0 as f64 {
                             let mut n = 0;
@@ -242,8 +243,7 @@ pub fn run(
                             }
                             contents = new_vec;
                         }
-                    }
-                    else if "while" == contents[x].as_str() {
+                    } else if "while" == contents[x].as_str() {
                         readfrom = x;
                         skiperwiper = true;
                         read = true;
@@ -285,8 +285,7 @@ pub fn run(
                             println!("new_vec: {:?}", new_vec);
                         }
                         contents = new_vec;
-                    }
-                    else if "sleep" == contents[x].as_str() {
+                    } else if "sleep" == contents[x].as_str() {
                         let number_of_times = functions::math(
                             x,
                             contents.clone(),
@@ -295,11 +294,10 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            uses.clone()
+                            uses.clone(),
                         );
                         thread::sleep(time::Duration::from_millis(number_of_times as u64));
-                    }
-                    else if "exec" == contents[x].as_str() {
+                    } else if "exec" == contents[x].as_str() {
                         functions::exec(
                             x,
                             contents.clone(),
@@ -309,10 +307,10 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                         );
-                    }
-                    else if "setcont" == contents[x].as_str() {
+                    } else if "setcont" == contents[x].as_str() {
                         let r = functions::set_contents(
                             x,
                             contents.clone(),
@@ -322,13 +320,13 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                         );
                         if r.is_err() {
                             error("Could not set file contents.".to_string());
                         }
-                    }
-                    else if "eval" == contents[x].as_str() {
+                    } else if "eval" == contents[x].as_str() {
                         let imp = functions::eval_eval(
                             x,
                             contents.clone(),
@@ -338,7 +336,8 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                         );
                         readfrom = x;
                         skiperwiper = true;
@@ -378,8 +377,7 @@ pub fn run(
                             }
                         }
                         contents = new_vec;
-                    }
-                    else if "imp" == contents[x].as_str() {
+                    } else if "imp" == contents[x].as_str() {
                         let imp = functions::imp(
                             x,
                             contents.clone(),
@@ -389,7 +387,8 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                             "".to_string(),
                         );
                         readfrom = x;
@@ -430,8 +429,7 @@ pub fn run(
                             }
                         }
                         contents = new_vec;
-                    }
-                    else if "dec" == contents[x].as_str() {
+                    } else if "dec" == contents[x].as_str() {
                         let _memory_names1 = memory_names.clone();
                         let _memory_values1 = memory_values.clone();
                         let _memory_types1 = memory_types.clone();
@@ -506,7 +504,8 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                             0,
                         )
                         .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -561,8 +560,7 @@ pub fn run(
                             println!("memory_types: {:?}", memory_types);
                             println!("memory_values: {:?}", memory_values);
                         }
-                    }
-                    else if "group" == contents[x].as_str() {
+                    } else if "group" == contents[x].as_str() {
                         let build_name = contents[x + 1].clone();
                         let mut objects: Vec<String> = Vec::new();
                         for j in x + 2..contents.len() {
@@ -591,8 +589,7 @@ pub fn run(
                             group_memory.push(build_name.clone());
                             group_memory.push(objects_object[d].clone());
                         }
-                    }
-                    else if "append" == contents[x].as_str() {
+                    } else if "append" == contents[x].as_str() {
                         let mut params: Vec<String> = Vec::new();
                         for item in x..contents.len() {
                             if contents[item].is_empty()
@@ -616,8 +613,7 @@ pub fn run(
                                 break;
                             }
                         }
-                    }
-                    else if "cut" == contents[x].as_str() {
+                    } else if "cut" == contents[x].as_str() {
                         let mut parameters: Vec<String> = Vec::new();
                         for item in x..contents.len() {
                             if contents[item].is_empty()
@@ -656,8 +652,7 @@ pub fn run(
                             }
                         }
                         memory_values[count] = change;
-                    }
-                    else if "func" == contents[x].as_str() {
+                    } else if "func" == contents[x].as_str() {
                         let mut skip = false;
                         let mut n = 1;
                         let mut reached = false;
@@ -706,7 +701,8 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                             3,
                         )
                         .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
@@ -730,8 +726,7 @@ pub fn run(
                             println!("func_code: {:?}", func_code);
                             println!("func_names: {:?}", func_names);
                         }
-                    }
-                    else if "if" == contents[x].as_str() {
+                    } else if "if" == contents[x].as_str() {
                         let mut loc1 = 0;
                         let mut loc2 = 0;
                         let mut vec: Vec<String> = Vec::new();
@@ -792,7 +787,8 @@ pub fn run(
                             func_names.clone(),
                             func_par.clone(),
                             func_code.clone(),
-                            dev, uses.clone(),
+                            dev,
+                            uses.clone(),
                             2,
                         )
                         .first()
@@ -825,8 +821,7 @@ pub fn run(
                                     || result[item - 1] == ">"
                                     || result[item - 1] == "<"
                                 {
-                                    output
-                                        .push(result[item - 1].to_owned() + &*"=".to_string());
+                                    output.push(result[item - 1].to_owned() + &*"=".to_string());
                                 }
                             } else if result[item] == "|" && 0 < item {
                                 if result[item + 1] == "|" {
@@ -873,8 +868,7 @@ pub fn run(
                         }
                         for item in 0..output.len() {
                             if (output[item] == "==" && output[item - 1] == output[item + 1])
-                                || (output[item] == "!="
-                                    && output[item - 1] != output[item + 1])
+                                || (output[item] == "!=" && output[item - 1] != output[item + 1])
                                 || (output[item] == ">="
                                     && output[item - 1].parse::<f64>().unwrap()
                                         >= output[item + 1].parse::<f64>().unwrap())
@@ -893,8 +887,7 @@ pub fn run(
                                 output[item + 1] = "".to_string();
                             } else if (output[item] == "=="
                                 && !(output[item - 1] == output[item + 1]))
-                                || (output[item] == "!="
-                                    && !(output[item - 1] != output[item + 1]))
+                                || (output[item] == "!=" && !(output[item - 1] != output[item + 1]))
                                 || (output[item] == ">="
                                     && !(output[item - 1].parse::<f64>().unwrap()
                                         >= output[item + 1].parse::<f64>().unwrap()))
@@ -962,9 +955,7 @@ pub fn run(
                                 contents[loc2 + 1] = " ".parse().unwrap();
                             } else if contents[loc2 + 2] == "while" {
                                 contents[loc2 + 2] = " ".parse().unwrap();
-                            } else if contents[loc2 + 1] == "else"
-                                || contents[loc2 + 2] == "else"
-                            {
+                            } else if contents[loc2 + 1] == "else" || contents[loc2 + 2] == "else" {
                                 let mut skip = false;
                                 let mut n = 0;
                                 for y in loc2 + 1..contents.len() {
@@ -992,8 +983,7 @@ pub fn run(
                             println!("contents[loc2]: {:?}", contents[loc2]);
                             println!("contents: {:?}", contents);
                         }
-                    }
-                    else {
+                    } else {
                         //function names
                         if x > 2 && contents[x - 2] != "func" {
                             let mut postion = func_names.len();
@@ -1006,14 +996,14 @@ pub fn run(
                             }
                             if postion != func_names.len() {
                                 let mut contetntstr: Vec<String> = Vec::new();
-                                for t in func_code[postion]
-                                    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                for t in
+                                    func_code[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                 {
                                     contetntstr.push(t.to_string());
                                 }
                                 let mut contetntstr1: Vec<String> = Vec::new();
-                                for t in func_par[postion]
-                                    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                for t in
+                                    func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                 {
                                     contetntstr1.push(t.to_string());
                                 }
@@ -1026,17 +1016,19 @@ pub fn run(
                                     func_names.clone(),
                                     func_par.clone(),
                                     func_code.clone(),
-                                    dev, uses.clone(),
+                                    dev,
+                                    uses.clone(),
                                     0,
                                 );
-                                for t in func_par[postion]
-                                    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+                                for t in
+                                    func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                 {
                                     contetntstr1.push(t.to_string());
                                 }
                                 let _output = run(
                                     contetntstr,
-                                    dev, uses.clone(),
+                                    dev,
+                                    uses.clone(),
                                     contetntstr1.clone(),
                                     contetntstr2.clone(),
                                     memory_types.clone(),
@@ -1072,9 +1064,7 @@ pub fn run(
                                     let mut pass_vec: Vec<String> =
                                         vec!["a".to_string(), "(".to_string()];
                                     loop {
-                                        if contents[position] == "\n"
-                                            || contents[position] == ";"
-                                        {
+                                        if contents[position] == "\n" || contents[position] == ";" {
                                             break;
                                         }
                                         pass_vec.push(contents[position].clone().to_string());
@@ -1090,7 +1080,8 @@ pub fn run(
                                         func_names.clone(),
                                         func_par.clone(),
                                         func_code.clone(),
-                                        dev, uses.clone(),
+                                        dev,
+                                        uses.clone(),
                                         0,
                                     )
                                     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1108,7 +1099,7 @@ pub fn run(
                                         func_names.clone(),
                                         func_par.clone(),
                                         func_code.clone(),
-                                        uses.clone()
+                                        uses.clone(),
                                     );
                                     let mut skipz = false;
                                     let mut nigro = 0;
@@ -1139,9 +1130,7 @@ pub fn run(
                                     let mut pass_vec: Vec<String> =
                                         vec!["a".to_string(), "(".to_string()];
                                     loop {
-                                        if contents[position] == "\n"
-                                            || contents[position] == ";"
-                                        {
+                                        if contents[position] == "\n" || contents[position] == ";" {
                                             break;
                                         }
                                         pass_vec.push(contents[position].clone().to_string());
@@ -1157,7 +1146,8 @@ pub fn run(
                                         func_names.clone(),
                                         func_par.clone(),
                                         func_code.clone(),
-                                        dev, uses.clone(),
+                                        dev,
+                                        uses.clone(),
                                         0,
                                     )
                                     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
@@ -1184,7 +1174,8 @@ pub fn run(
 
 pub(crate) fn hard(
     mut contents: Vec<String>,
-    dev: bool, uses: Vec<String>,
+    dev: bool,
+    uses: Vec<String>,
     memory_names: Vec<String>,
     memory_values: Vec<String>,
     memory_types: Vec<String>,
@@ -1230,7 +1221,8 @@ pub(crate) fn hard(
                         func_names.clone(),
                         func_par.clone(),
                         func_code.clone(),
-                        dev, uses.clone(),
+                        dev,
+                        uses.clone(),
                         "".to_string(),
                     );
                     skiperwiper = true;

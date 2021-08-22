@@ -27,7 +27,7 @@ fn main() {
     let mut compile = false;
     let mut hard = false;
     let mut run = false;
-    let uses:Vec<String> = vec!["false".to_string(), "false".to_string()];
+    let uses: Vec<String> = vec!["false".to_string(), "false".to_string()];
     for arg in args {
         if arg == "--dev" {
             dev = true;
@@ -103,7 +103,8 @@ fn main() {
                 let to_parse = lexer::lexer(contents, dev);
                 let _output = run::run(
                     to_parse,
-                    dev, uses.clone(),
+                    dev,
+                    uses.clone(),
                     Vec::new(),
                     Vec::new(),
                     Vec::new(),
@@ -136,7 +137,8 @@ fn main() {
         let to_parse = lexer::lexer(contents, dev);
         let _output = run::run(
             to_parse,
-            dev, uses,
+            dev,
+            uses,
             Vec::new(),
             Vec::new(),
             Vec::new(),
@@ -165,7 +167,8 @@ fn main() {
         if hard {
             contents = run::hard(
                 contents,
-                dev, uses,
+                dev,
+                uses,
                 Vec::new(),
                 Vec::new(),
                 Vec::new(),
