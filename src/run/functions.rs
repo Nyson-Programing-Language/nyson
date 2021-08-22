@@ -11,7 +11,7 @@ extern crate chrono;
 use chrono::prelude::DateTime;
 use chrono::Utc;
 use rustc_serialize::json::Json;
-use sysinfo::SystemExt;
+use sysinfo::{SystemExt, ProcessorExt};
 
 extern crate meval;
 
@@ -650,6 +650,146 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "os.uptime" && uses[0] == "true".to_string() {
+                    use sysinfo::System;
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.uptime().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "os.name" && uses[0] == "true".to_string() {
+                    use sysinfo::System;
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.name().unwrap().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "os.kernel_version" && uses[0] == "true".to_string() {
+                    use sysinfo::System;
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.kernel_version().unwrap().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "os.os_version" && uses[0] == "true".to_string() {
+                    use sysinfo::System;
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.os_version().unwrap().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "os.host_name" && uses[0] == "true".to_string() {
+                    use sysinfo::System;
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.host_name().unwrap().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "os.used_memory" && uses[0] == "true".to_string() {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -739,6 +879,62 @@ pub fn getstring(
                     let mut sys = System::new_all();
                     sys.refresh_all();
                     imput_s.push_str(sys.load_average().one.to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "os.cpu_usage" && uses[0] == "true".to_string() {
+                    use sysinfo::System;
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.global_processor_info().cpu_usage().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                } else if vec[y] == "os.cpu_name" && uses[0] == "true".to_string() {
+                    use sysinfo::System;
+                    let mut sys = System::new_all();
+                    sys.refresh_all();
+                    imput_s.push_str(sys.global_processor_info().name().to_string().as_str());
                     let mut leng = 0;
                     let mut n2 = 0;
                     let mut skip1 = false;
@@ -1714,14 +1910,20 @@ pub fn time_readable(
         0,
     );
     if !getstirng.is_empty() {
-        let time: f64 = getstirng.first().unwrap().parse().unwrap();
-        println!("{}", time);
-        let d = UNIX_EPOCH + Duration::from_millis(time as u64);
-        // Create DateTime from SystemTime
-        let datetime = DateTime::<Utc>::from(d);
-        // Formats the combined date and time with the specified format string.
-        let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
-        timestamp_str
+        let time: f64 = getstirng.get(0).unwrap().parse().unwrap();
+        if getstirng.first().unwrap() == "true" {
+            let d:SystemTime = UNIX_EPOCH + Duration::from_millis(time as u64);
+            // Create DateTime from SystemTime
+            let datetime = DateTime::<Utc>::from(d);
+            // Formats the combined date and time with the specified format string.
+            let timestamp_str = datetime.format(getstirng.get(1).unwrap()).to_string();
+            timestamp_str
+        }
+        else {
+            use humantime::format_duration;
+            let d = Duration::from_millis(time as u64);
+            format_duration(d).to_string()
+        }
     } else {
         let time = time();
         let d = UNIX_EPOCH + Duration::from_millis(time as u64);
@@ -1740,7 +1942,12 @@ pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
             line += 1;
         }
     }
-    (line - run::code_to_add().matches('\n').count() + 1) as i32
+    if line >= run::code_to_add().matches('\n').count() {
+        return (line - run::code_to_add().matches('\n').count() + 1) as i32
+    }
+    else {
+        return (line + 1) as i32
+    }
 }
 
 pub fn request(

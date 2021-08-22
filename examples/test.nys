@@ -1,2 +1,2 @@
-use os;
-log(os);
+use audio;
+audio();

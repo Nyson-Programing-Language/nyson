@@ -1,3 +1,5 @@
+use audio;
+
 log("What do you want to play (file location)");
 dec str play: input();
 log("What do you want to loop the music (y or n)");

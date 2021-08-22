@@ -27,7 +27,7 @@ fn main() {
     let mut compile = false;
     let mut hard = false;
     let mut run = false;
-    let mut uses:Vec<String> = vec!["false".to_string()];
+    let uses:Vec<String> = vec!["false".to_string(), "false".to_string()];
     for arg in args {
         if arg == "--dev" {
             dev = true;
