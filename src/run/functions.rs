@@ -478,6 +478,45 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
+                } else if vec[y] == "numeric" {
+                    imput_s.push_str(
+                        is_number(
+                            y,
+                            vec.to_vec(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
+                            dev,
+                        )
+                            .to_string()
+                            .as_str(),
+                    );
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
                 } else if vec[y] == "input" {
                     imput_s.push_str(input().to_string().as_str());
                     let mut leng = 0;
@@ -911,7 +950,9 @@ pub fn getstring(
                         || vec[y] == "<"
                         || vec[y] == "!"
                         || vec[y] == "|"
-                        || vec[y] == "&")
+                        || vec[y] == "&"
+                        || vec[y] == "true"
+                        || vec[y] == "false")
                 {
                     imput_s.push_str(vec[y].as_str());
                 } else {
@@ -1330,6 +1371,33 @@ pub fn get_contents(
         run::error("Could not open file for reading.".to_string());
         "".to_string()
     }
+}
+
+pub fn is_number(
+    x: usize,
+    contents: Vec<String>,
+    memory_names: Vec<String>,
+    memory_values: Vec<String>,
+    memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
+    dev: bool,
+) -> bool {
+    getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        func_names,
+        func_par,
+        func_code,
+        dev,
+        0,
+    )
+        .first()
+        .unwrap().parse::<f64>().is_ok()
 }
 
 pub fn replace(
