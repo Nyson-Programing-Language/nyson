@@ -1,2 +1,2 @@
-use audio;
-audio();
+dec int age : 10 + 10 * 10;
+log(age)
