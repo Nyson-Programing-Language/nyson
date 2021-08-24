@@ -1,0 +1,6 @@
+if (math(random*2) > 1) {
+    log("Heads");
+}
+else {
+    log("Tails");
+}
