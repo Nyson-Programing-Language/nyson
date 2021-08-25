@@ -562,19 +562,15 @@ pub fn run(
                                 } else {
                                     memory_values.push(number.unwrap().to_string());
                                 }
-                            } else {
-                                if exists != memory_values.len() {
-                                    memory_values[exists] = value.clone();
-                                } else {
-                                    memory_values.push(value.clone());
-                                }
-                            }
-                        } else {
-                            if exists != memory_values.len() {
+                            } else if exists != memory_values.len() {
                                 memory_values[exists] = value.clone();
                             } else {
                                 memory_values.push(value.clone());
                             }
+                        } else if exists != memory_values.len() {
+                            memory_values[exists] = value.clone();
+                        } else {
+                            memory_values.push(value.clone());
                         }
 
                         if types {
