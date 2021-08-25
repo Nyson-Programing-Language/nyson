@@ -442,7 +442,7 @@ pub fn run(
                         let mut position = x + 1;
                         let _square_brackets = 0;
                         let mut exists = memory_names.len();
-                        
+
                         if memory_names.contains(&contents[position + 1]) {
                             for item in 0..memory_names.len() {
                                 if memory_names[item] == contents[position + 1] {
@@ -452,12 +452,16 @@ pub fn run(
                         }
 
                         // get type
-                        if contents[position] == "int" || contents[position] == "str" || contents[position] == "arr" || contents[position] == "grp" || contents[position] == "inf" {
+                        if contents[position] == "int"
+                            || contents[position] == "str"
+                            || contents[position] == "arr"
+                            || contents[position] == "grp"
+                            || contents[position] == "inf"
+                        {
                             if exists != memory_names.len() {
                                 memory_types[exists] = contents[position].to_string();
                                 memory_names[exists] = contents[position + 1].clone();
-                            }
-                            else {
+                            } else {
                                 memory_types.push(contents[position].to_string());
                                 memory_names.push(contents[position + 1].clone());
                             }
@@ -466,8 +470,7 @@ pub fn run(
                             types = true;
                             if exists != memory_names.len() {
                                 memory_types[exists] = "anon".to_string();
-                            }
-                            else {
+                            } else {
                                 memory_types.push(String::from("anon"));
                             }
                         }
@@ -545,8 +548,7 @@ pub fn run(
                                     memory_names[exists] = name.clone();
                                     memory_values[exists] = value_group[d].clone();
                                     memory_types[exists] = "str".parse().unwrap();
-                                }
-                                else {
+                                } else {
                                     memory_names.push(name.clone());
                                     memory_values.push(value_group[d].clone());
                                     memory_types.push("str".parse().unwrap());
@@ -557,23 +559,20 @@ pub fn run(
                             if number.is_ok() {
                                 if exists != memory_values.len() {
                                     memory_values[exists] = number.unwrap().to_string();
-                                }
-                                else {
+                                } else {
                                     memory_values.push(number.unwrap().to_string());
                                 }
                             } else {
                                 if exists != memory_values.len() {
                                     memory_values[exists] = value.clone();
-                                }
-                                else {
+                                } else {
                                     memory_values.push(value.clone());
                                 }
                             }
                         } else {
                             if exists != memory_values.len() {
                                 memory_values[exists] = value.clone();
-                            }
-                            else {
+                            } else {
                                 memory_values.push(value.clone());
                             }
                         }
@@ -581,8 +580,7 @@ pub fn run(
                         if types {
                             if exists != memory_names.len() {
                                 memory_names[exists] = value.clone();
-                            }
-                            else {
+                            } else {
                                 memory_names.push(value.clone());
                             }
                         }
