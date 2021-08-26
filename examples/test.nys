@@ -1,2 +1,5 @@
-use audio;
-audio();
+func(count(number)) {
+    dec int number = number+1;
+    log(number);
+}
+count(0);

@@ -494,6 +494,10 @@ pub fn run(
                         let mut pass_vec: Vec<String> = Vec::new();
                         pass_vec.push("a".to_string());
                         pass_vec.push("(".to_string());
+                        if contents[x+1] == "int" {
+                            pass_vec.push("math".to_string());
+                            pass_vec.push("(".to_string());
+                        }
                         loop {
                             if contents[position] == "\n" || contents[position] == ";" {
                                 break;
