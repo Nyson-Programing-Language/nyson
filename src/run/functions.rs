@@ -305,8 +305,8 @@ pub fn getstring(
                             dev,
                             uses.clone(),
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -345,8 +345,8 @@ pub fn getstring(
                             dev,
                             uses.clone(),
                         )
-                            .to_string()
-                            .as_str(),
+                        .to_string()
+                        .as_str(),
                     );
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -1535,9 +1535,11 @@ pub fn split(
         uses,
         0,
     );
-    let replacer:String = items.last().unwrap().to_string();
+    let replacer: String = items.last().unwrap().to_string();
     items.pop();
-    items.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").replace(&replacer, "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+    items
+        .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+        .replace(&replacer, "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
 }
 
 pub fn split_k(
@@ -1565,12 +1567,20 @@ pub fn split_k(
         uses,
         0,
     );
-    let replacer:String = items.last().unwrap().to_string();
+    let replacer: String = items.last().unwrap().to_string();
     items.pop();
-    let mut replaced:String = "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v".to_string();
+    let mut replaced: String = "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v".to_string();
     replaced.push_str(&*replacer);
     replaced.push_str("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
-    items.join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").replace(&replacer, &replaced).to_string().strip_prefix("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").unwrap().strip_suffix("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v").unwrap().to_string()
+    items
+        .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+        .replace(&replacer, &replaced)
+        .to_string()
+        .strip_prefix("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+        .unwrap()
+        .strip_suffix("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+        .unwrap()
+        .to_string()
 }
 
 pub fn length(
