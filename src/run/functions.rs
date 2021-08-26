@@ -1575,7 +1575,7 @@ pub fn split_k(
     items
         .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
         .replace(&replacer, &replaced)
-        .to_string()
+        
         .strip_prefix("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
         .unwrap()
         .strip_suffix("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
