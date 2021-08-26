@@ -1,5 +1,6 @@
 func(count(number)) {
-    dec int number = number+1;
-    log(number);
+  dec int new_number: number+1;
+  log(new_number);
+  count(count(new_number));
 }
 count(0);
