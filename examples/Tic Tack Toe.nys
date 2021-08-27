@@ -1,0 +1,55 @@
+dec arr places: "1", "2", "3", "4", "5", "6", "7", "8", "9";
+dec str who_first: "x";
+loop(9) {
+    log("
+    "places(0)" | "places(1)" | "places(2)"
+---------
+"places(3)" | "places(4)" | "places(5)"
+---------
+"places(6)" | "places(7)" | "places(8)"
+");
+    log("Player "who_first" pick a space where you want to go")
+    dec int player_pick: input();
+    if(places(player_pick-1) != "x" && places(player_pick-1) != "o") {
+        places(player_pick-1): who_first;
+    }
+    else {
+        log("Sorry that place is already taken");
+        exit();
+    }
+    if(places(0) == places(1) && places(0) == places(2)) {
+        log("player "places(0)" you won!");
+        exit();
+    }
+    if(places(6) == places(7) && places(6) == places(8)) {
+        log("player "places(6)" you won!");
+        exit();
+    }
+    if(places(0) == places(3) && places(0) == places(6)) {
+        log("player "places(0)" you won!");
+        exit();
+    }
+    if(places(2) == places(5) && places(2) == places(8)) {
+        log("player "places(2)" you won!");
+        exit();
+    }
+    if(places(1) == places(4) && places(1) == places(7)) {
+        log("player "places(1)" you won!");
+        exit();
+    }
+    if(places(0) == places(4) && places(0) == places(8)) {
+        log("player "places(0)" you won!");
+        exit();
+    }
+    if(places(2) == places(4) && places(2) == places(6)) {
+        log("player "places(2)" you won!");
+        exit();
+    }
+    if(who_first == "x") {
+        who_first: "o";
+    }
+    else {
+        who_first: "x";
+    }
+}
+log("It was a tie!");

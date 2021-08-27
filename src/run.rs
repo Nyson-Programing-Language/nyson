@@ -441,6 +441,8 @@ pub fn run(
                         let mut types = false;
                         let mut position = x + 1;
                         let _square_brackets = 0;
+                        let mut infer = false;
+                        let mut find_int_str = false;
 
                         // get type
                         if contents[position] == "int" {
@@ -459,13 +461,28 @@ pub fn run(
                             memory_types.push(String::from("grp"));
                             memory_names.push(contents[position + 1].clone());
                             position += 1;
-                        } else if contents[position] == "inf" {
-                            memory_types.push(String::from("inf"));
-                            memory_names.push(contents[position + 1].clone());
-                            position += 1;
                         } else if contents[position] == "anon" {
                             memory_types.push(String::from("anon"));
                             types = true;
+                        } else {
+                            infer = true;
+                        }
+                        if infer == true {
+                            if contents[x+3] == "[" {
+                                memory_types.push(String::from("arr"));
+                                memory_names.push(contents[position + 1].clone());
+                                position += 1;
+                            } else if contents[x+3] == "\""{
+                                memory_types.push(String::from("str"));
+                                memory_names.push(contents[position + 1].clone());
+                                position += 1;
+                            } else if contents[x+3] == "{" {
+                                memory_types.push(String::from("grp"));
+                                memory_names.push(contents[position + 1].clone());
+                                position += 1;
+                            } else {
+                                find_int_str = true
+                            }
                         }
 
                         //more vars
