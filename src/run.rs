@@ -468,15 +468,15 @@ pub fn run(
                             infer = true;
                         }
                         if infer == true {
-                            if contents[x+3] == "[" {
+                            if contents[x + 3] == "[" {
                                 memory_types.push(String::from("arr"));
                                 memory_names.push(contents[position + 1].clone());
                                 position += 1;
-                            } else if contents[x+3] == "\""{
+                            } else if contents[x + 3] == "\"" {
                                 memory_types.push(String::from("str"));
                                 memory_names.push(contents[position + 1].clone());
                                 position += 1;
-                            } else if contents[x+3] == "{" {
+                            } else if contents[x + 3] == "{" {
                                 memory_types.push(String::from("grp"));
                                 memory_names.push(contents[position + 1].clone());
                                 position += 1;
@@ -505,7 +505,7 @@ pub fn run(
                         pass_vec.push("a".to_string());
                         pass_vec.push("(".to_string());
 
-                        if memory_types[memory_types.len()-1] == "int"{
+                        if memory_types[memory_types.len() - 1] == "int" {
                             pass_vec.push("math".to_string());
                             pass_vec.push("(".to_string())
                         }
@@ -516,7 +516,7 @@ pub fn run(
                             pass_vec.push(contents[position].clone().to_string());
                             position += 1;
                         }
-                        if memory_types[memory_types.len()-1] == "int"{
+                        if memory_types[memory_types.len() - 1] == "int" {
                             pass_vec.push(")".to_string());
                         }
                         pass_vec.push(")".to_string());
@@ -1175,8 +1175,6 @@ pub fn run(
                                         uses.clone(),
                                         0,
                                     )
-
-
                                     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                     .to_string();
                                     let mut new_value = memory_values[postion]
