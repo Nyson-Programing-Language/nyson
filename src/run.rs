@@ -441,47 +441,37 @@ pub fn run(
                         let mut types = false;
                         let mut position = x + 1;
                         let _square_brackets = 0;
-                        let mut infer = false;
-                        let mut find_int_str = false;
+                        let mut exists = memory_names.len();
+
+                        if memory_names.contains(&contents[position + 1]) {
+                            for item in 0..memory_names.len() {
+                                if memory_names[item] == contents[position + 1] {
+                                    exists = item;
+                                }
+                            }
+                        }
 
                         // get type
-                        if contents[position] == "int" {
-                            memory_types.push(String::from("int"));
-                            memory_names.push(contents[position + 1].clone());
-                            position += 1;
-                        } else if contents[position] == "str" {
-                            memory_types.push(String::from("str"));
-                            memory_names.push(contents[position + 1].clone());
-                            position += 1;
-                        } else if contents[position] == "arr" {
-                            memory_types.push(String::from("arr"));
-                            memory_names.push(contents[position + 1].clone());
-                            position += 1;
-                        } else if contents[position] == "grp" {
-                            memory_types.push(String::from("grp"));
-                            memory_names.push(contents[position + 1].clone());
+                        if contents[position] == "int"
+                            || contents[position] == "str"
+                            || contents[position] == "arr"
+                            || contents[position] == "grp"
+                            || contents[position] == "inf"
+                        {
+                            if exists != memory_names.len() {
+                                memory_types[exists] = contents[position].to_string();
+                                memory_names[exists] = contents[position + 1].clone();
+                            } else {
+                                memory_types.push(contents[position].to_string());
+                                memory_names.push(contents[position + 1].clone());
+                            }
                             position += 1;
                         } else if contents[position] == "anon" {
-                            memory_types.push(String::from("anon"));
                             types = true;
-                        } else {
-                            infer = true;
-                        }
-                        if infer == true {
-                            if contents[x + 3] == "[" {
-                                memory_types.push(String::from("arr"));
-                                memory_names.push(contents[position + 1].clone());
-                                position += 1;
-                            } else if contents[x + 3] == "\"" {
-                                memory_types.push(String::from("str"));
-                                memory_names.push(contents[position + 1].clone());
-                                position += 1;
-                            } else if contents[x + 3] == "{" {
-                                memory_types.push(String::from("grp"));
-                                memory_names.push(contents[position + 1].clone());
-                                position += 1;
+                            if exists != memory_names.len() {
+                                memory_types[exists] = "anon".to_string();
                             } else {
-                                find_int_str = true
+                                memory_types.push(String::from("anon"));
                             }
                         }
 
@@ -504,10 +494,9 @@ pub fn run(
                         let mut pass_vec: Vec<String> = Vec::new();
                         pass_vec.push("a".to_string());
                         pass_vec.push("(".to_string());
-
-                        if memory_types[memory_types.len() - 1] == "int" {
+                        if contents[x + 1] == "int" {
                             pass_vec.push("math".to_string());
-                            pass_vec.push("(".to_string())
+                            pass_vec.push("(".to_string());
                         }
                         loop {
                             if contents[position] == "\n" || contents[position] == ";" {
@@ -515,9 +504,6 @@ pub fn run(
                             }
                             pass_vec.push(contents[position].clone().to_string());
                             position += 1;
-                        }
-                        if memory_types[memory_types.len() - 1] == "int" {
-                            pass_vec.push(")".to_string());
                         }
                         pass_vec.push(")".to_string());
                         let value = functions::getstring(
@@ -562,23 +548,41 @@ pub fn run(
                                     }
                                 }
                                 name.push_str(&*group_memory[location]);
-                                memory_names.push(name.clone());
-                                memory_values.push(value_group[d].clone());
-                                memory_types.push("str".parse().unwrap());
+                                if exists != memory_names.len() {
+                                    memory_names[exists] = name.clone();
+                                    memory_values[exists] = value_group[d].clone();
+                                    memory_types[exists] = "str".parse().unwrap();
+                                } else {
+                                    memory_names.push(name.clone());
+                                    memory_values.push(value_group[d].clone());
+                                    memory_types.push("str".parse().unwrap());
+                                }
                             }
                         } else if memory_types[memory_types.len() - 1] == "int" {
                             let number = meval::eval_str(value.clone().as_str());
                             if number.is_ok() {
-                                memory_values.push(number.unwrap().to_string());
+                                if exists != memory_values.len() {
+                                    memory_values[exists] = number.unwrap().to_string();
+                                } else {
+                                    memory_values.push(number.unwrap().to_string());
+                                }
+                            } else if exists != memory_values.len() {
+                                memory_values[exists] = value.clone();
                             } else {
                                 memory_values.push(value.clone());
                             }
+                        } else if exists != memory_values.len() {
+                            memory_values[exists] = value.clone();
                         } else {
                             memory_values.push(value.clone());
                         }
 
                         if types {
-                            memory_names.push(value.clone());
+                            if exists != memory_names.len() {
+                                memory_names[exists] = value.clone();
+                            } else {
+                                memory_names.push(value.clone());
+                            }
                         }
                         if dev {
                             println!("memory_names: {:?}", memory_names);
