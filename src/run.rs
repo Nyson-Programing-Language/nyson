@@ -228,7 +228,7 @@ pub fn run(
                             let mut new_vec = Vec::new();
                             for t in 0..contents.clone().len() {
                                 if t == loc2 {
-                                    for _q in 1..number_of_times.round() as i32 {
+                                    for _q in 1..number_of_times.round() as i64 {
                                         for y in vec.clone() {
                                             new_vec.push(y);
                                         }

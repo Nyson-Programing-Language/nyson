@@ -15,7 +15,7 @@ log("
 `://-`      ..`  .....   .------.`   
 `::.        ..`  `....   .------.`   Uptime: "timeh(" ", math(os.uptime()*1000))"
 `.          ..`   `...   .------.`   
-                        .------.`    Ram: "math(os.used_memory()/1000)"MB / "math(os.total_memory()/1000)"MB
+                        .------.`    Ram: "round(math(os.used_memory()/1000))"MB / "round(math(os.total_memory()/1000))"MB
                 ````````.------.`    
               `.---------------.`    Swap: "math(os.used_swap()/1000)"MB / "math(os.total_swap()/1000)"MB
             `.-----------------.`    

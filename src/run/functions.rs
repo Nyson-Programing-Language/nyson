@@ -57,7 +57,7 @@ pub fn getstring(
     func_code: Vec<String>,
     dev: bool,
     uses: Vec<String>,
-    int: i32,
+    int: i64,
 ) -> Vec<String> {
     if dev {
         println!("memory_names: {:?}", memory_names);
@@ -132,6 +132,9 @@ pub fn getstring(
     let mut skips = 0;
     let mut parent = 0;
     let mut output_array = Vec::new();
+    if dev {
+        println!("vec: {:?}", vec);
+    }
     for y in 0..vec.len() {
         if skips == 0 {
             if !skip {
@@ -490,7 +493,7 @@ pub fn getstring(
                     }
                     skips = leng;
                 } else if vec[y] == "random" {
-                    imput_s.push_str(rand::thread_rng().gen::<f32>().to_string().as_str());
+                    imput_s.push_str(rand::thread_rng().gen::<f64>().to_string().as_str());
                 } else if vec[y] == "request" {
                     imput_s.push_str(
                         request(
@@ -1379,6 +1382,9 @@ pub fn getstring(
     if imput_s.trim() != "" {
         output_array.push(imput_s.trim().to_string());
     }
+    if dev {
+        println!("output_array: {:?}", output_array);
+    }
     output_array
 }
 
@@ -1491,7 +1497,7 @@ pub fn round(
     func_code: Vec<String>,
     dev: bool,
     uses: Vec<String>,
-) -> i32 {
+) -> i64 {
     getstring(
         x,
         contents,
@@ -1505,9 +1511,9 @@ pub fn round(
         uses,
         0,
     )[0]
-    .parse::<f32>()
+    .parse::<f64>()
     .unwrap()
-    .round() as i32
+    .round() as i64
 }
 
 pub fn split(
@@ -1593,7 +1599,7 @@ pub fn length(
     func_code: Vec<String>,
     dev: bool,
     uses: Vec<String>,
-) -> i32 {
+) -> i64 {
     getstring(
         x,
         contents,
@@ -1609,7 +1615,7 @@ pub fn length(
     )
     .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
     .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-    .count() as i32
+    .count() as i64
 }
 
 pub fn first(
@@ -2135,7 +2141,7 @@ pub fn time_readable(
     }
 }
 
-pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
+pub fn get_line(x: usize, contents: Vec<String>) -> i64 {
     let mut line = 1;
     for n in 0..x {
         if contents[n] == "\n" {
@@ -2143,9 +2149,9 @@ pub fn get_line(x: usize, contents: Vec<String>) -> i32 {
         }
     }
     if line >= run::code_to_add().matches('\n').count() {
-        return (line - run::code_to_add().matches('\n').count() + 1) as i32;
+        return (line - run::code_to_add().matches('\n').count() + 1) as i64;
     } else {
-        (line + 1) as i32
+        (line + 1) as i64
     }
 }
 
