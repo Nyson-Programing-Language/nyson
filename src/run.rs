@@ -506,6 +506,9 @@ pub fn run(
                             position += 1;
                         }
                         pass_vec.push(")".to_string());
+                        if contents[x + 1] == "int" {
+                            pass_vec.push(")".to_string());
+                        }
                         let value = functions::getstring(
                             0,
                             pass_vec.clone(),
@@ -1031,11 +1034,7 @@ pub fn run(
                                     contetntstr.push(t.to_string());
                                 }
                                 let mut contetntstr1: Vec<String> = Vec::new();
-                                for t in
-                                    func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-                                {
-                                    contetntstr1.push(t.to_string());
-                                }
+                                let mut contetntstr3: Vec<String> = Vec::new();
                                 let contetntstr2: Vec<String> = functions::getstring(
                                     x,
                                     contents.clone(),
@@ -1053,6 +1052,12 @@ pub fn run(
                                     func_par[postion].split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                 {
                                     contetntstr1.push(t.to_string());
+                                    contetntstr3.push("str".to_string());
+                                }
+                                if dev {
+                                    println!("contetntstr1: {:?}", contetntstr1);
+                                    println!("contetntstr2: {:?}", contetntstr2);
+                                    println!("contetntstr3: {:?}", contetntstr3);
                                 }
                                 let _output = run(
                                     contetntstr,
@@ -1060,7 +1065,7 @@ pub fn run(
                                     uses.clone(),
                                     contetntstr1.clone(),
                                     contetntstr2.clone(),
-                                    memory_types.clone(),
+                                    contetntstr3.clone(),
                                     func_names.clone(),
                                     func_par.clone(),
                                     func_code.clone(),

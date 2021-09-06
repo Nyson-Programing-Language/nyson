@@ -20,7 +20,7 @@ pub fn no_extra_whitespace(mut input: Vec<String>, dev: bool) -> Vec<String> {
         if (input[i] == "\"" || input[i] == "\'" || input[i] == r"\`") && input[i - 1] != "\\" {
             quotes += 1;
         }
-        if quotes % 2 == 0 && input[i] == " " {
+        if quotes % 2 == 0 && input[i].trim() == "" {
             delete.push(i);
         }
     }
