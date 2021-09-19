@@ -1,7 +1,6 @@
 mod lexer;
 mod run;
 
-use std::env;
 use std::fs;
 use std::fs::File;
 use std::io::Write;
@@ -9,6 +8,7 @@ use std::process::Command;
 extern crate pbr;
 extern crate serde_json;
 use std::collections::HashMap;
+use clap::*;
 
 use git2::Repository;
 use pbr::ProgressBar;
@@ -21,70 +21,51 @@ fn main() {
             run::error("Could not create dir.".to_string());
         }
     }
-    let maybe_file = env::args().nth(1);
-    let args = env::args();
-    let mut dev = false;
-    let mut compile = false;
-    let mut hard = false;
-    let mut run = false;
     let uses: Vec<String> = vec!["false".to_string(), "false".to_string()];
-    for arg in args {
-        if arg == "--dev" {
-            dev = true;
-        } else if arg == "--compile" {
-            compile = true;
-        } else if arg == "--hard" || arg == "-h" {
-            hard = true;
-        } else if arg == "run" {
-            run = true;
-        } else if arg == "--install" || arg == "-i" {
-            if Path::new(".gitignore").exists() {
-                let mut cont = fs::read_to_string(".gitignore").unwrap();
-                cont.push_str("\n\n# Nyson\ndep");
-                let _r = set_cont(".gitignore".to_string(), cont);
-            } else {
-                let r = set_cont(".gitignore".to_string(), "# Nyson\ndep".to_string());
-                if r.is_err() {
-                    run::error("Could not set file contents.".to_string());
-                }
-            }
-            make_path("".to_string());
-            std::process::exit(1);
-        } else if arg == "--init" {
-            let r = set_cont("Nyson.json".to_string(), "{\n\t\"name\": \"My Program\",\n\t\"dep\": {\n\t\t\"Example\": \"https://github.com/Nyson-Programing-Language/example-dep.git\"\n\t}\n}".to_string());
-            if r.is_err() {
-                run::error("Could not set file contents.".to_string());
-            }
-            let r = fs::create_dir("src");
-            if r.is_err() {
-                run::error("Could not create dir.".to_string());
-            }
-            let r = set_cont(
-                "src/main.nys".to_string(),
-                "log(\"Hello World\");".to_string(),
-            );
-            if r.is_err() {
-                run::error("Could not set file contents.".to_string());
-            }
-            std::process::exit(1);
-        } else if arg == "--help" || arg == "-h" {
-            println!("                            HELP                            ");
-            println!("-------------------------------------------------------------");
-            println!("| --help      - shows you help                              |");
-            println!("| --dev       - shows you some dev stuff so if you make a   |");
-            println!("|              issue on github we will need you to do this  |");
-            println!("| --compile   - compiles the code into a binary or exe      |");
-            println!("| --hard      - (need -compile b4) but compiles with imp aka|");
-            println!("|              apps offline if you use a imp from the web   |");
-            println!("| --init      - makes the init files                        |");
-            println!("| --install   - install all the dependencies                |");
-            println!("| run        - runs the main.nys                            |");
-            println!("-------------------------------------------------------------");
-            std::process::exit(1);
-        }
-    }
-    let file = if let Some(f) = maybe_file {
-        f
+    let matches = App::new("Nyson")
+        .version("0.19")
+        .about("a programing language made in rust")
+        .arg(Arg::with_name("INPUT")
+            .help("the file to run")
+            .required(false)
+            .index(1))
+        .arg(Arg::with_name("dev")
+            .short("d")
+            .long("dev")
+            .help("Gives you dev debug tools")
+            .takes_value(false))
+        .arg(Arg::with_name("compile")
+            .short("c")
+            .long("compile")
+            .help("Compiles your program")
+            .takes_value(false))
+        .arg(Arg::with_name("hard")
+            .short("h")
+            .long("hard")
+            .help("compiles the language to offline mode")
+            .takes_value(false))
+        .arg(Arg::with_name("run")
+            .short("r")
+            .long("run")
+            .help("Runs the program")
+            .takes_value(false))
+        .arg(Arg::with_name("install")
+            .short("i")
+            .long("install")
+            .help("installs all the dependencies")
+            .takes_value(false))
+        .arg(Arg::with_name("init")
+            .long("init")
+            .help("makes a new project")
+            .takes_value(false))
+        .get_matches();
+    let mut compile = matches.is_present("compile");
+    let mut hard = matches.is_present("hard");
+    let mut run = matches.is_present("run");
+    let mut dev = matches.is_present("dev");
+    let mut file:String = String::new();
+    if matches.is_present("INPUT") {
+        file = matches.value_of("INPUT").unwrap().to_string();
     } else {
         loop {
             println!(">> (type quit to quit)");

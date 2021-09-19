@@ -18,4 +18,5 @@ rustc-serialize = "0.3.24"
 openssl = { version = "0.10", features = ["vendored"] }
 sysinfo = "0.20.0"
 humantime = "2.1.0"
+clap = "2.33.3"
 
