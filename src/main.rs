@@ -64,7 +64,7 @@ fn main() {
     let mut run = matches.is_present("run");
     let mut dev = matches.is_present("dev");
     let mut file:String = String::new();
-    if matches.is_present("INPUT") || run {
+    if matches.is_present("INPUT") {
         file = matches.value_of("INPUT").unwrap().to_string();
     } else {
         loop {
