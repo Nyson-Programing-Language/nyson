@@ -7,8 +7,8 @@ use std::io::Write;
 use std::process::Command;
 extern crate pbr;
 extern crate serde_json;
-use std::collections::HashMap;
 use clap::*;
+use std::collections::HashMap;
 
 use git2::Repository;
 use pbr::ProgressBar;
@@ -25,45 +25,59 @@ fn main() {
     let matches = App::new("Nyson")
         .version("0.19")
         .about("a programing language made in rust")
-        .arg(Arg::with_name("INPUT")
-            .help("the file to run")
-            .required(false)
-            .index(1))
-        .arg(Arg::with_name("dev")
-            .short("d")
-            .long("dev")
-            .help("Gives you dev debug tools")
-            .takes_value(false))
-        .arg(Arg::with_name("compile")
-            .short("c")
-            .long("compile")
-            .help("Compiles your program")
-            .takes_value(false))
-        .arg(Arg::with_name("hard")
-            .short("h")
-            .long("hard")
-            .help("compiles the language to offline mode")
-            .takes_value(false))
-        .arg(Arg::with_name("run")
-            .short("r")
-            .long("run")
-            .help("Runs the program")
-            .takes_value(false))
-        .arg(Arg::with_name("install")
-            .short("i")
-            .long("install")
-            .help("installs all the dependencies")
-            .takes_value(false))
-        .arg(Arg::with_name("init")
-            .long("init")
-            .help("makes a new project")
-            .takes_value(false))
+        .arg(
+            Arg::with_name("INPUT")
+                .help("the file to run")
+                .required(false)
+                .index(1),
+        )
+        .arg(
+            Arg::with_name("dev")
+                .short("d")
+                .long("dev")
+                .help("Gives you dev debug tools")
+                .takes_value(false),
+        )
+        .arg(
+            Arg::with_name("compile")
+                .short("c")
+                .long("compile")
+                .help("Compiles your program")
+                .takes_value(false),
+        )
+        .arg(
+            Arg::with_name("hard")
+                .short("h")
+                .long("hard")
+                .help("compiles the language to offline mode")
+                .takes_value(false),
+        )
+        .arg(
+            Arg::with_name("run")
+                .short("r")
+                .long("run")
+                .help("Runs the program")
+                .takes_value(false),
+        )
+        .arg(
+            Arg::with_name("install")
+                .short("i")
+                .long("install")
+                .help("installs all the dependencies")
+                .takes_value(false),
+        )
+        .arg(
+            Arg::with_name("init")
+                .long("init")
+                .help("makes a new project")
+                .takes_value(false),
+        )
         .get_matches();
     let mut compile = matches.is_present("compile");
     let mut hard = matches.is_present("hard");
     let mut run = matches.is_present("run");
     let mut dev = matches.is_present("dev");
-    let mut file:String = String::new();
+    let mut file: String = String::new();
     if matches.is_present("INPUT") {
         file = matches.value_of("INPUT").unwrap().to_string();
     } else {
