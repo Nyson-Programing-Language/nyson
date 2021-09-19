@@ -20,7 +20,7 @@ https://user-images.githubusercontent.com/29708070/128087291-a6e4f541-d84f-4b28-
 ##### AMTitan: https://github.com/AMTitan [![wakatime](https://wakatime.com/badge/github/AMTitan/nyson-programming-language.svg)](https://wakatime.com/badge/github/AMTitan/nyson-programming-language)
 
 <a href="https://github.com/Nyson-Programing-Language/nyson/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Nyson-Programing-Language/nyson" />
+  <img src="https://contrib.rocks/image?repo=Nyson-Programing-Language/nyson"  alt="contributors"/>
 </a>
 
 ## Stargazers (if you want to see your self star the repo and refresh the page)
