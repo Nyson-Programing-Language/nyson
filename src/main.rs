@@ -73,10 +73,10 @@ fn main() {
                 .takes_value(false),
         )
         .get_matches();
-    let mut compile = matches.is_present("compile");
-    let mut hard = matches.is_present("hard");
-    let mut run = matches.is_present("run");
-    let mut dev = matches.is_present("dev");
+    let compile = matches.is_present("compile");
+    let hard = matches.is_present("hard");
+    let run = matches.is_present("run");
+    let dev = matches.is_present("dev");
     let mut file: String = String::new();
     if matches.is_present("INPUT") {
         file = matches.value_of("INPUT").unwrap().to_string();
