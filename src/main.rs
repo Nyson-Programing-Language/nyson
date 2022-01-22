@@ -1,6 +1,7 @@
 mod lexer;
 mod run;
 
+use std::process::Stdio;
 use std::fs;
 use std::fs::File;
 use std::io::Write;
@@ -316,4 +317,17 @@ fn make_path(path: String) {
         new_path.push_str("dep/");
     }
     loop_throught_dir(new_path.as_ref());
+}
+
+fn run_code(input:String) -> std::io::Result<()> {
+    let mut nyson_rs = std::env::temp_dir();
+    nyson_rs.push("nyson.rs");
+    let mut file = File::create(nyson_rs.to_str().unwrap())?;
+    file.write_all(input.as_bytes())?;
+    let _ = Command::new("rustc").arg(nyson_rs.to_str().unwrap()).output().expect("command failed to start");
+    fs::remove_file(nyson_rs.to_str().unwrap())?;
+    nyson_rs.pop();
+    nyson_rs.push("nyson*");
+    fs::rename(nyson_rs.to_str().unwrap(), "./");
+    Ok(())
 }
