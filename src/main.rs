@@ -5,7 +5,7 @@ use std::fs;
 use std::fs::File;
 use std::io::Write;
 use std::process::Command;
-use std::process::Stdio;
+
 extern crate pbr;
 extern crate serde_json;
 use clap::*;
@@ -75,7 +75,7 @@ fn main() {
         )
         .get_matches();
     let compile = matches.is_present("compile");
-    let hard = matches.is_present("hard");
+    let _hard = matches.is_present("hard");
     let run = matches.is_present("run");
     let dev = matches.is_present("dev");
     let mut file: String = String::new();

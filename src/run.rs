@@ -2,7 +2,7 @@ mod functions;
 use crate::lexer;
 use std::env;
 use std::process::Command;
-use std::{thread, time};
+use std::{thread};
 
 extern crate chrono;
 extern crate meval;
@@ -131,7 +131,7 @@ pub fn run(
                         let func_par_save = func_par.clone();
                         let func_code_save = func_code.clone();
                         let uses_save = uses.clone();
-                        let handle = thread::spawn(move || {
+                        let _handle = thread::spawn(move || {
                             let stringreturn = functions::getstring(
                                 x,
                                 contents_save.clone(),
@@ -149,8 +149,8 @@ pub fn run(
                             .unwrap()
                             .to_string();
                             if env::consts::OS == "linux" {
-                                let mut vecs = stringreturn.replace("\n", " ");
-                                vecs = vecs.replace("\t", " ");
+                                let mut vecs = stringreturn.replace('\n', " ");
+                                vecs = vecs.replace('\t', " ");
                                 let endvec: Vec<&str> = vecs.split(' ').collect();
                                 Command::new("cvlc")
                                     .args(endvec)
@@ -173,8 +173,8 @@ pub fn run(
                                     .output()
                                     .expect("failed to execute process");
                             } else if env::consts::OS == "macos" {
-                                let mut vecs = stringreturn.replace("\n", " ");
-                                vecs = vecs.replace("\t", " ");
+                                let mut vecs = stringreturn.replace('\n', " ");
+                                vecs = vecs.replace('\t', " ");
                                 let mut endvec: Vec<&str> = vec!["-I", "rc"];
                                 for q in vecs.split(' ') {
                                     endvec.push(q);
@@ -920,8 +920,8 @@ pub fn run(
                                 output[item - 1] = "".to_string();
                                 output[item + 1] = "".to_string();
                             } else if (output[item] == "=="
-                                && !(output[item - 1] == output[item + 1]))
-                                || (output[item] == "!=" && !(output[item - 1] != output[item + 1]))
+                                && output[item - 1] != output[item + 1])
+                                || (output[item] == "!=" && output[item - 1] == output[item + 1])
                                 || (output[item] == ">="
                                     && !(output[item - 1].parse::<f64>().unwrap()
                                         >= output[item + 1].parse::<f64>().unwrap()))

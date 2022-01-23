@@ -1,7 +1,7 @@
 pub fn lexer(contents: String, dev: bool) -> Vec<String> {
     let contents_literal = split(contents);
     let mut outputs: Vec<String> = Vec::new();
-    for x in contents_literal.clone() {
+    for x in contents_literal {
         outputs.push(x);
     }
     outputs.remove(0);

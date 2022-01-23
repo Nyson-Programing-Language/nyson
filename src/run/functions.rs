@@ -1459,8 +1459,8 @@ pub fn exec(
     }
     let string = string.first().unwrap().to_string();
     let stringreturn = string;
-    let mut vecs = stringreturn.replace("\n", " ");
-    vecs = vecs.replace("\t", " ");
+    let mut vecs = stringreturn.replace('\n', " ");
+    vecs = vecs.replace('\t', " ");
     if env::consts::OS == "windows" {
         let endvec: Vec<&str> = vec!["/C", &stringreturn];
         if dev {
