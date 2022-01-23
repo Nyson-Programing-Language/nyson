@@ -65,31 +65,39 @@ pub fn run(
 
                 if quotes % 2 == 0 && squigle == 0 {
                     if "log" == contents[x].as_str() {
-                        returns = format!("{}{}", returns, functions::log(
-                            x,
-                            contents.clone(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            memory_types.clone(),
-                            func_names.clone(),
-                            func_par.clone(),
-                            func_code.clone(),
-                            dev,
-                            uses.clone(),
-                        ));
+                        returns = format!(
+                            "{}{}",
+                            returns,
+                            functions::log(
+                                x,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                                uses.clone(),
+                            )
+                        );
                     } else if "ret" == contents[x].as_str() {
-                        returns = format!("{}return {};", returns, functions::log(
-                            x,
-                            contents.clone(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            memory_types.clone(),
-                            func_names.clone(),
-                            func_par.clone(),
-                            func_code.clone(),
-                            dev,
-                            uses.clone(),
-                        ));
+                        returns = format!(
+                            "{}return {};",
+                            returns,
+                            functions::log(
+                                x,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                                uses.clone(),
+                            )
+                        );
                     } else if "use" == contents[x].as_str() {
                         if contents[x + 1].as_str() == "os" {
                             uses[0] = "true".to_string();
@@ -219,14 +227,22 @@ pub fn run(
                                 }
                             }
                             vec.remove(0);
-                            returns = format!("{}for _ in 0..{}{{{}}};", number_of_times, returns, run(vec,dev,
-                                uses.clone(),
-                                Vec::new(),
-                                Vec::new(),
-                                Vec::new(),
-                                Vec::new(),
-                                Vec::new(),
-                                Vec::new(),));
+                            returns = format!(
+                                "{}for _ in 0..{}{{{}}};",
+                                number_of_times,
+                                returns,
+                                run(
+                                    vec,
+                                    dev,
+                                    uses.clone(),
+                                    Vec::new(),
+                                    Vec::new(),
+                                    Vec::new(),
+                                    Vec::new(),
+                                    Vec::new(),
+                                    Vec::new(),
+                                )
+                            );
                         }
                     } else if "while" == contents[x].as_str() {
                         readfrom = x;
@@ -253,14 +269,21 @@ pub fn run(
                                 }
                             }
                         }
-                        returns = format!("{}while {{{}}}", returns, run(vec,dev,
-                            uses.clone(),
-                            Vec::new(),
-                            Vec::new(),
-                            Vec::new(),
-                            Vec::new(),
-                            Vec::new(),
-                            Vec::new(),));
+                        returns = format!(
+                            "{}while {{{}}}",
+                            returns,
+                            run(
+                                vec,
+                                dev,
+                                uses.clone(),
+                                Vec::new(),
+                                Vec::new(),
+                                Vec::new(),
+                                Vec::new(),
+                                Vec::new(),
+                                Vec::new(),
+                            )
+                        );
                     } else if "sleep" == contents[x].as_str() {
                         let number_of_times = functions::math(
                             x,
@@ -272,7 +295,10 @@ pub fn run(
                             func_code.clone(),
                             uses.clone(),
                         );
-                        returns = format!("{}thread::sleep(time::Duration::from_millis({}));", returns, number_of_times as u64);
+                        returns = format!(
+                            "{}thread::sleep(time::Duration::from_millis({}));",
+                            returns, number_of_times as u64
+                        );
                     } else if "exec" == contents[x].as_str() {
                         functions::exec(
                             x,

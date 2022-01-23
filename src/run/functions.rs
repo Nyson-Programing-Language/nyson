@@ -233,15 +233,15 @@ pub fn getstring(
                     }
                     skips = leng;
                     if leng == 2 {
-                        imput_s.push_str(
-                            "env::args()"
-                        );
+                        imput_s.push_str("env::args()");
                     } else {
                         imput_s.push_str(
-                            format!("env::args()
+                            format!(
+                                "env::args()
                                 .nth({} as usize)
                                 .unwrap()
-                                .as_str()", math(
+                                .as_str()",
+                                math(
                                     y,
                                     vec.to_vec(),
                                     memory_names.clone(),
@@ -250,7 +250,9 @@ pub fn getstring(
                                     func_par.clone(),
                                     func_code.clone(),
                                     uses.clone(),
-                                )).as_str(),
+                                )
+                            )
+                            .as_str(),
                         );
                     }
                 } else if vec[y] == "round" {
@@ -1497,19 +1499,22 @@ pub fn round(
     dev: bool,
     uses: Vec<String>,
 ) -> String {
-    format!("{}.parse::<f64>().unwrap().round() as i64", getstring(
-        x,
-        contents,
-        memory_names,
-        memory_values,
-        memory_types,
-        func_names,
-        func_par,
-        func_code,
-        dev,
-        uses,
-        0,
-    )[0])
+    format!(
+        "{}.parse::<f64>().unwrap().round() as i64",
+        getstring(
+            x,
+            contents,
+            memory_names,
+            memory_values,
+            memory_types,
+            func_names,
+            func_par,
+            func_code,
+            dev,
+            uses,
+            0,
+        )[0]
+    )
 }
 
 pub fn split(
@@ -1584,19 +1589,24 @@ pub fn length(
     dev: bool,
     uses: Vec<String>,
 ) -> String {
-    format!("{}.count()", getstring(
-        x,
-        contents,
-        memory_names,
-        memory_values,
-        memory_types,
-        func_names,
-        func_par,
-        func_code,
-        dev,
-        uses,
-        0,
-    ).first().unwrap())
+    format!(
+        "{}.count()",
+        getstring(
+            x,
+            contents,
+            memory_names,
+            memory_values,
+            memory_types,
+            func_names,
+            func_par,
+            func_code,
+            dev,
+            uses,
+            0,
+        )
+        .first()
+        .unwrap()
+    )
 }
 
 pub fn first(
@@ -1611,19 +1621,24 @@ pub fn first(
     dev: bool,
     uses: Vec<String>,
 ) -> String {
-    format!("{}.first().unwrap()", getstring(
-        x,
-        contents,
-        memory_names,
-        memory_values,
-        memory_types,
-        func_names,
-        func_par,
-        func_code,
-        dev,
-        uses,
-        0,
-    ).first().unwrap())
+    format!(
+        "{}.first().unwrap()",
+        getstring(
+            x,
+            contents,
+            memory_names,
+            memory_values,
+            memory_types,
+            func_names,
+            func_par,
+            func_code,
+            dev,
+            uses,
+            0,
+        )
+        .first()
+        .unwrap()
+    )
 }
 
 pub fn last(
@@ -1638,19 +1653,24 @@ pub fn last(
     dev: bool,
     uses: Vec<String>,
 ) -> String {
-    format!("{}.last().unwrap()", getstring(
-        x,
-        contents,
-        memory_names,
-        memory_values,
-        memory_types,
-        func_names,
-        func_par,
-        func_code,
-        dev,
-        uses,
-        0,
-    ).first().unwrap())
+    format!(
+        "{}.last().unwrap()",
+        getstring(
+            x,
+            contents,
+            memory_names,
+            memory_values,
+            memory_types,
+            func_names,
+            func_par,
+            func_code,
+            dev,
+            uses,
+            0,
+        )
+        .first()
+        .unwrap()
+    )
 }
 
 pub fn set_contents(
@@ -1744,21 +1764,24 @@ pub fn is_number(
     dev: bool,
     uses: Vec<String>,
 ) -> String {
-    format!("{}.parse::<f64>().is_ok()", getstring(
-        x,
-        contents,
-        memory_names,
-        memory_values,
-        memory_types,
-        func_names,
-        func_par,
-        func_code,
-        dev,
-        uses,
-        0,
+    format!(
+        "{}.parse::<f64>().is_ok()",
+        getstring(
+            x,
+            contents,
+            memory_names,
+            memory_values,
+            memory_types,
+            func_names,
+            func_par,
+            func_code,
+            dev,
+            uses,
+            0,
+        )
+        .first()
+        .unwrap()
     )
-    .first()
-    .unwrap())
 }
 
 pub fn replace(
