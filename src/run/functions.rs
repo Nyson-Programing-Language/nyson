@@ -26,7 +26,7 @@ pub fn log(
     func_code: Vec<String>,
     dev: bool,
     uses: Vec<String>,
-) {
+) -> String {
     let string = getstring(
         x,
         contents,
@@ -43,7 +43,7 @@ pub fn log(
     .first()
     .unwrap()
     .to_string();
-    println!("{}", string);
+    format!("println!(\"{{}}\", {});", string)
 }
 
 pub fn getstring(
@@ -146,6 +146,7 @@ pub fn getstring(
                     imput_s = "".to_string();
                 } else if y < 1 {
                     if vec[y] == "\"" || vec[y] == "\'" || vec[y] == r"\`" {
+                        imput_s.push_str(&vec[y]);
                         n += 1;
                         continues = false;
                     }
@@ -153,6 +154,7 @@ pub fn getstring(
                     && vec[y - 1] != "\\"
                 {
                     n += 1;
+                    imput_s.push_str(&vec[y]);
                     continues = false;
                 } else if y + 1 < vec.len()
                     && (vec[y + 1] == "\"" || vec[y + 1] == "\'" || vec[y + 1] == r"\`")
@@ -232,15 +234,14 @@ pub fn getstring(
                     skips = leng;
                     if leng == 2 {
                         imput_s.push_str(
-                            &(env::args()
-                                .collect::<Vec<String>>()
-                                .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-                                .to_owned())[..],
+                            "env::args()"
                         );
                     } else {
                         imput_s.push_str(
-                            env::args()
-                                .nth(math(
+                            format!("env::args()
+                                .nth({} as usize)
+                                .unwrap()
+                                .as_str()", math(
                                     y,
                                     vec.to_vec(),
                                     memory_names.clone(),
@@ -249,9 +250,7 @@ pub fn getstring(
                                     func_par.clone(),
                                     func_code.clone(),
                                     uses.clone(),
-                                ) as usize)
-                                .unwrap()
-                                .as_str(),
+                                )).as_str(),
                         );
                     }
                 } else if vec[y] == "round" {
@@ -1497,8 +1496,8 @@ pub fn round(
     func_code: Vec<String>,
     dev: bool,
     uses: Vec<String>,
-) -> i64 {
-    getstring(
+) -> String {
+    format!("{}.parse::<f64>().unwrap().round() as i64", getstring(
         x,
         contents,
         memory_names,
@@ -1510,10 +1509,7 @@ pub fn round(
         dev,
         uses,
         0,
-    )[0]
-    .parse::<f64>()
-    .unwrap()
-    .round() as i64
+    )[0])
 }
 
 pub fn split(
@@ -1543,9 +1539,7 @@ pub fn split(
     );
     let replacer: String = items.last().unwrap().to_string();
     items.pop();
-    items
-        .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-        .replace(&replacer, "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
+    format!("{}.split(\"{}\")", items.first().unwrap(), replacer)
 }
 
 pub fn split_k(
@@ -1575,17 +1569,7 @@ pub fn split_k(
     );
     let replacer: String = items.last().unwrap().to_string();
     items.pop();
-    let mut replaced: String = "zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v".to_string();
-    replaced.push_str(&*replacer);
-    replaced.push_str("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v");
-    items
-        .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-        .replace(&replacer, &replaced)
-        .strip_prefix("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-        .unwrap()
-        .strip_suffix("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-        .unwrap()
-        .to_string()
+    format!("{}.split(\"{}\")", items.first().unwrap(), replacer)
 }
 
 pub fn length(
@@ -1599,8 +1583,8 @@ pub fn length(
     func_code: Vec<String>,
     dev: bool,
     uses: Vec<String>,
-) -> i64 {
-    getstring(
+) -> String {
+    format!("{}.count()", getstring(
         x,
         contents,
         memory_names,
@@ -1612,10 +1596,7 @@ pub fn length(
         dev,
         uses,
         0,
-    )
-    .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-    .count() as i64
+    ).first().unwrap())
 }
 
 pub fn first(
@@ -1630,7 +1611,7 @@ pub fn first(
     dev: bool,
     uses: Vec<String>,
 ) -> String {
-    getstring(
+    format!("{}.first().unwrap()", getstring(
         x,
         contents,
         memory_names,
@@ -1642,13 +1623,7 @@ pub fn first(
         dev,
         uses,
         0,
-    )
-    .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-    .collect::<Vec<&str>>()
-    .first()
-    .unwrap()
-    .to_string()
+    ).first().unwrap())
 }
 
 pub fn last(
@@ -1663,7 +1638,7 @@ pub fn last(
     dev: bool,
     uses: Vec<String>,
 ) -> String {
-    getstring(
+    format!("{}.last().unwrap()", getstring(
         x,
         contents,
         memory_names,
@@ -1675,13 +1650,7 @@ pub fn last(
         dev,
         uses,
         0,
-    )
-    .join("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-    .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
-    .collect::<Vec<&str>>()
-    .last()
-    .unwrap()
-    .to_string()
+    ).first().unwrap())
 }
 
 pub fn set_contents(
@@ -1722,9 +1691,7 @@ pub fn set_contents(
 }
 
 pub fn input() -> String {
-    let mut line = String::new();
-    std::io::stdin().read_line(&mut line).unwrap();
-    return line.trim().to_string();
+    "input()".to_string()
 }
 
 pub fn get_contents(
@@ -1776,8 +1743,8 @@ pub fn is_number(
     func_code: Vec<String>,
     dev: bool,
     uses: Vec<String>,
-) -> bool {
-    getstring(
+) -> String {
+    format!("{}.parse::<f64>().is_ok()", getstring(
         x,
         contents,
         memory_names,
@@ -1791,9 +1758,7 @@ pub fn is_number(
         0,
     )
     .first()
-    .unwrap()
-    .parse::<f64>()
-    .is_ok()
+    .unwrap())
 }
 
 pub fn replace(
@@ -1830,7 +1795,7 @@ pub fn replace(
         println!("find_s: {}", find_s);
         println!("replacer_s: {}", replacer_s);
     }
-    imput_s.replace(&*find_s, &*replacer_s)
+    format!("{}.replace({},{})", imput_s, find_s, replacer_s)
 }
 
 pub fn imp(
@@ -2079,16 +2044,7 @@ pub fn trim(
         uses,
         0,
     );
-    return if getstirng.len() > 1 {
-        getstirng
-            .first()
-            .unwrap()
-            .to_string()
-            .trim_matches(getstirng[1].chars().next().unwrap())
-            .to_string()
-    } else {
-        getstirng.first().unwrap().to_string().trim().to_string()
-    };
+    format!("{}.trim()", getstirng.first().unwrap())
 }
 
 pub fn time_readable(
@@ -2132,7 +2088,7 @@ pub fn time_readable(
         }
     } else {
         let time = time();
-        let d = UNIX_EPOCH + Duration::from_millis(time as u64);
+        let d = UNIX_EPOCH + Duration::from_millis(time.parse::<u64>().unwrap());
         // Create DateTime from SystemTime
         let datetime = DateTime::<Utc>::from(d);
         // Formats the combined date and time with the specified format string.
@@ -2243,12 +2199,8 @@ pub fn request(
     return dst.iter().map(|&c| c as char).collect::<String>();
 }
 
-pub fn time() -> f64 {
-    let start = SystemTime::now();
-    let since_the_epoch = start
-        .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards");
-    since_the_epoch.as_millis() as f64
+pub fn time() -> String {
+    "time()".to_string()
 }
 
 // pub fn group_fn(

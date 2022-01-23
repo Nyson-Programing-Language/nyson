@@ -1,6 +1,1 @@
-func(count(number)) {
-  dec int new_number: number+1;
-  log(new_number);
-  count(new_number);
-}
-count(0);
+log("Hello World");

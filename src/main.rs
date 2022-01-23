@@ -24,7 +24,7 @@ fn main() {
     }
     let uses: Vec<String> = vec!["false".to_string(), "false".to_string()];
     let matches = App::new("Nyson")
-        .version("0.19")
+        .version(env!("CARGO_PKG_VERSION"))
         .about("a programing language made in rust")
         .arg(
             Arg::with_name("INPUT")
@@ -108,6 +108,7 @@ fn main() {
                     Vec::new(),
                     Vec::new(),
                 );
+                //run and delete
             }
         }
     };
@@ -131,7 +132,7 @@ fn main() {
     }
     if !compile {
         let to_parse = lexer::lexer(contents, dev);
-        let _output = run::run(
+        run_code(run::run(
             to_parse,
             dev,
             uses,
@@ -141,73 +142,21 @@ fn main() {
             Vec::new(),
             Vec::new(),
             Vec::new(),
-        );
+        ));
+        // run and delete
     } else {
-        let mut pb;
-        if hard {
-            pb = ProgressBar::new(9);
-        } else {
-            pb = ProgressBar::new(8);
-        }
-        pb.inc();
-        Command::new("git")
-            .args([
-                "clone",
-                "https://github.com/Nyson-Programing-Language/nyson.git",
-            ])
-            .output()
-            .expect("failed to execute process");
-        pb.inc();
-        let mut contents = lexer::lexer(contents, dev);
-        pb.inc();
-        if hard {
-            contents = run::hard(
-                contents,
-                dev,
-                uses,
-                Vec::new(),
-                Vec::new(),
-                Vec::new(),
-                Vec::new(),
-                Vec::new(),
-                Vec::new(),
-            );
-            pb.inc();
-        }
-        for item in 0..contents.len() {
-            contents[item] = contents[item].replace("\"", "\\\"");
-        }
-        pb.inc();
-        let r = set_cont("nyson/src/main.rs".to_string(), get_new_code(contents));
-        if r.is_err() {
-            run::error("Could not set file contents.".to_string());
-        }
-        pb.inc();
-        Command::new("cargo")
-            .args([
-                "build",
-                "--release",
-                "--manifest-path",
-                "./nyson/Cargo.toml",
-            ])
-            .output()
-            .expect("failed to execute process");
-        pb.inc();
-        let _r = copy(
-            "nyson/target/release/nyson.exe".to_string(),
-            "nysonProgram.exe".to_string(),
-        );
-        let _r = copy(
-            "nyson/target/release/nyson".to_string(),
-            "nysonProgram".to_string(),
-        );
-        pb.inc();
-        let r = delete("nyson".to_string());
-        if r.is_err() {
-            run::error("Could not delete file.".to_string());
-        }
-        pb.inc();
-        pb.finish_print("done");
+        let to_parse = lexer::lexer(contents, dev);
+        run_code(run::run(
+            to_parse,
+            dev,
+            uses,
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+        ));
     }
 }
 
@@ -324,10 +273,18 @@ fn run_code(input: String) -> std::io::Result<()> {
     nyson_rs.push("nyson.rs");
     let mut file = File::create(nyson_rs.to_str().unwrap())?;
     file.write_all(input.as_bytes())?;
-    let _ = Command::new("rustc")
+    let output = Command::new("rustc")
+        .arg("-A")
+        .arg("dead_code")
         .arg(nyson_rs.to_str().unwrap())
         .output()
         .expect("command failed to start");
+    if !output.status.success() {
+        println!("code: {}", input);
+        println!("version: {}", env!("CARGO_PKG_VERSION"));
+        println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+        println!("I GOT AN ERROR (please make an issue on the github page with this output :) its https://github.com/Nyson-Programing-Language/nyson)")
+    }
     fs::remove_file(nyson_rs.to_str().unwrap())?;
     nyson_rs.pop();
     nyson_rs.push("nyson*");

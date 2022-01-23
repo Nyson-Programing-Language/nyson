@@ -18,6 +18,7 @@ pub fn run(
     mut func_par: Vec<String>,
     mut func_code: Vec<String>,
 ) -> String {
+    let mut returns = "use std::time::{SystemTime, UNIX_EPOCH};fn time()->f64{let start = SystemTime::now();start.duration_since(UNIX_EPOCH).expect(\"Time went backwards\").as_millis() as f64}fn input()->String{let mut line = String::new();std::io::stdin().read_line(&mut line).unwrap();return line.trim().to_string();}fn main(){".to_string();
     let mut newcont: Vec<String> = vec![" ".to_string()];
     for i in lexer::lexer(code_to_add(), dev) {
         newcont.push(i);
@@ -33,7 +34,6 @@ pub fn run(
     let mut squigle = 0;
     let mut readfrom = 0;
     let mut read = true;
-    let mut threads = Vec::new();
     let mut group_memory: Vec<String> = Vec::new();
     while read {
         read = false;
@@ -65,7 +65,7 @@ pub fn run(
 
                 if quotes % 2 == 0 && squigle == 0 {
                     if "log" == contents[x].as_str() {
-                        functions::log(
+                        returns = format!("{}{}", returns, functions::log(
                             x,
                             contents.clone(),
                             memory_names.clone(),
@@ -76,26 +76,20 @@ pub fn run(
                             func_code.clone(),
                             dev,
                             uses.clone(),
-                        );
+                        ));
                     } else if "ret" == contents[x].as_str() {
-                        return functions::getstring(
+                        returns = format!("{}return {};", returns, functions::log(
                             x,
                             contents.clone(),
-                            memory_names,
-                            memory_values,
-                            memory_types,
-                            func_names,
-                            func_par,
-                            func_code,
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
                             dev,
                             uses.clone(),
-                            0,
-                        )
-                        .first()
-                        .unwrap()
-                        .to_string()
-                        .trim()
-                        .to_string();
+                        ));
                     } else if "use" == contents[x].as_str() {
                         if contents[x + 1].as_str() == "os" {
                             uses[0] = "true".to_string();
@@ -116,7 +110,7 @@ pub fn run(
                             uses.clone(),
                         );
                     } else if "exit" == contents[x].as_str() {
-                        std::process::exit(1);
+                        returns = format!("{}std::process::exit(1);", returns);
                     } else if "audio" == contents[x].as_str()
                         && uses[1] == *"true"
                         && "use" != contents[x - 1].as_str()
@@ -183,7 +177,7 @@ pub fn run(
                                     .expect("failed to execute process");
                             }
                         });
-                        threads.push(handle);
+                        //threads.push(handle);
                     } else if "loop" == contents[x].as_str() {
                         readfrom = x + 1;
                         skiperwiper = true;
@@ -225,23 +219,14 @@ pub fn run(
                                 }
                             }
                             vec.remove(0);
-                            let mut new_vec = Vec::new();
-                            for t in 0..contents.clone().len() {
-                                if t == loc2 {
-                                    for _q in 1..number_of_times.round() as i64 {
-                                        for y in vec.clone() {
-                                            new_vec.push(y);
-                                        }
-                                    }
-                                } else {
-                                    new_vec.push(contents[t].clone());
-                                }
-                            }
-                            new_vec.remove(loc1);
-                            if dev {
-                                println!("new_vec: {:?}", new_vec);
-                            }
-                            contents = new_vec;
+                            returns = format!("{}for _ in 0..{}{{{}}};", number_of_times, returns, run(vec,dev,
+                                uses.clone(),
+                                Vec::new(),
+                                Vec::new(),
+                                Vec::new(),
+                                Vec::new(),
+                                Vec::new(),
+                                Vec::new(),));
                         }
                     } else if "while" == contents[x].as_str() {
                         readfrom = x;
@@ -268,23 +253,14 @@ pub fn run(
                                 }
                             }
                         }
-                        let mut new_vec = Vec::new();
-                        for t in 0..contents.clone().len() {
-                            if t == x {
-                                new_vec.push("if".to_string())
-                            } else if t == loc2 {
-                                new_vec.push(contents[loc2].clone());
-                                for q in x..loc2 + 1 {
-                                    new_vec.push(contents[q].clone());
-                                }
-                            } else {
-                                new_vec.push(contents[t].clone());
-                            }
-                        }
-                        if dev {
-                            println!("new_vec: {:?}", new_vec);
-                        }
-                        contents = new_vec;
+                        returns = format!("{}while {{{}}}", returns, run(vec,dev,
+                            uses.clone(),
+                            Vec::new(),
+                            Vec::new(),
+                            Vec::new(),
+                            Vec::new(),
+                            Vec::new(),
+                            Vec::new(),));
                     } else if "sleep" == contents[x].as_str() {
                         let number_of_times = functions::math(
                             x,
@@ -296,7 +272,7 @@ pub fn run(
                             func_code.clone(),
                             uses.clone(),
                         );
-                        thread::sleep(time::Duration::from_millis(number_of_times as u64));
+                        returns = format!("{}thread::sleep(time::Duration::from_millis({}));", returns, number_of_times as u64);
                     } else if "exec" == contents[x].as_str() {
                         functions::exec(
                             x,
@@ -1200,10 +1176,7 @@ pub fn run(
             }
         }
     }
-    for i in threads {
-        i.join().unwrap();
-    }
-    "".to_string()
+    format!("{}}}", returns)
 }
 
 pub(crate) fn hard(
