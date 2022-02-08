@@ -2,7 +2,7 @@ mod functions;
 use crate::lexer;
 use std::env;
 use std::process::Command;
-use std::{thread};
+use std::thread;
 
 extern crate chrono;
 extern crate meval;
@@ -919,8 +919,7 @@ pub fn run(
                                 output[item] = "true".to_string();
                                 output[item - 1] = "".to_string();
                                 output[item + 1] = "".to_string();
-                            } else if (output[item] == "=="
-                                && output[item - 1] != output[item + 1])
+                            } else if (output[item] == "==" && output[item - 1] != output[item + 1])
                                 || (output[item] == "!=" && output[item - 1] == output[item + 1])
                                 || (output[item] == ">="
                                     && !(output[item - 1].parse::<f64>().unwrap()
