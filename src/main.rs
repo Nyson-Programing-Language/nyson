@@ -274,6 +274,7 @@ fn run_code(input: String) -> std::io::Result<()> {
     let mut file = File::create(nyson_rs.to_str().unwrap())?;
     file.write_all(input.as_bytes())?;
     let output = Command::new("rustc")
+        .arg("-O")
         .arg("-A")
         .arg("dead_code")
         .arg(nyson_rs.to_str().unwrap())
