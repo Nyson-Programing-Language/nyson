@@ -219,7 +219,7 @@ pub fn run(
                                         n -= 1;
                                     }
                                     if n > 0 {
-                                        vec.push((&contents[y]).parse().unwrap());
+                                        vec.push(contents[y].parse().unwrap());
                                     } else if reached {
                                         skip = true;
                                         loc2 = y;
@@ -262,7 +262,7 @@ pub fn run(
                                     n -= 1;
                                 }
                                 if n > 0 {
-                                    vec.push((&contents[y]).parse().unwrap());
+                                    vec.push(contents[y].parse().unwrap());
                                 } else if reached {
                                     skip = true;
                                     loc2 = y;
@@ -781,7 +781,7 @@ pub fn run(
                                     }
                                 }
                                 if n > 0 {
-                                    vec.push((&contents[y]).parse().unwrap());
+                                    vec.push(contents[y].parse().unwrap());
                                 }
                             }
                         }
@@ -804,7 +804,7 @@ pub fn run(
                                 if n == 0 {
                                     skip = true;
                                     for z in x + 1..y + 1 {
-                                        vec.push((&contents[z]).parse().unwrap());
+                                        vec.push(contents[z].parse().unwrap());
                                     }
                                 }
                             }
@@ -839,13 +839,13 @@ pub fn run(
                                 || c == "&".chars().next().unwrap()
                         }) {
                             if last != index {
-                                result.push((&string[last..index]).parse().unwrap());
+                                result.push(string[last..index].parse().unwrap());
                             }
                             result.push(matched.parse().unwrap());
                             last = index + matched.len();
                         }
                         if last < string.len() {
-                            result.push((&string[last..]).parse().unwrap());
+                            result.push(string[last..].parse().unwrap());
                         }
                         let mut output = Vec::new();
                         for item in 0..result.len() {

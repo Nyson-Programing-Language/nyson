@@ -233,7 +233,7 @@ fn make_path(path: String) {
         path_made.push_str("Nyson.json")
     }
     let json: serde_json::Value = serde_json::from_str(
-        String::from_utf8_lossy((&fs::read_to_string(path_made).unwrap()).as_ref())
+        String::from_utf8_lossy(fs::read_to_string(path_made).unwrap().as_ref())
             .to_string()
             .as_str(),
     )
