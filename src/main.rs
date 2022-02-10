@@ -265,7 +265,7 @@ fn run_code(input: String, dev:bool) -> std::io::Result<()> {
         println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
     }
     if !output.status.success() {
-        println!("I GOT AN ERROR (please make an issue on the github page with this output :) its https://github.com/Nyson-Programing-Language/nyson)");
+        println!("\x1b[0;31mI GOT AN ERROR (please make an issue on the github page with this output :) its https://github.com/Nyson-Programing-Language/nyson)\x1b[0m");
     }
     fs::remove_file(nyson_rs.to_str().unwrap())?;
     nyson_rs.pop();
