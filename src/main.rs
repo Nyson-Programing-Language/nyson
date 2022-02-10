@@ -78,7 +78,7 @@ fn main() {
     let _hard = matches.is_present("hard");
     let run = matches.is_present("run");
     let dev = matches.is_present("dev");
-    let mut file: String = String::new();
+    let mut file;
     if matches.is_present("INPUT") || run {
         file = matches.value_of("INPUT").unwrap().to_string();
     } else {
@@ -145,7 +145,8 @@ fn main() {
                 Vec::new(),
             ),
             dev,
-        );
+        )
+        .unwrap();
         // run and delete
     } else {
         let to_parse = lexer::lexer(contents, dev);
@@ -162,7 +163,8 @@ fn main() {
                 Vec::new(),
             ),
             dev,
-        );
+        )
+        .unwrap();
     }
 }
 
@@ -276,6 +278,6 @@ fn run_code(input: String, dev: bool) -> std::io::Result<()> {
     fs::remove_file(nyson_rs.to_str().unwrap())?;
     nyson_rs.pop();
     nyson_rs.push("nyson*");
-    fs::rename(nyson_rs.to_str().unwrap(), "./");
+    fs::rename(nyson_rs.to_str().unwrap(), "./").unwrap();
     Ok(())
 }
