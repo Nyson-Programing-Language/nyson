@@ -160,7 +160,7 @@ pub fn getstring(
                         output_array.push(format!(
                             "format!(\"{}\",{})",
                             "{}".repeat(number_of_items),
-                            imput_s.trim_matches(',').trim().to_string()
+                            imput_s.trim_matches(',').trim()
                         ));
                     }
                     imput_s = "".to_string();
@@ -177,7 +177,7 @@ pub fn getstring(
                     imput_s.push_str(&vec[y]);
                     continues = false;
                     if n % 2 == 0 {
-                        imput_s.push_str(",");
+                        imput_s.push(',');
                     }
                 } else if y + 1 < vec.len()
                     && (vec[y + 1] == "\"" || vec[y + 1] == "\'" || vec[y + 1] == r"\`")
@@ -231,7 +231,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "arg" {
                     let mut leng = 0;
                     let mut n2 = 0;
@@ -256,7 +256,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                     if leng == 2 {
                         imput_s.push_str("env::args()");
                     } else {
@@ -320,7 +320,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "split" {
                     imput_s.push_str(
                         split(
@@ -361,7 +361,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "splitK" {
                     imput_s.push_str(
                         split_k(
@@ -402,7 +402,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "length" {
                     imput_s.push_str(
                         length(
@@ -443,7 +443,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "first" {
                     imput_s.push_str(
                         first(
@@ -483,7 +483,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "last" {
                     imput_s.push_str(
                         last(
@@ -523,7 +523,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "random" {
                     imput_s.push_str(rand::thread_rng().gen::<f64>().to_string().as_str());
                 } else if vec[y] == "request" {
@@ -566,7 +566,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "replace" {
                     imput_s.push_str(
                         replace(
@@ -607,7 +607,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "numeric" {
                     imput_s.push_str(
                         is_number(
@@ -648,7 +648,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "input" {
                     imput_s.push_str(input().to_string().as_str());
                     let mut leng = 0;
@@ -674,7 +674,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "exec" {
                     imput_s.push_str(
                         exec(
@@ -715,7 +715,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "trim" {
                     imput_s.push_str(
                         trim(
@@ -756,7 +756,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.total_memory" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -785,7 +785,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.uptime" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -814,7 +814,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.name" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -843,7 +843,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.kernel_version" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -872,7 +872,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.os_version" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -901,7 +901,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.host_name" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -930,7 +930,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.used_memory" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -959,7 +959,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.total_swap" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -988,7 +988,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.used_swap" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -1017,7 +1017,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.load_average.one" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -1046,7 +1046,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.cpu_usage" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -1075,7 +1075,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.cpu_name" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -1104,7 +1104,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.load_average.five" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -1133,7 +1133,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os.load_average.fifteen" && uses[0] == *"true" {
                     use sysinfo::System;
                     let mut sys = System::new_all();
@@ -1162,7 +1162,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "timeh" {
                     imput_s.push_str(
                         time_readable(
@@ -1203,7 +1203,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "os" && uses[0] == *"true" {
                     imput_s.push_str(env::consts::OS);
                     let mut leng = 0;
@@ -1229,7 +1229,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "time" {
                     imput_s.push_str(time().to_string().as_str());
                     let mut leng = 0;
@@ -1255,7 +1255,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if vec[y] == "getcont" {
                     imput_s.push_str(
                         get_contents(
@@ -1296,7 +1296,7 @@ pub fn getstring(
                         }
                     }
                     skips = leng;
-                    imput_s.push_str(",");
+                    imput_s.push(',');
                 } else if int == 2
                     && (vec[y] == "="
                         || vec[y] == ">"
@@ -1455,7 +1455,7 @@ pub fn getstring(
         output_array.push(format!(
             "format!(\"{}\",{})",
             "{}".repeat(number_of_items),
-            imput_s.trim_matches(',').trim().to_string()
+            imput_s.trim_matches(',').trim()
         ));
     }
     if dev {
