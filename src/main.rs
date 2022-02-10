@@ -78,7 +78,7 @@ fn main() {
     let _hard = matches.is_present("hard");
     let run = matches.is_present("run");
     let dev = matches.is_present("dev");
-    let mut file;
+    let file;
     if matches.is_present("INPUT") || run {
         file = matches.value_of("INPUT").unwrap().to_string();
     } else {
