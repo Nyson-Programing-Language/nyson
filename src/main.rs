@@ -35,7 +35,7 @@ fn main() {
         .arg(
             Arg::with_name("dev")
                 .short("v")
-                .long("verbose")
+                .long("verbos")
                 .help("Gives you dev debug tools")
                 .takes_value(false),
         )
@@ -142,7 +142,7 @@ fn main() {
             Vec::new(),
             Vec::new(),
             Vec::new(),
-        ));
+        ), dev);
         // run and delete
     } else {
         let to_parse = lexer::lexer(contents, dev);
@@ -156,7 +156,7 @@ fn main() {
             Vec::new(),
             Vec::new(),
             Vec::new(),
-        ));
+        ), dev);
     }
 }
 
@@ -247,7 +247,7 @@ fn make_path(path: String) {
     loop_throught_dir(new_path.as_ref());
 }
 
-fn run_code(input: String) -> std::io::Result<()> {
+fn run_code(input: String, dev:bool) -> std::io::Result<()> {
     let mut nyson_rs = std::env::temp_dir();
     nyson_rs.push("nyson.rs");
     let mut file = File::create(nyson_rs.to_str().unwrap())?;
@@ -259,11 +259,13 @@ fn run_code(input: String) -> std::io::Result<()> {
         .arg(nyson_rs.to_str().unwrap())
         .output()
         .expect("command failed to start");
-    if !output.status.success() {
+    if !output.status.success() || dev {
         println!("code: {}", input);
         println!("version: {}", env!("CARGO_PKG_VERSION"));
         println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
-        println!("I GOT AN ERROR (please make an issue on the github page with this output :) its https://github.com/Nyson-Programing-Language/nyson)")
+    }
+    if !output.status.success() {
+        println!("I GOT AN ERROR (please make an issue on the github page with this output :) its https://github.com/Nyson-Programing-Language/nyson)");
     }
     fs::remove_file(nyson_rs.to_str().unwrap())?;
     nyson_rs.pop();
