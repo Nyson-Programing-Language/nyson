@@ -34,8 +34,8 @@ fn main() {
         )
         .arg(
             Arg::with_name("dev")
-                .short("d")
-                .long("dev")
+                .short("v")
+                .long("verbose")
                 .help("Gives you dev debug tools")
                 .takes_value(false),
         )
@@ -158,27 +158,6 @@ fn main() {
             Vec::new(),
         ));
     }
-}
-
-fn get_new_code(content: Vec<String>) -> String {
-    let mut ruturns = "mod lexer;
-mod run;
-
-use std::env;
-use std::fs;
-use std::process::Command;
-
-#[allow(unused_variables)]
-#[allow(unused)]
-
-fn main() {
-    let dev = false;
-    let output = run::run([r\""
-        .to_string();
-    ruturns.push_str(content.join("\", r\"").as_str());
-    ruturns.push_str("\"].to_vec().iter().map(|s| s.to_string()).collect(), dev, uses, Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
-    }");
-    ruturns.to_string()
 }
 
 fn set_cont(loc: String, cont: String) -> std::io::Result<()> {

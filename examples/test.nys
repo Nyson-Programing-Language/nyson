@@ -1,1 +1,1 @@
-log("Hello World");
+log("Hello" " " "world");
