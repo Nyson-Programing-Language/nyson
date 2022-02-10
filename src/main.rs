@@ -132,31 +132,37 @@ fn main() {
     }
     if !compile {
         let to_parse = lexer::lexer(contents, dev);
-        run_code(run::run(
-            to_parse,
+        run_code(
+            run::run(
+                to_parse,
+                dev,
+                uses,
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+            ),
             dev,
-            uses,
-            Vec::new(),
-            Vec::new(),
-            Vec::new(),
-            Vec::new(),
-            Vec::new(),
-            Vec::new(),
-        ), dev);
+        );
         // run and delete
     } else {
         let to_parse = lexer::lexer(contents, dev);
-        run_code(run::run(
-            to_parse,
+        run_code(
+            run::run(
+                to_parse,
+                dev,
+                uses,
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+                Vec::new(),
+            ),
             dev,
-            uses,
-            Vec::new(),
-            Vec::new(),
-            Vec::new(),
-            Vec::new(),
-            Vec::new(),
-            Vec::new(),
-        ), dev);
+        );
     }
 }
 
@@ -247,7 +253,7 @@ fn make_path(path: String) {
     loop_throught_dir(new_path.as_ref());
 }
 
-fn run_code(input: String, dev:bool) -> std::io::Result<()> {
+fn run_code(input: String, dev: bool) -> std::io::Result<()> {
     let mut nyson_rs = std::env::temp_dir();
     nyson_rs.push("nyson.rs");
     let mut file = File::create(nyson_rs.to_str().unwrap())?;
