@@ -174,10 +174,9 @@ fn main() {
         .unwrap();
         if matches.is_present("output") {
             if Path::new("./nyson").exists() {
-                fs::rename("nyson", matches.value_of("output").unwrap().to_string()).unwrap();
-            }
-            else if Path::new("./nyson.exe").exists() {
-                fs::rename("nyson.exe", matches.value_of("output").unwrap().to_string()).unwrap();
+                fs::rename("nyson", matches.value_of("output").unwrap()).unwrap();
+            } else if Path::new("./nyson.exe").exists() {
+                fs::rename("nyson.exe", matches.value_of("output").unwrap()).unwrap();
             }
         }
     }
