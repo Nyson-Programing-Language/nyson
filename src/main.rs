@@ -73,6 +73,13 @@ fn main() {
                 .help("makes a new project")
                 .takes_value(false),
         )
+        .arg(
+            Arg::with_name("output")
+                .long("output")
+                .short("o")
+                .help("sets the output file name")
+                .takes_value(true),
+        )
         .get_matches();
     let compile = matches.is_present("compile");
     let _hard = matches.is_present("hard");
@@ -165,6 +172,14 @@ fn main() {
             dev,
         )
         .unwrap();
+        if matches.is_present("output") {
+            if Path::new("./nyson").exists() {
+                fs::rename("nyson", matches.value_of("output").unwrap().to_string()).unwrap();
+            }
+            else if Path::new("./nyson.exe").exists() {
+                fs::rename("nyson.exe", matches.value_of("output").unwrap().to_string()).unwrap();
+            }
+        }
     }
 }
 
