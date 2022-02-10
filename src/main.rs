@@ -35,7 +35,7 @@ fn main() {
         .arg(
             Arg::with_name("dev")
                 .short("v")
-                .long("verbos")
+                .long("verbose")
                 .help("Gives you dev debug tools")
                 .takes_value(false),
         )
