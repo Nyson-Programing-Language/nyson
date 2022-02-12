@@ -184,6 +184,7 @@ pub fn getstring(
                     && vec[y] == "\\"
                 {
                     continues = false;
+                    imput_s.push('\\');
                 }
                 if !continues {
                 } else if vec[y] == "(" && n % 2 == 0 {

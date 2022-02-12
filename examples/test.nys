@@ -1,1 +1,1 @@
-log("Time: " time());
+log("Time: \"" time()"\"");
