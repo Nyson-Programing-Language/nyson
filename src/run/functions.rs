@@ -1257,6 +1257,32 @@ pub fn getstring(
                     }
                     skips = leng;
                     imput_s.push(',');
+                } else if vec[y] == "internet_time" {
+                    imput_s.push_str(internet_time().to_string().as_str());
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for f in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if vec[f] == "(" {
+                                n2 += 1;
+                            } else if vec[f] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..f + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                    imput_s.push(',');
                 } else if vec[y] == "getcont" {
                     imput_s.push_str(
                         get_contents(
@@ -2300,6 +2326,10 @@ pub fn request(
 
 pub fn time() -> String {
     "time()".to_string()
+}
+
+pub fn internet_time() -> String {
+    "internet_time()".to_string()
 }
 
 // pub fn group_fn(

@@ -1,1 +1,2 @@
-log("Time: \"" time()"\"");
+log("System Time: \"" time()"\"");
+log("Real Time:   \"" internet_time()"\"");
