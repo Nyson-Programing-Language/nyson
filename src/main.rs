@@ -16,7 +16,7 @@ use pbr::ProgressBar;
 use std::path::Path;
 
 use duct::cmd;
-use std::thread;
+
 
 fn main() {
     if !Path::new("dep").exists() {
