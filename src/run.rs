@@ -81,7 +81,8 @@ pub fn run(
         std::io::stdin().read_line(&mut line).unwrap();
         return line.trim().to_string();
     }
-    fn main() {".to_string();
+    fn main() {"
+        .to_string();
     let mut newcont: Vec<String> = vec![" ".to_string()];
     for i in lexer::lexer(code_to_add(), dev) {
         newcont.push(i);
