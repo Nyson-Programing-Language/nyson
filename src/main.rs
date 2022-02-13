@@ -153,8 +153,7 @@ fn main() {
         if Path::new("./nyson").exists() {
             cmd!("./nyson").run();
             fs::remove_file("./nyson");
-        }
-        else if Path::new("./nyson.exe").exists() {
+        } else if Path::new("./nyson.exe").exists() {
             cmd!("./nyson.exe").run();
             fs::remove_file("./nyson.exe");
         }
