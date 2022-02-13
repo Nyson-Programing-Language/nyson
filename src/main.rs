@@ -47,13 +47,6 @@ fn main() {
                 .takes_value(false),
         )
         .arg(
-            Arg::with_name("hard")
-                .short("h")
-                .long("hard")
-                .help("compiles the language to offline mode")
-                .takes_value(false),
-        )
-        .arg(
             Arg::with_name("run")
                 .short("r")
                 .long("run")
@@ -82,7 +75,6 @@ fn main() {
         )
         .get_matches();
     let compile = matches.is_present("compile");
-    let _hard = matches.is_present("hard");
     let run = matches.is_present("run");
     let dev = matches.is_present("dev");
     let file;
