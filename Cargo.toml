@@ -19,4 +19,5 @@ openssl = { version = "0.10", features = ["vendored"] }
 sysinfo = "0.20.0"
 humantime = "2.1.0"
 clap = "2.33.3"
+duct = "0.13.5"
 

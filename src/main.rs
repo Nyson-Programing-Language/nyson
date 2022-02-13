@@ -15,6 +15,9 @@ use git2::Repository;
 use pbr::ProgressBar;
 use std::path::Path;
 
+use duct::cmd;
+use std::thread;
+
 fn main() {
     if !Path::new("dep").exists() {
         let r = fs::create_dir("dep");
@@ -107,6 +110,7 @@ fn main() {
                     Vec::new(),
                     Vec::new(),
                 );
+
                 //run and delete
             }
         }
@@ -146,7 +150,14 @@ fn main() {
             dev,
         )
         .unwrap();
-        // run and delete
+        if Path::new("./nyson").exists() {
+            cmd!("./nyson").run();
+            fs::remove_file("./nyson");
+        }
+        else if Path::new("./nyson.exe").exists() {
+            cmd!("./nyson.exe").run();
+            fs::remove_file("./nyson.exe");
+        }
     } else {
         let to_parse = lexer::lexer(contents, dev);
         run_code(
