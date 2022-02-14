@@ -17,7 +17,6 @@ use std::path::Path;
 
 use duct::cmd;
 
-
 fn main() {
     if !Path::new("dep").exists() {
         let r = fs::create_dir("dep");
