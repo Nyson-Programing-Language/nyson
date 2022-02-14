@@ -22,6 +22,7 @@ pub fn run(
     use std::io::Read;
     use std::net::TcpStream;
     use std::time::{SystemTime, UNIX_EPOCH};
+    use std::fs;
     fn internet_time() -> f64 {
         let mut stream = TcpStream::connect(\"time.nist.gov:13\").unwrap();
         let mut buffer = String::new();

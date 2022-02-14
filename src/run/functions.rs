@@ -142,6 +142,7 @@ pub fn getstring(
                 if (n % 2 == 0 || int == 3) && vec[y] == "," {
                     let mut number_of_items = 1;
                     let mut number_of_quotes = 0;
+                    let mut number_of_brackets = 0;
                     let mut last_item_was_backslash = false;
                     for f in imput_s.trim_matches(',').trim().chars() {
                         if f == '\\' {
@@ -150,7 +151,13 @@ pub fn getstring(
                             if (f == '\"' || f == '\'' || f == '`') && !last_item_was_backslash {
                                 number_of_quotes += 1;
                             }
-                            if number_of_quotes % 2 == 0 && f == ',' {
+                            else if number_of_quotes % 2 == 0 && f == '(' && !last_item_was_backslash {
+                                number_of_brackets += 1;
+                            }
+                            else if number_of_quotes % 2 == 0 && f == ')' && !last_item_was_backslash {
+                                number_of_brackets -= 1;
+                            }
+                            else if number_of_quotes % 2 == 0 && f == ',' && number_of_brackets == 0 {
                                 number_of_items += 1;
                             }
                             last_item_was_backslash = false;
@@ -1464,6 +1471,7 @@ pub fn getstring(
     }
     let mut number_of_items = 1;
     let mut number_of_quotes = 0;
+    let mut number_of_brackets = 0;
     let mut last_item_was_backslash = false;
     for f in imput_s.trim_matches(',').trim().chars() {
         if f == '\\' {
@@ -1472,7 +1480,13 @@ pub fn getstring(
             if (f == '\"' || f == '\'' || f == '`') && !last_item_was_backslash {
                 number_of_quotes += 1;
             }
-            if number_of_quotes % 2 == 0 && f == ',' {
+            else if number_of_quotes % 2 == 0 && f == '(' && !last_item_was_backslash {
+                number_of_brackets += 1;
+            }
+            else if number_of_quotes % 2 == 0 && f == ')' && !last_item_was_backslash {
+                number_of_brackets -= 1;
+            }
+            else if number_of_quotes % 2 == 0 && f == ',' && number_of_brackets == 0 {
                 number_of_items += 1;
             }
             last_item_was_backslash = false;
@@ -1844,14 +1858,7 @@ pub fn get_contents(
     .first()
     .unwrap()
     .to_string();
-    let maybe_contents = fs::read_to_string(string);
-
-    if maybe_contents.is_ok() {
-        maybe_contents.unwrap()
-    } else {
-        run::error("Could not open file for reading.".to_string());
-        "".to_string()
-    }
+    format!("fs::read_to_string({}).expect(\"Unable to read file\")", string)
 }
 
 pub fn is_number(
