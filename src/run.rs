@@ -56,7 +56,7 @@ pub fn run(
             .unwrap()
             .parse::<usize>()
             .unwrap();
-        let miliseconds = buffer
+        let milliseconds = buffer
             .replace(\"  \", \" \")
             .replace(\"  \", \" \") // for if there is a single digit millisecond
             .split(\" \")
@@ -69,7 +69,7 @@ pub fn run(
             + hours * 60 * 60 * 1000
             + mins * 60 * 1000
             + seconds * 1000
-            + miliseconds;
+            + milliseconds;
         return unix_time_stamp as f64;
     }
     fn time() -> f64 {
