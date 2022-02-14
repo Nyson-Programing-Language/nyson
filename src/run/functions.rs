@@ -150,14 +150,20 @@ pub fn getstring(
                         } else {
                             if (f == '\"' || f == '\'' || f == '`') && !last_item_was_backslash {
                                 number_of_quotes += 1;
-                            }
-                            else if number_of_quotes % 2 == 0 && f == '(' && !last_item_was_backslash {
+                            } else if number_of_quotes % 2 == 0
+                                && f == '('
+                                && !last_item_was_backslash
+                            {
                                 number_of_brackets += 1;
-                            }
-                            else if number_of_quotes % 2 == 0 && f == ')' && !last_item_was_backslash {
+                            } else if number_of_quotes % 2 == 0
+                                && f == ')'
+                                && !last_item_was_backslash
+                            {
                                 number_of_brackets -= 1;
-                            }
-                            else if number_of_quotes % 2 == 0 && f == ',' && number_of_brackets == 0 {
+                            } else if number_of_quotes % 2 == 0
+                                && f == ','
+                                && number_of_brackets == 0
+                            {
                                 number_of_items += 1;
                             }
                             last_item_was_backslash = false;
@@ -1479,14 +1485,11 @@ pub fn getstring(
         } else {
             if (f == '\"' || f == '\'' || f == '`') && !last_item_was_backslash {
                 number_of_quotes += 1;
-            }
-            else if number_of_quotes % 2 == 0 && f == '(' && !last_item_was_backslash {
+            } else if number_of_quotes % 2 == 0 && f == '(' && !last_item_was_backslash {
                 number_of_brackets += 1;
-            }
-            else if number_of_quotes % 2 == 0 && f == ')' && !last_item_was_backslash {
+            } else if number_of_quotes % 2 == 0 && f == ')' && !last_item_was_backslash {
                 number_of_brackets -= 1;
-            }
-            else if number_of_quotes % 2 == 0 && f == ',' && number_of_brackets == 0 {
+            } else if number_of_quotes % 2 == 0 && f == ',' && number_of_brackets == 0 {
                 number_of_items += 1;
             }
             last_item_was_backslash = false;
@@ -1858,7 +1861,10 @@ pub fn get_contents(
     .first()
     .unwrap()
     .to_string();
-    format!("fs::read_to_string({}).expect(\"Unable to read file\")", string)
+    format!(
+        "fs::read_to_string({}).expect(\"Unable to read file\")",
+        string
+    )
 }
 
 pub fn is_number(
