@@ -57,6 +57,8 @@ pub fn run(
             .parse::<usize>()
             .unwrap();
         let miliseconds = buffer
+            .replace(\"  \", \" \")
+            .replace(\"  \", \" \") // for if there is a single digit millisecond
             .split(\" \")
             .nth(6)
             .unwrap()
