@@ -490,11 +490,7 @@ pub fn run(
                             dev,
                             uses.clone(),
                         );
-                        returns = format!(
-                            "{}{}",
-                            returns,
-                            function
-                        );
+                        returns = format!("{}{}", returns, function);
                     } else if "eval" == contents[x].as_str() {
                         let imp = functions::eval_eval(
                             x,

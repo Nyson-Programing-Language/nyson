@@ -1825,7 +1825,11 @@ pub fn set_contents(
         uses,
         0,
     );
-    format!("set_contents({},{});", vec[0].to_string(), vec[1].to_string())
+    format!(
+        "set_contents({},{});",
+        vec[0].to_string(),
+        vec[1].to_string()
+    )
 }
 
 pub fn input() -> String {
@@ -2302,7 +2306,11 @@ pub fn join(
         0,
     );
     let last = getstring_response.last().unwrap();
-    format!("vec![{}].join({})", getstring_response[..getstring_response.len()-1].join(","), last)
+    format!(
+        "vec![{}].join({})",
+        getstring_response[..getstring_response.len() - 1].join(","),
+        last
+    )
 }
 
 pub fn time() -> String {
