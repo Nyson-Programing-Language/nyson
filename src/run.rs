@@ -123,7 +123,6 @@ pub fn run(
         }
         stream.write(format!(\"{} /{} HTTP/1.1{}\\r\\n\\r\\n{}\", input.get(0).unwrap().trim().to_string(), tcpstream_url_path, headers, cont).as_bytes());
         let mut buffer = String::new();
-        println!(\"hello\");
         let mut buffer = [0; 4096];
         let mut total = \"\".to_string();
         stream.read(&mut buffer).unwrap();
@@ -131,13 +130,16 @@ pub fn run(
         let mut read_rest = 0;
         for i in response.to_lowercase().lines() {
             if i.starts_with(\"Content-Type\") {
-                read_rest = i.split(\": \").nth(1).unwrap().parse::<usize>();
+                read_rest = i.split(\": \").nth(1).unwrap().parse::<usize>().unwrap();
             }
         }
         read_rest+=response.split(\"\\r\\n\\r\\n\").nth(0).unwrap().len()+4;
-        total.push_str(response);
-        println!(\"{:?}\", buffer);
-        buffer.trim().to_string().split(\"\\r\\n\").nth(1).unwrap().to_string()
+        total.push_str(&response);
+        while total.len() < read_rest {
+            stream.read(&mut buffer).unwrap();
+            total.push_str(&String::from_utf8_lossy(&buffer).to_string());
+        }
+        response.trim().to_string().split(\"\\r\\n\\r\\n\").nth(1).unwrap().to_string()
     }
     fn main() {"
         .to_string();

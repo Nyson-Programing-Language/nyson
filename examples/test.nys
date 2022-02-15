@@ -1,1 +1,1 @@
-log(request("GET", "https://www.rust-lang.org/"));
+log(request("GET", "my-json-server.typicode.com/user/repo/posts/1"));
