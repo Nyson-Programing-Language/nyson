@@ -112,16 +112,16 @@ pub fn run(
         let mut stream = TcpStream::connect(format!(\"{}:80\", tcpstream_url.trim())).unwrap();
         let mut headers = \"\".to_string();
         if input.len() > 3 {
-            headers = format!(\"\\r\\nHost: {}\\r\\nAccept: */*\\r\\n{}\", tcpstream_url.trim(), input[3..].join(\"\\r\\n\"));
+            headers = format!(\"\\r\\nHost: {}\\r\\nAccept: */*\\r\\nContent-Length: {}\\r\\n{}\", tcpstream_url.trim(), input.get(2).unwrap().trim().len(), input[3..].join(\"\\r\\n\"));
         }
         else {
-            headers = format!(\"\\r\\nHost: {}\\r\\nAccept: */*\\r\\n\", tcpstream_url.trim());
+            headers = format!(\"\\r\\nHost: {}\\r\\nAccept: */*\\r\\nContent-Length: {}\", tcpstream_url.trim(), input.get(2).unwrap().trim().len());
         }
         let mut cont = \"\";
         if input.len() > 2 {
             cont = input.get(2).unwrap();
         }
-        stream.write(format!(\"{} /{} HTTP/1.1{}\\r\\n\\r\\n{}\", input.get(0).unwrap().trim().to_string(), tcpstream_url_path, headers, cont).as_bytes());
+        stream.write(format!(\"{} /{} HTTP/1.1{}\\r\\n\\r\\n{}\", input.get(0).unwrap().trim().to_string(), tcpstream_url_path, headers, cont.trim()).as_bytes());
         let mut buffer = String::new();
         let mut buffer = [0; 4096];
         let mut total = \"\".to_string();

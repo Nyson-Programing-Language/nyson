@@ -1,1 +1,1 @@
-log(request("GET", "my-json-server.typicode.com/user/repo/posts/1"));
+log(request("POST", "https://amtitan.free.beeceptor.com", "billy bob", "custom: hello"));
