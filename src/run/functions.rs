@@ -1844,7 +1844,7 @@ pub fn set_contents(
     func_code: Vec<String>,
     dev: bool,
     uses: Vec<String>,
-) -> std::io::Result<()> {
+) -> String {
     let vec = getstring(
         x,
         contents,
@@ -1858,16 +1858,7 @@ pub fn set_contents(
         uses,
         0,
     );
-    let file_s = vec[0].to_string();
-    let text_s = vec[1].to_string();
-    if dev {
-        println!("vec: {:?}", vec);
-        println!("file_s: {}", file_s);
-        println!("text_s: {}", text_s);
-    }
-    let mut file = File::create(file_s)?;
-    file.write_all(text_s.as_ref())?;
-    Ok(())
+    format!("set_contents({},{});", vec[0].to_string(), vec[1].to_string())
 }
 
 pub fn input() -> String {

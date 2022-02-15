@@ -23,6 +23,7 @@ pub fn run(
     use std::net::TcpStream;
     use std::time::{SystemTime, UNIX_EPOCH};
     use std::io::Write;
+    use std::fs::File;
     fn internet_time() -> f64 {
         let mut stream = TcpStream::connect(\"time.nist.gov:13\").unwrap();
         let mut buffer = String::new();
@@ -83,6 +84,11 @@ pub fn run(
         let mut line = String::new();
         std::io::stdin().read_line(&mut line).unwrap();
         return line.trim().to_string();
+    }
+    fn set_contents(file_s:String,text_s:String) -> std::io::Result<()> {
+        let mut file = File::create(file_s)?;
+        file.write_all(text_s.as_ref())?;
+        Ok(())
     }
     fn split_k(text:String, spliter:String) -> Vec<String> {
         let mut result = Vec::new();
@@ -451,7 +457,7 @@ pub fn run(
                             uses.clone(),
                         );
                     } else if "setcont" == contents[x].as_str() {
-                        let r = functions::set_contents(
+                        let function = functions::set_contents(
                             x,
                             contents.clone(),
                             memory_names.clone(),
@@ -463,9 +469,11 @@ pub fn run(
                             dev,
                             uses.clone(),
                         );
-                        if r.is_err() {
-                            error("Could not set file contents.".to_string());
-                        }
+                        returns = format!(
+                            "{}{}",
+                            returns,
+                            function
+                        );
                     } else if "eval" == contents[x].as_str() {
                         let imp = functions::eval_eval(
                             x,

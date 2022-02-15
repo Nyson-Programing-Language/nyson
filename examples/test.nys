@@ -1,1 +1,1 @@
-log(request("POST", "https://amtitan.free.beeceptor.com", "billy bob", "custom: hello"));
+setcont("billy", "hello");
