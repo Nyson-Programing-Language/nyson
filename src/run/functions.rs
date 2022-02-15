@@ -1,10 +1,10 @@
 use crate::{lexer, run};
 use curl::easy::Easy;
 use rand::Rng;
-use std::fs::File;
-use std::io::Write;
 
-use std::process::Command;
+
+
+
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use std::{env, fs};
 extern crate chrono;
@@ -1827,8 +1827,8 @@ pub fn set_contents(
     );
     format!(
         "set_contents({},{});",
-        vec[0].to_string(),
-        vec[1].to_string()
+        vec[0],
+        vec[1]
     )
 }
 
