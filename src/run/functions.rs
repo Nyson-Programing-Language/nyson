@@ -1,8 +1,8 @@
 use crate::{lexer, run};
-use curl::easy::{Easy, List};
+use curl::easy::{Easy};
 use rand::Rng;
 use std::fs::File;
-use std::io::{Read, Write};
+use std::io::{Write};
 
 use std::process::Command;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};

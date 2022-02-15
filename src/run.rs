@@ -222,7 +222,6 @@ pub fn run(
                             )
                             .first()
                             .unwrap()
-                            .to_string()
                         );
                     } else if "use" == contents[x].as_str() {
                         if contents[x + 1].as_str() == "os" {
