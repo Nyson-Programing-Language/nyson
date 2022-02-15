@@ -2261,7 +2261,7 @@ pub fn request(
     dev: bool,
     uses: Vec<String>,
 ) -> String {
-    let mut reply = getstring(
+    let getstring_response = getstring(
         x,
         contents,
         memory_names,
@@ -2274,67 +2274,7 @@ pub fn request(
         uses,
         0,
     );
-    let type_of_request = reply[0].to_string();
-    let imput_s = reply[1].to_string();
-    let mut find_s = "".to_string();
-    let types_that_send = ["POST", "PUT", "PATCH"];
-    if types_that_send.contains(&&*type_of_request) {
-        find_s = reply[2].to_string();
-    }
-    if dev {
-        println!("vec: {:?}", reply);
-        println!("type_of_request: {}", type_of_request);
-        println!("imput_s: {}", imput_s);
-        if types_that_send.contains(&&*type_of_request) {
-            println!("find_s: {}", find_s);
-        }
-    }
-    reply.remove(0);
-    reply.remove(0);
-    if types_that_send.contains(&&*type_of_request) {
-        reply.remove(0);
-    }
-    let mut list = List::new();
-    for i in reply {
-        list.append(i.as_str()).unwrap();
-    }
-    if dev {
-        println!("list: {:?}", list);
-    }
-    let mut data = "".as_bytes();
-    let mut dst = Vec::new();
-    if types_that_send.contains(&&*type_of_request) {
-        data = find_s.as_bytes();
-    }
-
-    let mut easy = Easy::new();
-    easy.url(&*imput_s).unwrap();
-    let _output = easy.custom_request(type_of_request.as_str());
-    if types_that_send.contains(&&*type_of_request) {
-        easy.post_field_size(data.len() as u64).unwrap();
-    }
-    easy.http_headers(list).unwrap();
-
-    let mut transfer = easy.transfer();
-    if types_that_send.contains(&&*type_of_request) {
-        transfer
-            .read_function(|buf| {
-                dst.extend_from_slice(buf);
-                Ok(data.read(buf).unwrap_or(0))
-            })
-            .unwrap();
-    } else {
-        transfer
-            .write_function(|data| {
-                dst.extend_from_slice(data);
-                Ok(data.len())
-            })
-            .unwrap();
-    }
-    transfer.perform().unwrap();
-    drop(transfer);
-
-    return dst.iter().map(|&c| c as char).collect::<String>();
+    format!("request(vec![{}])", getstring_response.join(","))
 }
 
 pub fn time() -> String {

@@ -1,3 +1,4 @@
 log("System Time: \"" time() "\"");
 log("Real Time:   \"" internet_time() "\"");
 log("test.nys:    " getcont("examples/test.nys"));
+log(request("GET", "https://www.rust-lang.org/"));

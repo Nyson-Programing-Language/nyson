@@ -23,6 +23,7 @@ pub fn run(
     use std::net::TcpStream;
     use std::time::{SystemTime, UNIX_EPOCH};
     use std::fs;
+    use std::io::Write;
     fn internet_time() -> f64 {
         let mut stream = TcpStream::connect(\"time.nist.gov:13\").unwrap();
         let mut buffer = String::new();
@@ -83,6 +84,46 @@ pub fn run(
         let mut line = String::new();
         std::io::stdin().read_line(&mut line).unwrap();
         return line.trim().to_string();
+    }
+    fn request(input:Vec<String>) -> String {
+        let url = input.get(1).unwrap().trim().to_string();
+        let mut tcpstream_url = \"\";
+        let mut tcpstream_url_path = \"\";
+        let mut split = url.split('/').collect::<Vec<&str>>();
+        let mut right_part;
+        let mut right_part1;
+        if url.starts_with(\"http\") {
+            tcpstream_url = url.split('/').nth(2).unwrap();
+            if url.split('/').count() > 3 {
+                right_part = &split[3..];
+                right_part1 = right_part.join(\"/\");
+                tcpstream_url_path = &right_part1;
+            }
+        }
+        else {
+            tcpstream_url = url.split('/').nth(0).unwrap();
+            if url.split('/').count() > 1 {
+                right_part = &split[1..];
+                right_part1 = right_part.join(\"/\");
+                tcpstream_url_path = &right_part1;
+            }
+        }
+        let mut stream = TcpStream::connect(format!(\"{}:80\", tcpstream_url.trim())).unwrap();
+        let mut headers = \"\".to_string();
+        if input.len() > 3 {
+            headers = format!(\"\\r\\nHost: {}\\r\\nAccept: */*\\r\\n{}\", tcpstream_url.trim(), input[3..].join(\"\\r\\n\"));
+        }
+        else {
+            headers = format!(\"\\r\\nHost: {}\\r\\nAccept: */*\\r\\n\", tcpstream_url.trim());
+        }
+        let mut cont = \"\";
+        if input.len() > 2 {
+            cont = input.get(2).unwrap();
+        }
+        stream.write(format!(\"{} /{} HTTP/1.1{}\\r\\n\\r\\n{}\", input.get(0).unwrap().trim().to_string(), tcpstream_url_path, headers, cont).as_bytes());
+        let mut buffer = String::new();
+        stream.read_to_string(&mut buffer).unwrap();
+        buffer.trim().to_string().split(\"\\r\\n\").nth(1).unwrap().to_string()
     }
     fn main() {"
         .to_string();
@@ -152,7 +193,34 @@ pub fn run(
                         returns = format!(
                             "{}return {};",
                             returns,
-                            functions::log(
+                            functions::getstring(
+                                x,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                                uses.clone(),
+                                0
+                            )
+                            .first()
+                            .unwrap()
+                            .to_string()
+                        );
+                    } else if "use" == contents[x].as_str() {
+                        if contents[x + 1].as_str() == "os" {
+                            uses[0] = "true".to_string();
+                        } else if contents[x + 1].as_str() == "audio" {
+                            uses[1] = "true".to_string();
+                        }
+                    } else if "request" == contents[x].as_str() {
+                        returns = format!(
+                            "{}{};",
+                            returns,
+                            functions::request(
                                 x,
                                 contents.clone(),
                                 memory_names.clone(),
@@ -164,25 +232,6 @@ pub fn run(
                                 dev,
                                 uses.clone(),
                             )
-                        );
-                    } else if "use" == contents[x].as_str() {
-                        if contents[x + 1].as_str() == "os" {
-                            uses[0] = "true".to_string();
-                        } else if contents[x + 1].as_str() == "audio" {
-                            uses[1] = "true".to_string();
-                        }
-                    } else if "request" == contents[x].as_str() {
-                        let _output = functions::request(
-                            x,
-                            contents.clone(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            memory_types.clone(),
-                            func_names.clone(),
-                            func_par.clone(),
-                            func_code.clone(),
-                            dev,
-                            uses.clone(),
                         );
                     } else if "exit" == contents[x].as_str() {
                         returns = format!("{}std::process::exit(1);", returns);
