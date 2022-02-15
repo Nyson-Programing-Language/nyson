@@ -376,7 +376,48 @@ pub fn getstring(
                     }
                     skips = leng;
                     imput_s.push(',');
-                } else if vec[y] == "splitK" {
+                } else if vec[y] == "join" {
+                    imput_s.push_str(
+                        join(
+                            y,
+                            vec.to_vec(),
+                            memory_names.clone(),
+                            memory_values.clone(),
+                            memory_types.clone(),
+                            func_names.clone(),
+                            func_par.clone(),
+                            func_code.clone(),
+                            dev,
+                            uses.clone(),
+                        )
+                        .to_string()
+                        .as_str(),
+                    );
+                    let mut leng = 0;
+                    let mut n2 = 0;
+                    let mut skip1 = false;
+                    for elem in y + 1..vec.len() {
+                        if !skip1 {
+                            if vec[y + 1] != "(" {
+                                println!("You have to put a parentheses after a log");
+                                std::process::exit(1);
+                            }
+                            if contents[elem] == "(" {
+                                n2 += 1;
+                            } else if contents[elem] == ")" {
+                                n2 -= 1;
+                            }
+                            if n2 == 0 {
+                                skip1 = true;
+                                for _z in y + 1..elem + 1 {
+                                    leng += 1;
+                                }
+                            }
+                        }
+                    }
+                    skips = leng;
+                    imput_s.push(',');
+                } else if vec[y] == "split_k" {
                     imput_s.push_str(
                         split_k(
                             y,
@@ -1693,7 +1734,7 @@ pub fn split_k(
     );
     let replacer: String = items.last().unwrap().to_string();
     items.pop();
-    format!("{}.split(\"{}\")", items.first().unwrap(), replacer)
+    format!("split_k({}, {})", items.first().unwrap(), replacer)
 }
 
 pub fn length(
@@ -2275,6 +2316,35 @@ pub fn request(
         0,
     );
     format!("request(vec![{}])", getstring_response.join(","))
+}
+
+pub fn join(
+    x: usize,
+    contents: Vec<String>,
+    memory_names: Vec<String>,
+    memory_values: Vec<String>,
+    memory_types: Vec<String>,
+    func_names: Vec<String>,
+    func_par: Vec<String>,
+    func_code: Vec<String>,
+    dev: bool,
+    uses: Vec<String>,
+) -> String {
+    let getstring_response = getstring(
+        x,
+        contents,
+        memory_names,
+        memory_values,
+        memory_types,
+        func_names,
+        func_par,
+        func_code,
+        dev,
+        uses,
+        0,
+    );
+    let last = getstring_response.last().unwrap();
+    format!("vec![{}].join({})", getstring_response[..getstring_response.len()-1].join(","), last)
 }
 
 pub fn time() -> String {

@@ -22,9 +22,7 @@ pub fn run(
     use std::io::Read;
     use std::net::TcpStream;
     use std::time::{SystemTime, UNIX_EPOCH};
-    use std::fs;
     use std::io::Write;
-    use std::io::BufReader;
     fn internet_time() -> f64 {
         let mut stream = TcpStream::connect(\"time.nist.gov:13\").unwrap();
         let mut buffer = String::new();
@@ -86,6 +84,16 @@ pub fn run(
         std::io::stdin().read_line(&mut line).unwrap();
         return line.trim().to_string();
     }
+    fn split_k(text:String, spliter:String) -> Vec<String> {
+        let mut result = Vec::new();
+        let mut last = 0;
+        for i in text.split(&spliter.clone()) {
+            result.push(i.to_string());
+            result.push(spliter.clone());
+        }
+        result.pop();
+        result
+    }
     fn request(input:Vec<String>) -> String {
         let url = input.get(1).unwrap().trim().to_string();
         let mut tcpstream_url = \"\";
@@ -122,7 +130,6 @@ pub fn run(
             cont = input.get(2).unwrap();
         }
         stream.write(format!(\"{} /{} HTTP/1.1{}\\r\\n\\r\\n{}\", input.get(0).unwrap().trim().to_string(), tcpstream_url_path, headers, cont.trim()).as_bytes());
-        let mut buffer = String::new();
         let mut buffer = [0; 4096];
         let mut total = \"\".to_string();
         stream.read(&mut buffer).unwrap();
