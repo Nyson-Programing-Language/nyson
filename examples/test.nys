@@ -1,1 +1,1 @@
-setcont("billy", "hello");
+log(exec("dir"));

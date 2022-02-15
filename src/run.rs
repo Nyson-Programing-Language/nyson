@@ -24,6 +24,7 @@ pub fn run(
     use std::time::{SystemTime, UNIX_EPOCH};
     use std::io::Write;
     use std::fs::File;
+    use std::process::Command;
     fn internet_time() -> f64 {
         let mut stream = TcpStream::connect(\"time.nist.gov:13\").unwrap();
         let mut buffer = String::new();
@@ -84,6 +85,22 @@ pub fn run(
         let mut line = String::new();
         std::io::stdin().read_line(&mut line).unwrap();
         return line.trim().to_string();
+    }
+    fn exec(input:String) -> String {
+        let output = if cfg!(target_os = \"windows\") {
+            Command::new(\"cmd\")
+                    .args([\"/C\", &input])
+                    .output()
+                    .expect(\"failed to execute process\")
+        } else {
+            Command::new(\"sh\")
+                    .arg(\"-c\")
+                    .arg(&input)
+                    .output()
+                    .expect(\"failed to execute process\")
+        };
+        
+        String::from_utf8_lossy(&output.stdout).to_string()
     }
     fn set_contents(file_s:String,text_s:String) -> std::io::Result<()> {
         let mut file = File::create(file_s)?;
@@ -444,17 +461,21 @@ pub fn run(
                             returns, number_of_times as u64
                         );
                     } else if "exec" == contents[x].as_str() {
-                        functions::exec(
-                            x,
-                            contents.clone(),
-                            memory_names.clone(),
-                            memory_values.clone(),
-                            memory_types.clone(),
-                            func_names.clone(),
-                            func_par.clone(),
-                            func_code.clone(),
-                            dev,
-                            uses.clone(),
+                        returns = format!(
+                            "{}{};",
+                            returns,
+                            functions::exec(
+                                x,
+                                contents.clone(),
+                                memory_names.clone(),
+                                memory_values.clone(),
+                                memory_types.clone(),
+                                func_names.clone(),
+                                func_par.clone(),
+                                func_code.clone(),
+                                dev,
+                                uses.clone(),
+                            )
                         );
                     } else if "setcont" == contents[x].as_str() {
                         let function = functions::set_contents(

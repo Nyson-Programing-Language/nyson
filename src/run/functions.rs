@@ -1597,7 +1597,7 @@ pub fn exec(
 ) -> String {
     let string = getstring(
         x,
-        contents.clone(),
+        contents,
         memory_names,
         memory_values,
         memory_types,
@@ -1607,44 +1607,11 @@ pub fn exec(
         dev,
         uses,
         0,
-    );
-    if string.is_empty() {
-        run::error(
-            [
-                "You have to put stuff in the exec command on line ",
-                get_line(x, contents).to_string().as_str(),
-            ]
-            .join(""),
-        )
-    }
-    let string = string.first().unwrap().to_string();
-    let stringreturn = string;
-    let mut vecs = stringreturn.replace('\n', " ");
-    vecs = vecs.replace('\t', " ");
-    if env::consts::OS == "windows" {
-        let endvec: Vec<&str> = vec!["/C", &stringreturn];
-        if dev {
-            println!("Command args: {:?}", endvec);
-        }
-        let output = Command::new("cmd")
-            .args(endvec)
-            .output()
-            .expect("failed to execute process");
-        return String::from_utf8_lossy(&output.stdout).to_string();
-    } else {
-        let mut endvec: Vec<&str> = vecs.split(' ').collect();
-        let commandname = endvec[0];
-        endvec.remove(0);
-        if dev {
-            println!("Command Name: {}", commandname);
-            println!("Command args: {:?}", endvec);
-        }
-        let output = Command::new(commandname)
-            .args(endvec)
-            .output()
-            .expect("failed to execute process");
-        return String::from_utf8_lossy(&output.stdout).to_string();
-    }
+    )
+    .first()
+    .unwrap()
+    .to_string();
+    format!("exec({})", string)
 }
 
 pub fn round(
