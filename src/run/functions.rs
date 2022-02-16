@@ -2,9 +2,6 @@ use crate::{lexer, run};
 use curl::easy::Easy;
 use rand::Rng;
 
-
-
-
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use std::{env, fs};
 extern crate chrono;
@@ -1818,11 +1815,7 @@ pub fn set_contents(
         uses,
         0,
     );
-    format!(
-        "set_contents({},{});",
-        vec[0],
-        vec[1]
-    )
+    format!("set_contents({},{});", vec[0], vec[1])
 }
 
 pub fn input() -> String {
