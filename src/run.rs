@@ -260,6 +260,56 @@ pub fn run(
                             uses[0] = "true".to_string();
                         } else if contents[x + 1].as_str() == "audio" {
                             uses[1] = "true".to_string();
+                        } else if contents[x + 1].as_str() == "term" {
+                            uses[2] = "true".to_string();
+                            returns = format!(
+                                "{}
+                                let reset=\"\\x1b[0m\";
+                                let bold=\"\\x1b[1m\";
+                                let dim=\"\\x1b[2m\";
+                                let italic=\"\\x1b[3m\";
+                                let underline=\"\\x1b[4m\";
+                                let blinking=\"\\x1b[5m\";
+                                let reverse=\"\\x1b[7m\";
+                                let invisible=\"\\x1b[8m\";
+                                let strikethrough=\"\\x1b[9m\";
+                                let black=\"\\x1b[30m\";
+                                let red=\"\\x1b[31m\";
+                                let green=\"\\x1b[32m\";
+                                let yellow=\"\\x1b[33m\";
+                                let blue=\"\\x1b[34m\";
+                                let magenta=\"\\x1b[35m\";
+                                let cyan=\"\\x1b[36m\";
+                                let white=\"\\x1b[37m\";
+                                let default=\"\\x1b[39m\";
+                                let background_black=\"\\x1b[40m\";
+                                let background_red=\"\\x1b[41m\";
+                                let background_green=\"\\x1b[42m\";
+                                let background_yellow=\"\\x1b[43m\";
+                                let background_blue=\"\\x1b[44m\";
+                                let background_magenta=\"\\x1b[45m\";
+                                let background_cyan=\"\\x1b[46m\";
+                                let background_white=\"\\x1b[47m\";
+                                let background_default=\"\\x1b[49m\";
+                                let bright_black=\"\\x1b[90m\";
+                                let bright_red=\"\\x1b[91m\";
+                                let bright_green=\"\\x1b[92m\";
+                                let bright_yellow=\"\\x1b[93m\";
+                                let bright_blue=\"\\x1b[94m\";
+                                let bright_magenta=\"\\x1b[95m\";
+                                let bright_cyan=\"\\x1b[96m\";
+                                let bright_white=\"\\x1b[97m\";
+                                let bright_background_black=\"\\x1b[100m\";
+                                let bright_background_red=\"\\x1b[101m\";
+                                let bright_background_green=\"\\x1b[102m\";
+                                let bright_background_yellow=\"\\x1b[103m\";
+                                let bright_background_blue=\"\\x1b[104m\";
+                                let bright_background_magenta=\"\\x1b[105m\";
+                                let bright_background_cyan=\"\\x1b[106m\";
+                                let bright_background_white=\"\\x1b[107m\";",
+                                // need to add the rest from https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+                                returns
+                            );
                         }
                     } else if "request" == contents[x].as_str() {
                         returns = format!(

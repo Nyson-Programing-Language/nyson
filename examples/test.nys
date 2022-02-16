@@ -1,1 +1,2 @@
-log(exec("dir"));
+use term;
+log(cyan"Hello");

@@ -24,7 +24,7 @@ fn main() {
             run::error("Could not create dir.".to_string());
         }
     }
-    let uses: Vec<String> = vec!["false".to_string(), "false".to_string()];
+    let uses: Vec<String> = vec!["false".to_string(), "false".to_string(), "false".to_string()];
     let matches = App::new("Nyson")
         .version(env!("CARGO_PKG_VERSION"))
         .about("a programing language made in rust")

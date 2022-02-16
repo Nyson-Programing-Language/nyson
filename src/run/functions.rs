@@ -1499,15 +1499,8 @@ pub fn getstring(
                         } else if int == 3 {
                             imput_s.push_str(vec[y].as_str());
                         } else if !all_the_allowed_stuff().contains(&vec[y]) {
-                            run::error(
-                                [
-                                    "I have no idea what \"",
-                                    vec[y].to_string().as_str(),
-                                    "\" is on line ",
-                                    get_line(x, contents.clone()).to_string().as_str(),
-                                ]
-                                .join(""),
-                            )
+                            imput_s.push_str(&vec[y]);
+                            imput_s.push_str(",");
                         }
                     }
                 }
