@@ -1497,7 +1497,7 @@ pub fn getstring(
                             imput_s.push_str(vec[y].as_str());
                         } else if !all_the_allowed_stuff().contains(&vec[y]) {
                             imput_s.push_str(&vec[y]);
-                            imput_s.push_str(",");
+                            imput_s.push(',');
                         }
                     }
                 }
