@@ -1410,11 +1410,10 @@ pub fn getstring(
                                 )
                                 .to_string();
                                 imput_s.push_str(
-                                    &*memory_values[postion]
+                                    memory_values[postion]
                                         .split("zzGVgfHaNtPMe7H9RRyx3rWC9JyyZdMkc2v")
                                         .nth(number_of_item.parse().unwrap())
-                                        .unwrap()
-                                        .to_string(),
+                                        .unwrap(),
                                 );
                             } else if vec[y + 1] == "[" {
                                 let json = Json::from_str(memory_values[postion].trim()).unwrap();
@@ -1434,13 +1433,13 @@ pub fn getstring(
                                 let slices: Vec<&str> =
                                     original.iter().map(AsRef::as_ref).collect();
                                 imput_s.push_str(
-                                    json.find_path(&*slices).unwrap().to_string().as_str(),
+                                    json.find_path(&slices).unwrap().to_string().as_str(),
                                 );
                             } else {
-                                imput_s.push_str(&*memory_values[postion].to_string());
+                                imput_s.push_str(&memory_values[postion].to_string());
                             }
                         } else {
-                            imput_s.push_str(&*memory_values[postion].to_string());
+                            imput_s.push_str(&memory_values[postion].to_string());
                         }
                     } else {
                         let mut postion = func_names.len();
@@ -1969,7 +1968,7 @@ pub fn imp(
     if string.starts_with("https://") || string.starts_with("http://") {
         let mut dst = Vec::new();
         let mut easy = Easy::new();
-        easy.url(&*string).unwrap();
+        easy.url(&string).unwrap();
 
         let mut transfer = easy.transfer();
         transfer

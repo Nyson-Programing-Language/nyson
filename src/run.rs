@@ -765,7 +765,7 @@ pub fn run(
                                         location = items + (d * 2) + 3;
                                     }
                                 }
-                                name.push_str(&*group_memory[location]);
+                                name.push_str(&group_memory[location]);
                                 if exists != memory_names.len() {
                                     memory_names[exists] = name.clone();
                                     memory_values[exists] = value_group[d].clone();
