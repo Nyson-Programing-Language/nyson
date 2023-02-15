@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/29708070/128087291-a6e4f541-d84f-4b28-
 
 #### List of users who contributed to this project! 👍
 
-##### Nyelsonon: https://github.com/Nyelsonon [![wakatime](https://wakatime.com/badge/github/Nyson-Programing-Language/nyson.svg)](https://wakatime.com/badge/github/Nyson-Programing-Language/nyson)
+##### Neal-Kotval: https://github.com/Neal-Kotval [![wakatime](https://wakatime.com/badge/github/Nyson-Programing-Language/nyson.svg)](https://wakatime.com/badge/github/Nyson-Programing-Language/nyson)
 
 ##### AMTitan: https://github.com/AMTitan [![wakatime](https://wakatime.com/badge/github/AMTitan/nyson-programming-language.svg)](https://wakatime.com/badge/github/AMTitan/nyson-programming-language)
 
